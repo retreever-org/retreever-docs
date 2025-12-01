@@ -1,73 +1,124 @@
-# React + TypeScript + Vite
+<p align="center">
+  <img src="http://raw.githubusercontent.com/Retreever-org/retreever-java/fae0a98e028e9b7bc6b269c480b388245530ea8d/Docmentation/Logo/retreever-banner.svg" width="100%" alt="Retreever Banner" />
+</p>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Retreever Docs
 
-Currently, two official plugins are available:
+**Retreever Docs** is a lightweight, fast, and fully customizable documentation interface for the Retreever ecosystem. It is built to serve as the primary documentation site for:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+* Retreever Java
+* Retreever API Tools
+* Any upcoming Retreever modules
 
-## React Compiler
+This project focuses on clarity, speed, and a developer-centric experience. All content is Markdown-based and rendered through a clean, modern UI.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the ESLint configuration
+## Purpose
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Retreever Docs provides a simple way to:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+* Organize documentation without introducing heavy frameworks
+* Render Markdown with a consistent layout
+* Auto-generate navigation from folder structure
+* Maintain documentation alongside code
+* Allow the community to contribute easily
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+The goal is not to be a full documentation engine — only a clean, efficient frontend for reading docs.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+
+## Key Features
+
+### **• Modern Dark UI**
+
+Responsive layout with a minimal, tool-first design:
+
+* Custom color tokens
+* Navbar + Sidebar + TOC layout
+* Tailwind v4-based styling
+* Clean typography for technical content
+
+### **• Markdown Rendering**
+
+* `markdown-it`
+* Syntax highlighting via `highlight.js`
+* Sanitized HTML with `DOMPurify`
+
+### **• Navigation From File Structure**
+
+* Vite glob imports automatically map files inside `/docs`
+* URL-based routing
+* No manual sidebar configuration needed
+
+### **• Lightweight State & Routing**
+
+* React Router v7
+* Zustand for UI state
+
+### **• Open & Extensible**
+
+Built to be modified, extended, or integrated into other Retreever tooling.
+
+
+## Project Structure
+
+```
+docs/     ← your markdown files live here
+src/
+  components/
+  pages/
+  store/
+  utils/
+public/
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Getting Started
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Installation
+
+```bash
+git clone https://github.com/Retreever-org/retreever-docs.git
+cd retreever-docs
+npm install
 ```
+
+### Development Server
+
+```bash
+npm run dev
+```
+
+### Production Build
+
+```bash
+npm run build
+```
+
+The output is a static site that can be deployed to any static hosting environment.
+
+
+## Contributing
+
+Contributions are welcome.
+
+If you'd like to add or update documentation, improve UI components, or extend functionality:
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes with clear messages
+4. Open a pull request
+
+For documentation updates, edit or add Markdown files inside `/src/docs`.
+
+If you're unsure where a change belongs, open an issue to discuss it.
+
+
+## Licensing
+
+This project is available under the **MIT License**.
+
+
+## Maintainers
+
+**Retreever Org**
+Focused on building reliable, reflection-driven tools for the Java and Spring ecosystem.
