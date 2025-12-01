@@ -1,4 +1,4 @@
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import { useRef } from "react";
 import { Zap, Wand2, ShieldCheck, Network } from "lucide-react";
 
@@ -31,11 +31,6 @@ export default function Features() {
   ];
 
   const ref = useRef(null);
-  const isInView = useInView(ref, {
-    once: false,
-    amount: 0.1,
-    margin: "-10% 0px -10% 0px", // Prevents flickering on edge scroll
-  });
 
   return (
     <section className="w-full py-20 bg-black text-white border-t border-(--dark-border)/30">
