@@ -1,7 +1,14 @@
+import Compare from "./home/Compare";
+import Hero from "./home/Hero";
+import Intro from "./home/Intro";
 
 const Home: React.FC = () => {
     return (
-        <div>Home Page</div>
+        <div>
+            <Hero />
+            <Intro />
+            <Compare />
+        </div>
     )
 }
 

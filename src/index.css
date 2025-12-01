@@ -12,3 +12,21 @@
   --dark-border-2: #2c2c2c;
   --text-light: #e6edf3;
 }
+
+:root {
+  --rt-bg-dark: #0a0a10;
+  --rt-bg-1: #09101a;
+  --rt-bg-2: #0c1623;
+  --rt-blue: #3ea9ff;
+  --rt-cyan: #24ffd6;
+  --rt-green: #6cff7a;
+  --rt-purple: #7677e2;
+  --rt-brand-glow: #14f1ff;
+  --rt-fg-light: #e0ecff;
+  --rt-fg-muted: #99aac1;
+  --rt-fg-subtle: #49516a;
+  --rt-border-card: #22293d;
+  --rt-card-bg: #141925b2;
+  --rt-shadow-lg: 0 8px 32px 0 #00131f60;
+}
+
