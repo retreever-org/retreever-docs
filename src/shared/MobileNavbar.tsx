@@ -26,19 +26,21 @@ export default function MobileNavbar({
   return (
     <>
       {/* FAB-style toggle button (always visible on mobile) */}
-      <div className="ml-auto">
-        <MobileNavLink
-        href="/docs"
-        active={isDocs}
-        onClick={(e) => {
-          e.preventDefault();
-          handleSectionClick("/docs");
-          setOpen(false);
-        }}
-      >
-        Docs
-      </MobileNavLink>
-      </div>
+      {!isDocs && (
+        <div className="ml-auto">
+          <MobileNavLink
+            href="/docs"
+            active={isDocs}
+            onClick={(e) => {
+              e.preventDefault();
+              handleSectionClick("/docs");
+              setOpen(false);
+            }}
+          >
+            Docs
+          </MobileNavLink>
+        </div>
+      )}
       <motion.button
         className="z-50 flex h-10 w-10 rounded-lg border border-white/10 bg-white/5 text-white backdrop-blur-sm transition-colors hover:bg-white/10"
         onClick={() => setOpen((v) => !v)}
