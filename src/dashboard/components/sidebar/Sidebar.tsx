@@ -57,7 +57,7 @@ const Sidebar: React.FC<SidebarProps> = ({ tree }) => {
     <>
       {/* Desktop / large screens: normal sidebar with filtering */}
       <aside
-        className="
+        className={`
           hidden lg:flex
           min-w-68
           h-screen
@@ -66,7 +66,7 @@ const Sidebar: React.FC<SidebarProps> = ({ tree }) => {
           border-r border-(--dark-border)/50
           text-(--rt-fg-light)
           sticky top-0 overflow-auto
-        "
+        `}
         ref={sidebarRef}
       >
         <div className="mt-16 mb-4" />
