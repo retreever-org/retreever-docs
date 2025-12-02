@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import GitHubLogo from "/github.svg";
 import { type MouseEvent } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LOGO_BLUE = "#3B8BFF";
 
@@ -20,6 +21,8 @@ export default function MobileNavbar({
   open,
   setOpen,
 }: MobileNavbarProps) {
+  const navigate = useNavigate();
+
   return (
     <>
       {/* FAB-style toggle button (always visible on mobile) */}
@@ -68,7 +71,7 @@ export default function MobileNavbar({
           >
             {/* Top content: links + GitHub */}
             <div className="px-6 pt-12 pb-4 space-y-1 mt-6">
-              {!isDocs && (
+              {!isDocs ? (
                 <>
                   <MobileNavLink
                     href="#home"
@@ -83,18 +86,6 @@ export default function MobileNavbar({
                   </MobileNavLink>
 
                   <MobileNavLink
-                    href="/docs"
-                    active={isDocs}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleSectionClick("/docs");
-                      setOpen(false);
-                    }}
-                  >
-                    Docs
-                  </MobileNavLink>
-
-                  <MobileNavLink
                     href="#features"
                     active={activeLink === "#features"}
                     onClick={(e) => {
@@ -105,7 +96,31 @@ export default function MobileNavbar({
                   >
                     Features
                   </MobileNavLink>
+
+                  <MobileNavLink
+                    href="/docs"
+                    active={isDocs}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleSectionClick("/docs");
+                      setOpen(false);
+                    }}
+                  >
+                    Docs
+                  </MobileNavLink>
                 </>
+              ) : (
+                <MobileNavLink
+                  href="/"
+                  active={isDocs}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate("/");
+                    setOpen(false);
+                  }}
+                >
+                  Home
+                </MobileNavLink>
               )}
 
               <motion.a
@@ -137,7 +152,12 @@ interface MobileNavLinkProps {
   children: React.ReactNode;
 }
 
-function MobileNavLink({ href, active, onClick, children }: MobileNavLinkProps) {
+function MobileNavLink({
+  href,
+  active,
+  onClick,
+  children,
+}: MobileNavLinkProps) {
   return (
     <motion.a
       href={href}
