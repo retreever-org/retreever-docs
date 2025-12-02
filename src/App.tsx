@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import DocPage from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard";
 
 export default function App() {
   return (
@@ -9,7 +9,7 @@ export default function App() {
           <main className="flex-1 overflow-auto">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/docs/:slug*" element={<DocPage />} />
+              <Route path="/docs/:slug?" element={<Dashboard />} />
             </Routes>
           </main>
         </div>

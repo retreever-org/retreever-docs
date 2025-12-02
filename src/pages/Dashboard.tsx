@@ -1,7 +1,7 @@
 
 const Dashboard: React.FC = () => {
     return (
-        <div>Doc Page</div>
+        <div className="text-white">Doc Page</div>
     )
 }
 

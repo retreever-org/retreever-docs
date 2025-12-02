@@ -56,11 +56,18 @@ export default function Navbar() {
             {/* Nav Links */}
             <div className="flex items-center gap-1">
               <NavLink
-                href="/"
+                href="#home"
                 active={activeLink === "/"}
                 onClick={() => setActiveLink("/")}
               >
                 Home
+              </NavLink>
+              <NavLink
+                href="#features"
+                active={activeLink === "/features"}
+                onClick={() => setActiveLink("/features")}
+              >
+                Features
               </NavLink>
               <NavLink
                 href="/docs"
@@ -68,13 +75,6 @@ export default function Navbar() {
                 onClick={() => setActiveLink("/docs")}
               >
                 Docs
-              </NavLink>
-              <NavLink
-                href="/features"
-                active={activeLink === "/features"}
-                onClick={() => setActiveLink("/features")}
-              >
-                Features
               </NavLink>
             </div>
 

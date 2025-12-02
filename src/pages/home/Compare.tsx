@@ -4,7 +4,7 @@ import { MoveRight } from "lucide-react";
 
 const Compare: React.FC = () => {
   return (
-    <section className="relative py-4 px-4 md:py-10 md:px-16 bg-(--dark-3) overflow-hidden border-t border-(--dark-border)/20">
+    <section id="features" className="relative py-4 px-4 md:py-10 md:px-16 bg-(--dark-3) overflow-hidden border-t border-(--dark-border)/20">
       {/* Subtle background linear glows */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute left-0 top-1/4 w-96 h-96 bg-linear-to-br from-(--rt-blue-1)/5 to-transparent rounded-full blur-3xl" />
