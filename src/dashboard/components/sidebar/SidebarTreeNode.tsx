@@ -3,14 +3,16 @@ import { useState } from "react";
 import { ChevronRight, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { DocNode } from "../../types/docfile.types";
+import { highlightText } from "../../service/DocSearch";
 
 interface FolderNodeProps {
   node: Extract<DocNode, { type: "folder" }>;
   depth: number;
   activeFile?: string;
+  highlight?: string;
 }
 
-export const FolderNode = ({ node, depth, activeFile }: FolderNodeProps) => {
+export const FolderNode = ({ node, depth, activeFile, highlight }: FolderNodeProps) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -34,7 +36,7 @@ export const FolderNode = ({ node, depth, activeFile }: FolderNodeProps) => {
         ) : (
           <ChevronRight className="w-3.5 h-3.5 text-(--rt-fg-muted)" />
         )}
-        <span>{node.name}</span>
+        {highlightText(node.name, highlight)}
       </div>
 
       <AnimatePresence initial={false}>
@@ -53,6 +55,7 @@ export const FolderNode = ({ node, depth, activeFile }: FolderNodeProps) => {
                   node={child}
                   depth={depth + 1}
                   activeFile={activeFile}
+                  highlight={highlight}
                 />
               ) : (
                 <FileNode
@@ -60,6 +63,7 @@ export const FolderNode = ({ node, depth, activeFile }: FolderNodeProps) => {
                   node={child as Extract<DocNode, { type: "file" }>}
                   depth={depth + 1}
                   active={activeFile === child.name}
+                  highlight={highlight}
                 />
               )
             )}
@@ -74,9 +78,10 @@ interface FileNodeProps {
   node: Extract<DocNode, { type: "file" }>;
   depth: number;
   active?: boolean;
+  highlight?: string;
 }
 
-export const FileNode = ({ node, depth, active }: FileNodeProps) => {
+export const FileNode = ({ node, depth, active, highlight }: FileNodeProps) => {
   return (
     <div
       className={`
@@ -94,7 +99,7 @@ export const FileNode = ({ node, depth, active }: FileNodeProps) => {
       `}
       title={node.name}
     >
-      <span className="truncate">{node.name}</span>
+      {highlightText(node.name, highlight)}
     </div>
   );
 };

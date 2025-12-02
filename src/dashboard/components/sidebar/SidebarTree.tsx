@@ -5,9 +5,10 @@ import { FileNode, FolderNode } from "./SidebarTreeNode";
 interface SidebarTreeProps {
   tree: DocNode[];
   activeFile?: string; // e.g. file name or full path
+  highlight?: string;
 }
 
-export const SidebarTree = ({ tree, activeFile }: SidebarTreeProps) => {
+export const SidebarTree = ({ tree, activeFile, highlight }: SidebarTreeProps) => {
   if (!tree || tree.length === 0) return null;
 
   const firstFolder = tree.find((n) => n.type === "folder") as
@@ -38,6 +39,7 @@ export const SidebarTree = ({ tree, activeFile }: SidebarTreeProps) => {
           key={intro.name}
           node={intro}
           depth={0}
+          highlight={highlight}
           active={activeFile === intro.name}
         />
       )}
@@ -46,6 +48,7 @@ export const SidebarTree = ({ tree, activeFile }: SidebarTreeProps) => {
           key={gettingStarted.name}
           node={gettingStarted}
           depth={0}
+          highlight={highlight}
           active={activeFile === gettingStarted.name}
         />
       )}
@@ -54,6 +57,7 @@ export const SidebarTree = ({ tree, activeFile }: SidebarTreeProps) => {
           key={file.name}
           node={file}
           depth={0}
+          highlight={highlight}
           active={activeFile === file.name}
         />
       ))}
@@ -61,7 +65,7 @@ export const SidebarTree = ({ tree, activeFile }: SidebarTreeProps) => {
       {/* 2) Category from first folder */}
       {firstFolder && (
         <div className="mt-7">
-          <CategorySection node={firstFolder} activeFile={activeFile} />
+          <CategorySection node={firstFolder} activeFile={activeFile} highlight={highlight}/>
         </div>
       )}
 
@@ -71,6 +75,7 @@ export const SidebarTree = ({ tree, activeFile }: SidebarTreeProps) => {
           key={folder.name}
           node={folder}
           depth={0}
+          highlight={highlight}
           activeFile={activeFile}
         />
       ))}

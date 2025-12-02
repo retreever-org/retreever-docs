@@ -1,12 +1,14 @@
 import type { DocNode } from "../../types/docfile.types";
 import { FileNode, FolderNode } from "./SidebarTreeNode";
+import { highlightText } from "../../service/DocSearch";
 
 interface CategorySectionProps {
   node: Extract<DocNode, { type: "folder" }>;
   activeFile?: string;
+  highlight?: string;
 }
 
-export const CategorySection = ({ node, activeFile }: CategorySectionProps) => {
+export const CategorySection = ({ node, activeFile, highlight }: CategorySectionProps) => {
   const children = node.children;
 
   const files = children.filter(
@@ -25,7 +27,7 @@ export const CategorySection = ({ node, activeFile }: CategorySectionProps) => {
   return (
     <div className="space-y-4">
       <div className="px-3 text-base font-semibold text-(--rt-fg-light)">
-        {node.name}
+        {highlightText(node.name, highlight)}
       </div>
 
       <div className="space-y-1">
@@ -35,6 +37,7 @@ export const CategorySection = ({ node, activeFile }: CategorySectionProps) => {
             node={intro}
             depth={0}
             active={activeFile === intro.name}
+            highlight={highlight}
           />
         )}
         {gettingStarted && (
@@ -43,6 +46,7 @@ export const CategorySection = ({ node, activeFile }: CategorySectionProps) => {
             node={gettingStarted}
             depth={0}
             active={activeFile === gettingStarted.name}
+            highlight={highlight}
           />
         )}
         {otherFiles.map((file) => (
@@ -51,6 +55,7 @@ export const CategorySection = ({ node, activeFile }: CategorySectionProps) => {
             node={file}
             depth={0}
             active={activeFile === file.name}
+            highlight={highlight}
           />
         ))}
 
@@ -60,6 +65,7 @@ export const CategorySection = ({ node, activeFile }: CategorySectionProps) => {
             node={folder}
             depth={0}
             activeFile={activeFile}
+            highlight={highlight}
           />
         ))}
       </div>

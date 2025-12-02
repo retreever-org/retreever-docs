@@ -3,15 +3,18 @@ import type { DocNode } from "../../types/docfile.types";
 import { Search, X } from "lucide-react";
 import { SidebarTree } from "./SidebarTree";
 import RetreeverIcon from "/retreever-icon-box.svg";
+import { filterDocTree } from "../../service/DocSearch";
 
 interface SidebarProps {
   tree: DocNode[];
-  activeFile?: string; // pass current file name or id
+  activeFile?: string;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ tree, activeFile }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [isOpen, setIsOpen] = useState(false); // for small screens
+  const [isOpen, setIsOpen] = useState(false); // for small/medium screens
+
+  const filteredTree = filterDocTree(tree, searchTerm);
 
   const handleFocus = () => {
     setIsOpen(true);
@@ -21,9 +24,17 @@ const Sidebar: React.FC<SidebarProps> = ({ tree, activeFile }) => {
     setIsOpen(false);
   };
 
+  const handleChange = (value: string) => {
+    setSearchTerm(value);
+    if (!value.trim()) {
+      // when clearing search on small screens, keep overlay state as is
+      return;
+    }
+  };
+
   return (
     <>
-      {/* Desktop / large screens: normal sidebar */}
+      {/* Desktop / large screens: normal sidebar with filtering */}
       <aside
         className="
           hidden lg:flex
@@ -52,7 +63,7 @@ const Sidebar: React.FC<SidebarProps> = ({ tree, activeFile }) => {
               type="text"
               placeholder="Search docs..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => handleChange(e.target.value)}
               className="
                 bg-transparent
                 w-full
@@ -67,25 +78,26 @@ const Sidebar: React.FC<SidebarProps> = ({ tree, activeFile }) => {
 
         {/* Tree */}
         <div className="flex-1 overflow-auto px-6 py-2 text-sm">
-          <SidebarTree tree={tree} activeFile={activeFile} />
+          <SidebarTree
+            tree={filteredTree}
+            activeFile={activeFile}
+            highlight={searchTerm}
+          />
         </div>
       </aside>
 
-      {/* Below lg: compact search bar + overlay tree */}
-
-      {/* Small/medium screens: top search bar only */}
-      {/* Small/medium screens: logo/icon + search bar */}
+      {/* Small/medium screens: logo + search bar */}
       <div
         className="
-    lg:hidden
-    w-full
-    px-4 pt-4 pb-2
-    bg-(--dark-5)
-    border-b border-(--dark-border)/40
-  "
+          lg:hidden
+          w-full
+          px-4 pt-4 pb-2
+          bg-(--dark-5)
+          border-b border-(--dark-border)/40
+        "
       >
         <div className="flex items-center gap-3">
-          <div className="flex lg:hidden h-8 w-auto items-center">
+          <div className="flex h-8 w-auto items-center">
             <img
               src={RetreeverIcon}
               alt="Retreever logo"
@@ -96,32 +108,33 @@ const Sidebar: React.FC<SidebarProps> = ({ tree, activeFile }) => {
           {/* Search bar */}
           <div
             className="
-        flex items-center gap-2
-        flex-1
-        px-3 py-2
-        rounded-lg
-        border border-(--dark-border-2)
-      "
+              flex items-center gap-2
+              flex-1
+              px-3 py-2
+              rounded-lg
+              border border-(--dark-border-2)
+            "
           >
             <Search className="w-4 h-4 text-(--rt-fg-muted)" />
             <input
               type="text"
               placeholder="Search docs..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => handleChange(e.target.value)}
               onFocus={handleFocus}
               className="
-          bg-transparent
-          w-full
-          text-sm
-          text-(--rt-fg-light)
-          placeholder-(--rt-fg-muted)
-          outline-none
-        "
+                bg-transparent
+                w-full
+                text-sm
+                text-(--rt-fg-light)
+                placeholder-(--rt-fg-muted)
+                outline-none
+              "
             />
           </div>
         </div>
       </div>
+
       {/* Overlay tree when search is active (mobile+tablet) */}
       {isOpen && (
         <div
@@ -150,7 +163,7 @@ const Sidebar: React.FC<SidebarProps> = ({ tree, activeFile }) => {
                 type="text"
                 placeholder="Search docs..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => handleChange(e.target.value)}
                 className="
                   bg-transparent
                   w-full
@@ -173,9 +186,13 @@ const Sidebar: React.FC<SidebarProps> = ({ tree, activeFile }) => {
             </button>
           </div>
 
-          {/* Full-screen tree */}
+          {/* Full-screen tree (filtered) */}
           <div className="flex-1 overflow-auto px-4 pb-4 text-sm">
-            <SidebarTree tree={tree} activeFile={activeFile} />
+            <SidebarTree
+              tree={filteredTree}
+              activeFile={activeFile}
+              highlight={searchTerm}
+            />
           </div>
         </div>
       )}
