@@ -33,7 +33,7 @@ export default function Features() {
   const ref = useRef(null);
 
   return (
-    <section className="w-full py-20 bg-black text-white border-t border-(--dark-border)/30">
+    <section className="w-full py-20 text-white border-t border-(--dark-border)/30">
       <div className="max-w-6xl mx-auto px-6">
         {/* Header */}
         <motion.h2

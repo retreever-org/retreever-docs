@@ -4,7 +4,7 @@ import { ArrowRight, Zap, Code2, Play } from "lucide-react";
 
 export const Quickstart: React.FC = () => {
   return (
-    <section className="w-full py-32 flex items-center justify-center bg-(--dark-3) relative overflow-hidden">
+    <section className="w-full py-32 flex items-center justify-center relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0">
         <div className="absolute top-1/2 left-1/4 w-48 h-48 bg-emerald-500/5 rounded-full blur-xl animate-ping" />

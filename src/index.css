@@ -7,6 +7,8 @@
   --dark-1: #010409;
   --dark-2: #0D1117;
   --dark-3: #000000;
+  --dark-4: #010409;
+  --dark-5: #05080d;
 
   --dark-border: #ffffff24;
   --dark-border-2: #2c2c2c;
@@ -24,12 +26,19 @@
   --rt-brand-glow: #14f1ff;
   --rt-fg-light: #e0ecff;
   --rt-fg-muted: #99aac1;
-  --rt-fg-subtle: #49516a;
-  --rt-border-card: #22293d;
+  --rt-fg-subtle: #737c97;
+  --rt-border-card: #2e333f;
   --rt-card-bg: #141925b2;
   --rt-shadow-lg: 0 8px 32px 0 #00131f60;
 }
 
-a {
-  cursor: pointer !important; 
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+
+html {
+  scrollbar-width: thin;                     /* width */
+  scrollbar-color: var(--rt-border-card) var(--dark-2); /* thumb track */
 }

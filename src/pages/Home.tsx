@@ -8,7 +8,7 @@ import { Quickstart } from "./home/Quickstart";
 
 const Home: React.FC = () => {
     return (
-        <div>
+        <div className="bg-(--dark-3)">
             <Navbar />
             <Hero />
             <Intro />

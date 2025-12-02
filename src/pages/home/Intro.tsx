@@ -3,7 +3,7 @@ import { ChevronRight, Sparkles, Play } from 'lucide-react';
 
 const Intro: React.FC = () => {
   return (
-    <section className="relative bg-(--dark-3) border-t border-(--dark-border)/20 py-24 px-6 overflow-hidden">
+    <section className="relative border-t border-(--dark-border)/20 py-24 px-6 overflow-hidden">
       {/* Subtle background glow */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div 

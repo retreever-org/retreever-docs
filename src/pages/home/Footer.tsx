@@ -11,7 +11,7 @@ import {
 
 const Footer: React.FC = () => {
   return (
-    <footer className="w-full bg-(--dark-3) border-t border-(--dark-border)/30 pt-20 pb-12 relative overflow-hidden">
+    <footer className="w-full bg-(--dark-3)/30 border-t border-(--dark-border)/30 pt-20 pb-12 relative overflow-hidden">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* Try Section */}

@@ -7,7 +7,7 @@ const LOGO_BLUE = "#3B8BFF";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen overflow-hidden bg-(--dark-3) text-white">
+    <section id="home" className="relative min-h-screen overflow-hidden text-white">
       {/* Animated gradient background */}
       
       {/* Floating orbs */}

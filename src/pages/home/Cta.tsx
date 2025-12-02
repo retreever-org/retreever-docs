@@ -4,7 +4,7 @@ import GitHubLogo from '/github.svg';
 
 const Cta: React.FC = () => {
   return (
-    <section className="relative py-20 px-6 bg-(--dark-3) border-t-[0.01px] border-white/60">
+    <section className="relative py-20 px-6 border-t-[0.01px] border-white/60">
       {/* Background subtle glow */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div 
