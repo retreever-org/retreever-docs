@@ -1,10 +1,10 @@
 import type { DocNode } from "../types/docfile.types";
 import { extractTitle, prettifyName, toUrlPath } from "./FileNameFormatter";
 
-const markdownFiles = import.meta.glob("/docs/**/*.md", {
+export const markdownFiles = import.meta.glob("/docs/**/*.md", {
   eager: true,
   as: "raw",
-});
+}) as Record<string, string>;
 
 export function resolveDocs(): DocNode[] {
   const tree: Record<string, any> = {};

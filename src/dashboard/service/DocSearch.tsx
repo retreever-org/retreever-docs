@@ -56,6 +56,37 @@ export function filterDocTree(tree: DocNode[], search: string): DocNode[] {
   return result;
 }
 
+export function getMarkdown(filePath: string, files: Record<string, string>): string | null {
+  // Remove "/docs" with or without trailing slash
+  let normalizedUrlPath = filePath.replace(/^\/docs\/?/i, "").toLowerCase().trim();
+
+  if (!normalizedUrlPath) {
+    normalizedUrlPath = "introduction";
+  }
+
+  const urlComparable = normalizedUrlPath
+    .replace(/\\/g, "/")
+    .replace(/-/g, "_");
+
+  const markdownMatch = Object.entries(files).find(([key]) => {
+    const normalizedKeyPath = key
+      .replace(/^\/docs\/?/i, "")
+      .replace(/\.md$/i, "")
+      .replace(/\\/g, "/")
+      .toLowerCase();
+
+    return normalizedKeyPath === urlComparable;
+  });
+
+  if (!markdownMatch) return null;
+
+  const content = markdownMatch[1];
+
+  return content.replace(/^---[\s\S]*?---\s*/, "");
+}
+
+
+
 
 export const highlightText = (text: string, highlight?: string) => {
   const termRaw = highlight?.trim();

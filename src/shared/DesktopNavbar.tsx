@@ -16,7 +16,6 @@ export default function DesktopNavbar({
   isDocs,
   activeLink,
   handleSectionClick,
-  setOpen,
 }: DesktopNavbarProps) {
   const navigate = useNavigate();
 

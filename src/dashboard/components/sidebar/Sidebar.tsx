@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import type { DocNode } from "../../types/docfile.types";
 import { Search, X } from "lucide-react";
 import { SidebarTree } from "./SidebarTree";
@@ -7,6 +7,7 @@ import { filterDocTree } from "../../service/DocSearch";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import MobileNavbar from "../../../shared/MobileNavbar";
+import { useLayoutStore } from "../../../store/useDocsStore";
 
 interface SidebarProps {
   tree: DocNode[];
@@ -20,6 +21,22 @@ const Sidebar: React.FC<SidebarProps> = ({ tree }) => {
 
   const filteredTree = filterDocTree(tree, searchTerm);
 
+  // Resize observer to track sidebar width
+  const sidebarRef = useRef<HTMLInputElement>(null);
+  const setSidebarWidth = useLayoutStore((s) => s.setSidebarWidth);
+
+  useEffect(() => {
+    if (!sidebarRef.current) return;
+
+    const observer = new ResizeObserver(([entry]) => {
+      setSidebarWidth(entry.contentRect.width);
+    });
+
+    observer.observe(sidebarRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  // Handlers
   const handleFocus = () => {
     setIsOpen(true);
   };
@@ -42,13 +59,15 @@ const Sidebar: React.FC<SidebarProps> = ({ tree }) => {
       <aside
         className="
           hidden lg:flex
-          w-72
+          min-w-68
           h-screen
           flex-col
           bg-(--dark-5)
           border-r border-(--dark-border)/50
           text-(--rt-fg-light)
+          sticky top-0 overflow-auto
         "
+        ref={sidebarRef}
       >
         <div className="mt-16 mb-4" />
 
