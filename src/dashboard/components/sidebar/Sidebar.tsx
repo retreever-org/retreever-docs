@@ -24,7 +24,7 @@ const Sidebar: React.FC<SidebarProps> = ({ tree, activeFile }) => {
         text-(--rt-fg-light)
       "
     >
-      <div className="mt-16 mb-4 border-b border-(--dark-border)/50">{" "}</div>
+      <div className="mt-16 mb-4">{" "}</div>
 
       {/* Search */}
       <div className="px-5 pb-3 shrink-0">
@@ -55,7 +55,7 @@ const Sidebar: React.FC<SidebarProps> = ({ tree, activeFile }) => {
       </div>
 
       {/* Tree */}
-      <div className="flex-1 overflow-auto px-3 py-2 text-sm">
+      <div className="flex-1 overflow-auto px-6 py-2 text-sm">
         <SidebarTree tree={tree} activeFile={activeFile} />
       </div>
     </aside>

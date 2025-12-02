@@ -1,6 +1,6 @@
 // SidebarTreeNode.tsx
 import { useState } from "react";
-import { ChevronRight, ChevronDown, FileText } from "lucide-react";
+import { ChevronRight, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { DocNode } from "../../types/docfile.types";
 
@@ -25,7 +25,7 @@ export const FolderNode = ({ node, depth, activeFile }: FolderNodeProps) => {
           text-sm
           ${depth > 0 ? "pl-6" : ""}
           transition-colors
-          hover:text-(--rt-fg-muted)
+          hover:text-(--rt-fg-subtle)
         `}
         onClick={() => setOpen((v) => !v)}
       >
