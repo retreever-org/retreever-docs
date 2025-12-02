@@ -26,6 +26,19 @@ export default function MobileNavbar({
   return (
     <>
       {/* FAB-style toggle button (always visible on mobile) */}
+      <div className="ml-auto">
+        <MobileNavLink
+        href="/docs"
+        active={isDocs}
+        onClick={(e) => {
+          e.preventDefault();
+          handleSectionClick("/docs");
+          setOpen(false);
+        }}
+      >
+        Docs
+      </MobileNavLink>
+      </div>
       <motion.button
         className="z-50 flex h-10 w-10 rounded-lg border border-white/10 bg-white/5 text-white backdrop-blur-sm transition-colors hover:bg-white/10"
         onClick={() => setOpen((v) => !v)}
@@ -168,7 +181,7 @@ function MobileNavLink({
       className={`block rounded-lg px-4 py-3 text-sm font-medium transition-all ${
         active
           ? "bg-blue-500/5 backdrop-blur-2xl text-white"
-          : "text-slate-400 hover:bg-white/5 hover:text-white"
+          : "text-slate-300 hover:bg-white/5 hover:text-white"
       }`}
       whileTap={{ scale: 0.98 }}
     >
