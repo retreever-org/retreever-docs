@@ -11,7 +11,7 @@ const ContentDisplay: React.FC = () => {
 
   return (
     <div
-      className="text-slate-200 px-4 lg:p-4 md:p-8 tracking-wide lg:mt-10 transition-all duration-300"
+      className="text-slate-200 px-4 lg:p-4 lg:px-7 md:p-8 tracking-wide lg:mt-10 transition-all duration-300"
     >
       {markdownContent ? (
         <MarkdownRenderer

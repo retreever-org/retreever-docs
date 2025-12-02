@@ -3,13 +3,7 @@ title: Introduction
 ---
 
 
-# Instant API Documentation & Testing for Spring Boot — Zero Config, Always Live.
-
-<div align="center">
-
-![Retreever Logo](https://raw.githubusercontent.com/Retreever-org/retreever-java/fae0a98e028e9b7bc6b269c480b388245530ea8d/Docmentation/Logo/retreever-banner.svg)
-
-</div>
+# Introduction
 
 Retreever is a **lightweight, developer-first toolkit** that automatically **discovers, documents, and tests** your Spring Boot APIs — *without a single manual annotation or YAML file.*
 
@@ -24,7 +18,8 @@ Just add the dependency, start your app, and open:
 
 Done. Your entire API surface is ready — documented, organized, and instantly testable.
 
-<br>
+---
+
 
 ## ✨ Why Retreever?
 
@@ -32,19 +27,19 @@ Unlike Swagger/OpenAPI tools that require 20 lines of annotations per endpoint *
 
 ### Retreever gives you:
 
-1.  ✔ **Automatic docs** (no annotation clutter)
-2.  ✔ **Automatic examples** (via annotations + constraints)
-3.  ✔ **Accurate generic resolution** (even nested)
-4.  ✔ **Automatic error mapping** (directly from your exception handlers)
-5.  ✔ **A modern Postman-like testing UI**
-6.  ✔ **Zero YAML, zero configuration**
-7.  ✔ **Reflection-accurate request & response schemas**
-8.  ✔ **Blazing fast output (~30ms)**
-9.  ✔ **A tiny JSON document (~45KB) for complex ~70 endpoint resolution**
+1.  **Automatic docs** (no annotation clutter)
+2.  **Automatic examples** (via annotations + constraints)
+3.  **Accurate generic resolution** (even nested)
+4.  **Automatic error mapping** (directly from your exception handlers)
+5.  **A modern Postman-like testing UI**
+6.  **Zero YAML, zero configuration**
+7.  **Reflection-accurate request & response schemas**
+8.  **Blazing fast output (~30ms)**
+9.  **A tiny JSON document (~45KB) for complex ~70 endpoint resolution**
 
 Just write normal Spring code — Retreever fills in everything else.
 
-<br>
+---
 
 # 🚀 Features
 
@@ -61,7 +56,7 @@ Drop it in your Spring Boot app. Retreever automatically discovers:
 
 No setup. No external config. No YAML.
 
-
+---
 
 ## 🧩 Smart Schema Resolution
 
@@ -97,7 +92,7 @@ Every endpoint includes:
 
 Grouped automatically using `@ApiGroup`.
 
-
+---
 
 ## ❗ Automatic Error Mapping
 
@@ -116,6 +111,7 @@ Swagger can’t do this.
 SpringDoc can’t do this.
 Retreever does.
 
+---
 
 ## 📄 Clean, Stable Output Document
 
@@ -136,6 +132,7 @@ Containing:
 * Errors
 * Validation constraints
 
+---
 
 # 📦 Installation
 
@@ -151,7 +148,7 @@ Soon you’ll simply add:
 </dependency>
 ```
 
-
+---
 
 # 📄 Example Output
 
@@ -179,7 +176,7 @@ Soon you’ll simply add:
 
 Clean. Predictable. Easy to render.
 
-<br>
+---
 
 # 📊 Comparison With Other Tools
 
@@ -198,7 +195,7 @@ Retreever replaces BOTH Swagger and Postman.
 | YAML required       | ✔        | ✔         | ❌       | **❌**         |
 | UI                  | Outdated | Outdated  | Modern  | **Modern**    |
 
-<br>
+---
 
 # 🧭 Roadmap
 
@@ -211,7 +208,7 @@ Retreever replaces BOTH Swagger and Postman.
 -  🔜 Map & multi-generic improvements
 -  🔜 Gradle plugin / IDE integration
 
-<br>
+---
 
 # 🤝 Contributing
 
@@ -225,13 +222,13 @@ Contributions are welcome!
 
 Let’s make API documentation fast, clean, and fun.
 
-<br>
+---
 
 # 📝 License
 
 MIT — free for personal and commercial use.
 
-<br>
+---
 
 # ❤️ Acknowledgement
 

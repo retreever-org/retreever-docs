@@ -81,8 +81,8 @@ interface FileNodeProps {
 export const FileNode = ({ node, depth, highlight }: FileNodeProps) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const currentPath = location.pathname.replace(/^\/docs\//, "");
-  const isActive = currentPath === node.path;
+  let currentPath = location.pathname.replace(/^\/docs\//, "");
+  const isActive = currentPath === node.path ||!currentPath;
 
   return (
     <div
