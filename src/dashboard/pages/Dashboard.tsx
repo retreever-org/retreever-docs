@@ -13,7 +13,7 @@ const Dashboard: React.FC = () => {
         {/* default navbar shown only on large screens */}
         <Navbar />
       </div>
-      <div className="flex">
+      <div className="lg:flex">
         <Sidebar tree={docsTree} />
         <ContentDisplay />
       </div>
