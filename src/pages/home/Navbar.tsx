@@ -61,7 +61,7 @@ export default function Navbar() {
             whileTap={{ scale: 0.98 }}
             onClick={(e) => {
               e.preventDefault();
-              handleSectionClick("/");
+              navigate("/");
             }}
           >
             <motion.img
@@ -73,29 +73,31 @@ export default function Navbar() {
 
           {/* Desktop Navigation Links */}
           <div className="hidden md:flex items-center gap-8">
-            <div className="flex items-center gap-1">
-              <NavLink
-                href="#home"
-                active={activeLink === "#home" || activeLink === "/"}
-                onClick={() => handleSectionClick("#home")}
-              >
-                Home
-              </NavLink>
-              <NavLink
-                href="#features"
-                active={activeLink === "#features"}
-                onClick={() => handleSectionClick("#features")}
-              >
-                Features
-              </NavLink>
-              <NavLink
-                href="/docs"
-                active={isDocs}
-                onClick={() => handleSectionClick("/docs")}
-              >
-                Docs
-              </NavLink>
-            </div>
+            {window.location.pathname.startsWith("/docs") ? null : (
+              <div className="flex items-center gap-1">
+                <NavLink
+                  href="#home"
+                  active={activeLink === "#home" || activeLink === "/"}
+                  onClick={() => handleSectionClick("#home")}
+                >
+                  Home
+                </NavLink>
+                <NavLink
+                  href="#features"
+                  active={activeLink === "#features"}
+                  onClick={() => handleSectionClick("#features")}
+                >
+                  Features
+                </NavLink>
+                <NavLink
+                  href="/docs"
+                  active={isDocs}
+                  onClick={() => handleSectionClick("/docs")}
+                >
+                  Docs
+                </NavLink>
+              </div>
+            )}
 
             {/* GitHub CTA */}
             <motion.a

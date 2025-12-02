@@ -1,5 +1,5 @@
 import DOMPurify from "dompurify";
-import { md } from "../utils/markdown";
+import { md } from "../../utils/markdown";
 
 export function MarkdownRenderer({ content }: { content: string }) {
   const dirty = md.render(content);
