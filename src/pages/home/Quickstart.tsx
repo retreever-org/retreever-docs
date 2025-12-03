@@ -13,7 +13,7 @@ export const Quickstart: React.FC = () => {
       <div className="text-center max-w-4xl px-6 relative z-10">
         {/* Main heading with icon */}
         <motion.div
-          className="w-full inline-flex items-center gap-2 mb-6"
+          className="w-full inline-flex justify-center items-center gap-2 mb-6"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6 }}

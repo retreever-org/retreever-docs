@@ -9,41 +9,71 @@ export interface MarkdownRendererProps {
   className?: string;
 }
 
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-");
+}
+
 export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
   markdown,
 }) => {
   const components: Components = {
     // Headings - Dark mode
-    h1: ({ node, ...props }) => (
-      <h1
-        className="text-4xl font-semibold mt-8 mb-4 pb-2 text-slate-200"
-        {...props}
-      />
-    ),
-    h2: ({ node, ...props }) => (
-      <h2
-        className="text-3xl font-semibold mt-7 mb-4 pb-2 text-slate-200"
-        {...props}
-      />
-    ),
-    h3: ({ node, ...props }) => (
-      <h3
-        className="text-2xl font-semibold mt-6 mb-4 text-slate-200"
-        {...props}
-      />
-    ),
-    h4: ({ node, ...props }) => (
-      <h4
-        className="text-lg font-semibold mt-5 mb-3 text-slate-200"
-        {...props}
-      />
-    ),
+    h1: ({ node, ...props }) => {
+      const text = String(props.children);
+      const id = slugify(text);
+      return (
+        <h1
+          id={id}
+          className="text-4xl font-medium mt-8 mb-4 pb-2 text-text-primary scroll-mt-28"
+          {...props}
+        />
+      );
+    },
+    h2: ({ node, ...props }) => {
+      const text = String(props.children);
+      const id = slugify(text);
+      return (
+        <h2
+          id={id}
+          className="text-2xl font-medium my-7 text-text-primary scroll-mt-28"
+          {...props}
+        />
+      );
+    },
+    h3: ({ node, ...props }) => {
+      const text = String(props.children);
+      const id = slugify(text);
+      return (
+        <h3
+          id={id}
+          className="text-xl font-medium my-7 text-text-primary scroll-mt-28"
+          {...props}
+        />
+      );
+    },
+    h4: ({ node, ...props }) => {
+      const text = String(props.children);
+      const id = slugify(text);
+      return (
+        <h4
+          id={id}
+          className="text-lg font-medium mt-5 mb-3 text-text-primary scroll-mt-28"
+          {...props}
+        />
+      );
+    },
 
-    hr: () => <hr className="my-8 border-t border-neutral-500/50 opacity-50" />,
+    hr: () => <hr className="my-8 border-t border-border-subtle" />,
 
     // Paragraphs - Dark mode
     p: ({ node, ...props }) => (
-      <p className="mb-4 leading-7 text-slate-300" {...props} />
+      <p
+        className="text-[1rem] md:text-[0.92rem] mb-4 leading-7 text-text-paragraph"
+        {...props}
+      />
     ),
 
     // Links - Dark mode
@@ -56,22 +86,28 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 
     // Lists - Dark mode
     ul: ({ node, ...props }) => (
-      <ul className="mb-4 ml-6 space-y-2 list-disc text-slate-200" {...props} />
+      <ul
+        className="custom-list mb-5 ml-6 space-y-2 list-disc text-text-paragraph text-[1rem] md:text-[0.92rem]"
+        {...props}
+      />
     ),
     ol: ({ node, ...props }) => (
       <ol
-        className="mb-4 ml-6 space-y-2 list-decimal text-slate-200"
+        className="custom-list mb-5 ml-6 space-y-2 list-decimal text-text-paragraph text-[1rem] md:text-[0.92rem]"
         {...props}
       />
     ),
     li: ({ node, ...props }) => (
-      <li className="leading-7 text-slate-200" {...props} />
+      <li
+        className="mb-3 leading-7 text-text-paragraph pl-3.5 text-[1rem] md:text-[0.92rem]"
+        {...props}
+      />
     ),
 
     // Blockquotes - Dark mode
     blockquote: ({ node, ...props }) => (
       <blockquote
-        className="my-4 pl-4 border-l-4 border-blue-500 bg-slate-800/50 py-2 pr-4 italic text-slate-300"
+        className="my-4 pl-4 border-l-4 border-accent bg-slate-800/50 py-2 pr-4 italic text-text-paragraph"
         {...props}
       />
     ),
@@ -95,26 +131,29 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     ),
     th: ({ node, ...props }) => (
       <th
-        className="px-4 py-2 text-left font-semibold border border-(--dark-border) text-slate-100 bg-black/20"
+        className="px-4 py-2 text-left text-[1rem] md:text-[0.92rem] font-semibold border border-(--dark-border) text-text-primary bg-black/20"
         {...props}
       />
     ),
     td: ({ node, ...props }) => (
       <td
-        className="px-4 py-2 border border-(--dark-border) text-slate-200"
+        className="px-4 py-2 text-[1rem] md:text-[0.92rem] border border-(--dark-border) text-text-paragraph"
         {...props}
       />
     ),
 
     // Text formatting - Dark mode
     strong: ({ node, ...props }) => (
-      <strong className="font-bold text-slate-300" {...props} />
+      <strong
+        className="font-semibold text-[1rem] md:text-[0.92rem] text-text-primary"
+        {...props}
+      />
     ),
     em: ({ node, ...props }) => (
-      <em className="italic text-slate-200" {...props} />
+      <em className="italic text-text-paragraph" {...props} />
     ),
     del: ({ node, ...props }) => (
-      <del className="line-through text-slate-500" {...props} />
+      <del className="line-through text-text-muted" {...props} />
     ),
 
     // Code - Enhanced dark mode
@@ -130,7 +169,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       if (!isMultiline) {
         return (
           <code
-            className={`${base} px-1.5 py-0.5 rounded bg-slate-100/10 text-zinc-300/80`}
+            className={`${base} px-1.5 py-0.5 rounded bg-text-text-text-paragraph/10 text-zinc-300/80`}
             {...props}
           >
             {children}
@@ -142,7 +181,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       return (
         <pre className="my-4 rounded-lg bg-(--dark-3)/50 p-4 overflow-auto border border-(--dark-border)">
           <code
-            className={`${base} text-slate-100 ${
+            className={`${base} text-text-paragraph ${
               language ? `language-${language}` : ""
             }`}
             {...props}

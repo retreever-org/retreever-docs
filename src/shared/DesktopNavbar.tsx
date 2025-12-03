@@ -21,17 +21,19 @@ export default function DesktopNavbar({
 
   return (
     <motion.nav
-      className={`fixed top-0 z-50 w-full transition-all duration-300 border-b border-transparent bg-transparent`}
+      className={`fixed top-0 z-50 w-full transition-all duration-300 border-b ${
+        isDocs ? "border-border-subtle bg-navbar" : "border-transparent bg-transparent"
+      }`}
       initial={window.location.pathname === "/" ? { y: -100 } : { y: 0 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
       <div className={`transition-all duration-300`}>
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6">
           {/* Logo */}
           <motion.a
             href="/"
-            className="group flex items-center gap-2.5 select-none"
+            className="group flex items-center select-none"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={(e) => {
@@ -42,12 +44,12 @@ export default function DesktopNavbar({
             <motion.img
               src={RetreeverLogo}
               alt="Retreever"
-              className="h-8 w-auto transition-opacity"
+              className="h-10 w-auto transition-opacity"
             />
           </motion.a>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-8 py-2.5">
             {!isDocs && (
               <div className="flex items-center gap-1">
                 <NavLink

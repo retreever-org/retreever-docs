@@ -1,4 +1,17 @@
 @import "tailwindcss";
+@config "../tailwind.config.ts";
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@layer base {
+  html {
+    font-family: Inter, system-ui, sans-serif;
+  }
+}
+
+.custom-list li::marker {
+  color: #515459; 
+}
 
 :root {
   --rt-blue-1: #4da3ff;
@@ -28,7 +41,7 @@
   --rt-purple: #7677e2;
   --rt-brand-glow: #14f1ff;
   --rt-fg-light: #e0ecff;
-  --rt-fg-muted: #99aac1;
+  --rt-fg-muted: #a8aeb7;
   --rt-fg-subtle: #737c97;
   --rt-border-card: #2e333f;
   --rt-card-bg: #141925b2;
@@ -42,6 +55,7 @@
 
 
 html {
+  scroll-behavior: smooth;
   scrollbar-width: thin;                     /* width */
-  scrollbar-color: var(--rt-border-card) var(--dark-2); /* thumb track */
+  scrollbar-color: var(--rt-fg-muted) var(--dark-2); /* thumb track */
 }

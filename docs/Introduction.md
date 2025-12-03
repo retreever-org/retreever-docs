@@ -2,235 +2,51 @@
 title: Introduction
 ---
 
+# Retreever
 
-# Introduction
-
-Retreever is a **lightweight, developer-first toolkit** that automatically **discovers, documents, and tests** your Spring Boot APIs — *without a single manual annotation or YAML file.*
-
-It scans your controllers, request/response models, validation constraints, and exception handlers to build a **complete, accurate, always-up-to-date** API documentation model.
-
-Think of it as **Swagger + Postman → merged, modernized, and simplified.**
-Just add the dependency, start your app, and open:
-
-```
-/retreever
-```
-
-Done. Your entire API surface is ready — documented, organized, and instantly testable.
+Retreever is a zero-config toolkit that automatically generates **live API documentation** and a **built-in testing UI** for your Spring Boot application.
+No YAML. No manual OpenAPI annotations. No extra controllers. Just your code — reflected into a complete API explorer.
 
 ---
 
+### What Retreever Does
 
-## ✨ Why Retreever?
-
-Unlike Swagger/OpenAPI tools that require 20 lines of annotations per endpoint *and* a separate Postman collection you manually maintain, Retreever does all the work for you.
-
-### Retreever gives you:
-
-1.  **Automatic docs** (no annotation clutter)
-2.  **Automatic examples** (via annotations + constraints)
-3.  **Accurate generic resolution** (even nested)
-4.  **Automatic error mapping** (directly from your exception handlers)
-5.  **A modern Postman-like testing UI**
-6.  **Zero YAML, zero configuration**
-7.  **Reflection-accurate request & response schemas**
-8.  **Blazing fast output (~30ms)**
-9.  **A tiny JSON document (~45KB) for complex ~70 endpoint resolution**
-
-Just write normal Spring code — Retreever fills in everything else.
+* Discovers your controllers, models, generics, and exception handlers
+* Builds an always-accurate API documentation model
+* Generates clean request/response schemas
+* Includes validation constraints and example values
+* Maps exceptions into clear error responses
+* Provides a modern, Postman-like testing panel built directly into your app
 
 ---
 
-# 🚀 Features
+### Why Developers Use It
 
-## ⚡ Zero Configuration
-
-Drop it in your Spring Boot app. Retreever automatically discovers:
-
-* `@RestController` classes
-* Request bodies (`@RequestBody`)
-* Response types (`ResponseEntity<T>` and raw DTOs)
-* Path variables, query params, and headers
-* Validation annotations
-* Exception handlers (`@ExceptionHandler`)
-
-No setup. No external config. No YAML.
+* **Zero setup** — add the dependency and start your app
+* **Pure code-first** — documentation derives from real behavior
+* **Fast** — ~100ms startup resolution, ~30ms doc serving
+* **Minimal clutter** — only a few optional annotations for descriptions/examples
+* **Always up-to-date** — no manual syncing or broken specs
+* **Lightweight** — small footprint, no external services
 
 ---
 
-## 🧩 Smart Schema Resolution
+### What Retreever Replaces
 
-Automatically builds a predictable JSON schema for:
-
-* Complex nested DTOs
-* Lists, arrays, maps
-* Records and plain classes
-* Enums
-* Nullable vs non-nullable fields
-* Jakarta Validation constraints
-* Field-level documentation (`@FieldInfo`)
-
-Generic substitution is deeply supported:
-
-```
-ResponseEntity<Page<OrderItemResponse>>
-```
-
-…just works.
-
-
-## 🛣️ Endpoint & Metadata Extraction
-
-Every endpoint includes:
-
-* HTTP method
-* Full resolved path
-* Params (path, query, header)
-* Consumes / produces media types
-* Security flags (`secured=true`, `@PreAuthorize`)
-* Developer-friendly name & description (`@ApiEndpoint`)
-
-Grouped automatically using `@ApiGroup`.
+Instead of using Swagger/OpenAPI for documentation **and** Postman for testing, Retreever gives you both in one place —
+**documentation + testing unified inside your application**.
 
 ---
 
-## ❗ Automatic Error Mapping
+### When to Use Retreever
 
-Declare your error responses *once* where they belong — your `@RestControllerAdvice`.
+Choose Retreever if you want:
 
-Retreever extracts:
+* Accurate API docs without maintaining them
+* A simple testing UI for every endpoint
+* Automatic error + validation awareness
+* Clean developer experience for teams
+* A modern alternative to annotation-heavy setups
 
-* Error type
-* HTTP status
-* Description
-* Error body schema
 
-Your documentation stays **fully consistent** with your real exception flow.
 
-Swagger can’t do this.
-SpringDoc can’t do this.
-Retreever does.
-
----
-
-## 📄 Clean, Stable Output Document
-
-Every part of the system flows into a final immutable DTO:
-
-```
-ApiDocument
-```
-
-Containing:
-
-* Metadata
-* Groups
-* Endpoints
-* Request schemas
-* Response schemas
-* Example objects
-* Errors
-* Validation constraints
-
----
-
-# 📦 Installation
-
-(*Publishing to Maven Central in progress*)
-
-Soon you’ll simply add:
-
-```xml
-<dependency>
-    <groupId>dev.retreever</groupId>
-    <artifactId>retreever</artifactId>
-    <version>1.0.0</version>
-</dependency>
-```
-
----
-
-# 📄 Example Output
-
-```json
-{
-  "name": "Example API",
-  "version": "v1",
-  "groups": [
-    {
-      "name": "Product APIs",
-      "endpoints": [
-        {
-          "name": "Get Product",
-          "method": "GET",
-          "path": "/products/{id}",
-          "request": { ... },
-          "response": { ... },
-          "errors": [ ... ]
-        }
-      ]
-    }
-  ]
-}
-```
-
-Clean. Predictable. Easy to render.
-
----
-
-# 📊 Comparison With Other Tools
-
-Retreever replaces BOTH Swagger and Postman.
-
-| Feature             | Swagger  | SpringDoc | Postman | **Retreever** |
-| ------------------- | -------- | --------- | ------- | ------------- |
-| Auto-generates docs | ✔        | ✔         | ❌       | **✔**         |
-| Accurate examples   | ❌        | ❌         | Manual  | **✔**         |
-| Generic resolution  | Weak     | Medium    | ❌       | **Strong**    |
-| Error mapping       | Weak     | Weak      | ❌       | **Strong**    |
-| Always up-to-date   | ❌        | ❌         | ❌       | **✔**         |
-| Testing panel       | ❌        | ❌         | ✔       | **✔**         |
-| Annotation clutter  | ❌        | ❌         | ✔       | **Minimal**   |
-| Output size         | Bloated  | Bloated   | N/A     | **~45KB**     |
-| YAML required       | ✔        | ✔         | ❌       | **❌**         |
-| UI                  | Outdated | Outdated  | Modern  | **Modern**    |
-
----
-
-# 🧭 Roadmap
-
--  ✅ Core backend
--  ✅ Schema resolution engine
--  ✅ Error mapping
--  🚧 Frontend UI
--  🔜 Microservice discovery
--  🔜 Polymorphic type support
--  🔜 Map & multi-generic improvements
--  🔜 Gradle plugin / IDE integration
-
----
-
-# 🤝 Contributing
-
-Contributions are welcome!
-
-* Report issues
-* Improve type resolution
-* Add integration tests
-* Suggest new annotations
-* Help with frontend
-
-Let’s make API documentation fast, clean, and fun.
-
----
-
-# 📝 License
-
-MIT — free for personal and commercial use.
-
----
-
-# ❤️ Acknowledgement
-
-Built for developers who are tired of stale documentation, duplicated effort, and YAML fatigue —
-Retreever **fetches everything you need, instantly.**
