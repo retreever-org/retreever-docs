@@ -62,10 +62,8 @@ const Sidebar: React.FC<SidebarProps> = ({ tree }) => {
           min-w-68
           h-screen
           flex-col
-          bg-(--db-side)
-          border-r border-(--dark-border)
-          text-(--rt-fg-light)
           sticky top-0 overflow-auto
+          border-r border-border-subtle
         `}
         ref={sidebarRef}
       >
@@ -78,7 +76,7 @@ const Sidebar: React.FC<SidebarProps> = ({ tree }) => {
               flex items-center gap-2
               px-3 py-1.5
               rounded-lg
-              border border-(--dark-border-2)
+              border border-border-subtle
             "
           >
             <Search className="w-4 h-4 text-(--rt-fg-muted)" />
@@ -140,7 +138,7 @@ const Sidebar: React.FC<SidebarProps> = ({ tree }) => {
               flex-1
               px-3 py-2
               rounded-lg
-              border border-(--dark-border-2)
+              border border-border-subtle
             "
           >
             <Search className="w-4 h-4 text-(--rt-fg-muted)" />

@@ -1,4 +1,17 @@
 @import "tailwindcss";
+@config "../tailwind.config.ts";
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@layer base {
+  html {
+    font-family: Inter, system-ui, sans-serif;
+  }
+}
+
+.custom-list li::marker {
+  color: #515459; 
+}
 
 :root {
   --rt-blue-1: #4da3ff;

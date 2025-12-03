@@ -57,14 +57,12 @@ export function filterDocTree(tree: DocNode[], search: string): DocNode[] {
 }
 
 export function getMarkdown(filePath: string, files: Record<string, string>): string | null {
-  // Remove "/docs" with or without trailing slash
-  let normalizedUrlPath = filePath.replace(/^\/docs\/?/i, "").toLowerCase().trim();
 
-  if (!normalizedUrlPath) {
-    normalizedUrlPath = "introduction";
+  if (!filePath) {
+    filePath = "introduction";
   }
 
-  const urlComparable = normalizedUrlPath
+  const urlComparable = filePath
     .replace(/\\/g, "/")
     .replace(/-/g, "_");
 
