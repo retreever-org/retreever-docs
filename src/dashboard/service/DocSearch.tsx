@@ -63,10 +63,10 @@ export async function getMarkdown(filePath: string): Promise<string | null> {
 
   try {
     // Fetch from /docs/{path}.md
-    const response = await fetch(`/docs/${filePath}.md`);
+    const response = await fetch(`/markdown/${filePath}.md`);
     
     if (!response.ok) {
-      console.warn(`Markdown file not found: /docs/${filePath}.md`);
+      console.warn(`Markdown file not found: /markdown/${filePath}.md`);
       return null;
     }
 
