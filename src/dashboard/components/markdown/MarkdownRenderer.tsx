@@ -3,6 +3,7 @@ import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
+import { CodeBlock } from "./CodeBlock";
 
 export interface MarkdownRendererProps {
   markdown: string;
@@ -107,7 +108,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     // Blockquotes - Dark mode
     blockquote: ({ node, ...props }) => (
       <blockquote
-        className="my-4 pl-4 border-l-4 border-accent bg-slate-800/50 py-2 pr-4 italic text-text-paragraph"
+        className="my-4 pl-4 border-l-4 border-b-zinc-500 bg-slate-800/30 py-2 pr-4 italic text-text-muted"
         {...props}
       />
     ),
@@ -157,40 +158,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     ),
 
     // Code - Enhanced dark mode
-    code: ({ node, className, children, ...props }) => {
-      const raw = String(children ?? "");
-      const isMultiline = raw.includes("\n");
-      const match = /language-(\w+)/.exec(className ?? "");
-      const language = match?.[1];
-
-      const base = "font-mono text-sm";
-
-      // Inline code - Dark mode
-      if (!isMultiline) {
-        return (
-          <code
-            className={`${base} px-1.5 py-0.5 rounded bg-text-text-text-paragraph/10 text-zinc-300/80`}
-            {...props}
-          >
-            {children}
-          </code>
-        );
-      }
-
-      // Code block - Dark mode
-      return (
-        <pre className="my-4 rounded-lg bg-(--dark-3)/50 p-4 overflow-auto border border-(--dark-border)">
-          <code
-            className={`${base} text-text-paragraph ${
-              language ? `language-${language}` : ""
-            }`}
-            {...props}
-          >
-            {children}
-          </code>
-        </pre>
-      );
-    },
+    code: CodeBlock,
 
     // Images
     img: ({ node, ...props }) => (

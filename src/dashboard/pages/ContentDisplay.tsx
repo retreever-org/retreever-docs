@@ -1,5 +1,5 @@
 import { useDocsStore } from "../../store/useDocsStore";
-import { MarkdownRenderer } from "../components/MarkdownRenderer";
+import { MarkdownRenderer } from "../components/markdown/MarkdownRenderer";
 
 const ContentDisplay: React.FC = () => {
   const { current } = useDocsStore();
