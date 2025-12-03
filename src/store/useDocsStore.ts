@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { getMarkdown } from "../dashboard/service/DocSearch";
-import { markdownFiles } from "../dashboard/service/DocsResolver";
 
 export interface ViewingDoc {
   markdown: string | null;
@@ -9,24 +8,47 @@ export interface ViewingDoc {
 
 interface DocsState {
   current: ViewingDoc;
-  setCurrent: (path: string) => void;
+  cache: Record<string, string>;                // path -> markdown
+  setCurrent: (path: string) => Promise<void>;
 }
 
-export const useDocsStore = create<DocsState>((set) => ({
+export const useDocsStore = create<DocsState>((set, get) => ({
   current: {
     markdown: null,
     path: null,
   },
-  setCurrent: (path: string) => {
-    const markdown = getMarkdown(path, markdownFiles) || null;
-    set({
+  cache: {},
+  setCurrent: async (path: string) => {
+    if (!path) path = "introduction";
+
+    const { cache } = get();
+
+    // 1) Cache hit → no network call
+    if (cache[path]) {
+      set({
+        current: {
+          markdown: cache[path],
+          path,
+        },
+      });
+      return;
+    }
+
+    // 2) Cache miss → fetch and store
+    const markdown = await getMarkdown(path);
+
+    set((state) => ({
       current: {
         markdown,
         path,
       },
-    });
+      cache: markdown
+        ? { ...state.cache, [path]: markdown }
+        : state.cache, // do not cache null/failed
+    }));
   },
 }));
+
 
 type LayoutState = {
   sidebarWidth: number;

@@ -56,33 +56,29 @@ export function filterDocTree(tree: DocNode[], search: string): DocNode[] {
   return result;
 }
 
-export function getMarkdown(filePath: string, files: Record<string, string>): string | null {
-
+export async function getMarkdown(filePath: string): Promise<string | null> {
   if (!filePath) {
     filePath = "introduction";
   }
 
-  const urlComparable = filePath
-    .replace(/\\/g, "/")
-    .replace(/-/g, "_");
+  try {
+    // Fetch from /docs/{path}.md
+    const response = await fetch(`/markdown/${filePath}.md`);
+    
+    if (!response.ok) {
+      console.warn(`Markdown file not found: /markdown/${filePath}.md`);
+      return null;
+    }
 
-  const markdownMatch = Object.entries(files).find(([key]) => {
-    const normalizedKeyPath = key
-      .replace(/^\/docs\/?/i, "")
-      .replace(/\.md$/i, "")
-      .replace(/\\/g, "/")
-      .toLowerCase();
-
-    return normalizedKeyPath === urlComparable;
-  });
-
-  if (!markdownMatch) return null;
-
-  const content = markdownMatch[1];
-
-  return content.replace(/^---[\s\S]*?---\s*/, "");
+    const content = await response.text();
+    
+    // Remove frontmatter (same logic as before)
+    return content.replace(/^---[\s\S]*?---\s*/, "");
+  } catch (error) {
+    console.error(`Failed to fetch ${filePath}:`, error);
+    return null;
+  }
 }
-
 
 
 

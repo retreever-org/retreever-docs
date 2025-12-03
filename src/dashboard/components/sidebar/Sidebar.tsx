@@ -9,22 +9,27 @@ import { useNavigate } from "react-router-dom";
 import MobileNavbar from "../../../shared/MobileNavbar";
 import { useLayoutStore } from "../../../store/useDocsStore";
 
-interface SidebarProps {
-  tree: DocNode[];
-}
 
-const Sidebar: React.FC<SidebarProps> = ({ tree }) => {
+const Sidebar: React.FC = () => {
+  const [docTree, setDocTree] = useState<DocNode[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false); // for small/medium screens
   const navigate = useNavigate();
   const [hamOpen, setHamOpen] = useState(false);
 
-  const filteredTree = filterDocTree(tree, searchTerm);
+  const filteredTree = filterDocTree(docTree, searchTerm);
 
   // Resize observer to track sidebar width
   const sidebarRef = useRef<HTMLInputElement>(null);
   const setSidebarWidth = useLayoutStore((s) => s.setSidebarWidth);
 
+  useEffect(() => {
+    // Fetch works in both dev + prod
+    fetch('/doc-tree.json')
+      .then(res => res.json())
+      .then((data: DocNode[]) => setDocTree(data));
+  }, []);
+  
   useEffect(() => {
     if (!sidebarRef.current) return;
 

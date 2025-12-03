@@ -1,0 +1,62 @@
+[
+  {
+    "type": "folder",
+    "name": "Spring Boot",
+    "children": [
+      {
+        "type": "folder",
+        "name": "Architecture",
+        "children": [
+          {
+            "type": "file",
+            "name": "Schema Resolution",
+            "title": "Schema Resolution",
+            "path": "spring-boot/architecture/schema-resolution"
+          }
+        ]
+      },
+      {
+        "type": "folder",
+        "name": "Tutorials",
+        "children": [
+          {
+            "type": "file",
+            "name": "Annotations",
+            "title": "Annotations",
+            "path": "spring-boot/tutorials/annotations"
+          },
+          {
+            "type": "file",
+            "name": "Api Headers",
+            "title": "API Header Registory",
+            "path": "spring-boot/tutorials/api-headers"
+          },
+          {
+            "type": "file",
+            "name": "Setup",
+            "title": "Setup",
+            "path": "spring-boot/tutorials/setup"
+          }
+        ]
+      },
+      {
+        "type": "file",
+        "name": "Why Retreever",
+        "title": "Why Retreever?",
+        "path": "spring-boot/why-retreever"
+      }
+    ]
+  },
+  {
+    "type": "file",
+    "name": "Getting Started",
+    "title": "Getting Started",
+    "path": "getting-started"
+  },
+  {
+    "type": "file",
+    "name": "Introduction",
+    "title": "Introduction",
+    "path": "introduction"
+  }
+]
