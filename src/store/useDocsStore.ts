@@ -1,13 +1,31 @@
 import { create } from "zustand";
+import { getMarkdown } from "../dashboard/service/DocSearch";
+import { markdownFiles } from "../dashboard/service/DocsResolver";
+
+export interface ViewingDoc {
+  markdown: string | null;
+  path: string | null;
+}
 
 interface DocsState {
-  current: string;
-  setCurrent: (name: string) => void;
+  current: ViewingDoc;
+  setCurrent: (path: string) => void;
 }
 
 export const useDocsStore = create<DocsState>((set) => ({
-  current: "",
-  setCurrent: (name) => set({ current: name }),
+  current: {
+    markdown: null,
+    path: null,
+  },
+  setCurrent: (path: string) => {
+    const markdown = getMarkdown(path, markdownFiles) || null;
+    set({
+      current: {
+        markdown,
+        path,
+      },
+    });
+  },
 }));
 
 type LayoutState = {

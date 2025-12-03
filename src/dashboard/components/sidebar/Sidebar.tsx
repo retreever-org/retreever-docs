@@ -107,6 +107,7 @@ const Sidebar: React.FC<SidebarProps> = ({ tree }) => {
       <div
         className="
           lg:hidden
+          fixed
           w-full
           px-4 pt-4 pb-2
           bg-(--dark-5)

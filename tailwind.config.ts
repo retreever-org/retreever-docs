@@ -7,6 +7,7 @@ const config: Config = {
       colors: {
         canvas: '#030710',
         sidebar: '#030710',
+        navbar: '#02050B',
         surface: '#131419',
         panel: '#1A1C22',
         borderSubtle: '#23252E',

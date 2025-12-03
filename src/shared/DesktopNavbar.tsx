@@ -22,7 +22,7 @@ export default function DesktopNavbar({
   return (
     <motion.nav
       className={`fixed top-0 z-50 w-full transition-all duration-300 border-b ${
-        isDocs ? "border-border-subtle bg-sidebar" : "border-transparent bg-transparent"
+        isDocs ? "border-border-subtle bg-navbar" : "border-transparent bg-transparent"
       }`}
       initial={window.location.pathname === "/" ? { y: -100 } : { y: 0 }}
       animate={{ y: 0 }}
