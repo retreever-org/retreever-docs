@@ -60,7 +60,7 @@ const Sidebar: React.FC = () => {
       {/* Desktop / large screens: normal sidebar with filtering */}
       <aside
         className={`
-          hidden lg:flex
+          hidden md:flex
           h-screen
           flex-col
           sticky top-0 overflow-auto
