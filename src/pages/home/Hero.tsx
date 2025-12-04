@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { ChevronRight, PlayCircle, Sparkles } from "lucide-react";
-import GitHubDarkLogo from "/github-dark.svg";
-import RetreeverIcon from "/retreever-icon-box.svg";
+import GitHubDarkLogo from "/images/github-dark.svg";
+import RetreeverIcon from "/images/retreever-icon-box.svg";
 
 const LOGO_BLUE = "#3B8BFF";
 

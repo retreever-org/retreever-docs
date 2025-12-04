@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import RetreeverLogo from "/Retreever-logo-dark.svg";
-import GitHubLogo from "/github.svg";
+import RetreeverLogo from "/images/Retreever-logo-dark.svg";
+import GitHubLogo from "/images/github.svg";
 import { ChevronRight } from "lucide-react";
 import { type MouseEvent } from "react";
 import { useNavigate } from "react-router-dom";

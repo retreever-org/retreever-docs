@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { comparisonData } from "./comparision";
+import { comparisonData } from "./comparison";
 import { MoveRight } from "lucide-react";
 
 const Compare: React.FC = () => {

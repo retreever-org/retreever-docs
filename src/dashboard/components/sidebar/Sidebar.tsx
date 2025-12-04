@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import type { DocNode } from "../../types/docfile.types";
 import { Search, X } from "lucide-react";
 import { SidebarTree } from "./SidebarTree";
-import RetreeverIcon from "/retreever-icon-box.svg";
+import RetreeverIcon from "/images/retreever-icon-box.svg";
 import { filterDocTree } from "../../service/DocSearch";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -64,7 +64,6 @@ const Sidebar: React.FC = () => {
       <aside
         className={`
           hidden lg:flex
-          min-w-68
           h-screen
           flex-col
           sticky top-0 overflow-auto

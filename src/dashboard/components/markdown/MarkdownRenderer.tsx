@@ -1,20 +1,33 @@
-import React from "react";
+import React, { type ReactElement, type ReactNode } from "react";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import { CodeBlock } from "./CodeBlock";
+import { slugify } from "../../service/Slugify";
 
 export interface MarkdownRendererProps {
   markdown: string;
   className?: string;
 }
 
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, "")
-    .replace(/\s+/g, "-");
+function getNodeText(node: ReactNode): string {
+  if (node == null) return "";
+
+  if (typeof node === "string" || typeof node === "number") {
+    return String(node);
+  }
+
+  if (Array.isArray(node)) {
+    return node.map(getNodeText).join("");
+  }
+
+  if (typeof node === "object") {
+    const el = node as ReactElement<any>;
+    return getNodeText(el.props?.children);
+  }
+
+  return "";
 }
 
 export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
@@ -23,7 +36,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
   const components: Components = {
     // Headings - Dark mode
     h1: ({ node, ...props }) => {
-      const text = String(props.children);
+      const text = getNodeText(props.children);
       const id = slugify(text);
       return (
         <h1
@@ -34,8 +47,10 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       );
     },
     h2: ({ node, ...props }) => {
-      const text = String(props.children);
+      const text = getNodeText(props.children);
       const id = slugify(text);
+      console.log("Generated slug text: ", text);
+      console.log("Generated slug id: ", id);
       return (
         <h2
           id={id}
@@ -45,7 +60,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       );
     },
     h3: ({ node, ...props }) => {
-      const text = String(props.children);
+      const text = getNodeText(props.children);
       const id = slugify(text);
       return (
         <h3
@@ -56,7 +71,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       );
     },
     h4: ({ node, ...props }) => {
-      const text = String(props.children);
+      const text = getNodeText(props.children);
       const id = slugify(text);
       return (
         <h4

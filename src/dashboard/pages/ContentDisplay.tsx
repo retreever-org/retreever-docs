@@ -17,7 +17,7 @@ const ContentDisplay: React.FC = () => {
   }
 
   return (
-    <div className="text-text-primary px-4 md:p-4 lg:px-12 lg:w-7/12 pt-2 lg:mt-14 transition-all duration-300">
+    <div className="text-text-primary px-4 md:p-4 lg:px-12 pt-2 lg:mt-14 transition-all duration-300">
       <div className="mt-20 lg:mt-4"></div>
       <div
         className="

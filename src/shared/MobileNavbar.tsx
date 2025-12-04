@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import GitHubLogo from "/github.svg";
+import GitHubLogo from "/images/github.svg";
 import { type MouseEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
