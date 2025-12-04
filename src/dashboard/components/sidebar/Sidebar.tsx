@@ -7,28 +7,25 @@ import { filterDocTree } from "../../service/DocSearch";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import MobileNavbar from "../../../shared/MobileNavbar";
-import { useLayoutStore } from "../../../store/useDocsStore";
+import { useDocTree, useLayoutStore } from "../../../store/useDocsStore";
 
 
 const Sidebar: React.FC = () => {
-  const [docTree, setDocTree] = useState<DocNode[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false); // for small/medium screens
   const navigate = useNavigate();
   const [hamOpen, setHamOpen] = useState(false);
-
-  const filteredTree = filterDocTree(docTree, searchTerm);
+  const {tree, load} = useDocTree();
+  const [filteredTree, setFilteredTree] = useState<DocNode[]>(tree);
 
   // Resize observer to track sidebar width
   const sidebarRef = useRef<HTMLInputElement>(null);
   const setSidebarWidth = useLayoutStore((s) => s.setSidebarWidth);
 
   useEffect(() => {
-    // Fetch works in both dev + prod
-    fetch('/doc-tree.json')
-      .then(res => res.json())
-      .then((data: DocNode[]) => setDocTree(data));
-  }, []);
+    load();
+    setFilteredTree(filterDocTree(tree, searchTerm));
+  }, [tree]);
   
   useEffect(() => {
     if (!sidebarRef.current) return;

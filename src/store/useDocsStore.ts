@@ -1,3 +1,4 @@
+import { type DocNode } from './../dashboard/types/docfile.types';
 import { create } from "zustand";
 import { getMarkdown } from "../dashboard/service/DocSearch";
 
@@ -49,6 +50,37 @@ export const useDocsStore = create<DocsState>((set, get) => ({
   },
 }));
 
+// ------------------------ Doc Tree ---------------------------
+type DocTreeState = {
+  tree: DocNode[];                  // cached tree
+  loaded: boolean;                  // has it been fetched?
+  load: () => Promise<void>;        // fetch + cache
+  setTree: (tree: DocNode[]) => void;
+};
+
+export const useDocTree = create<DocTreeState>((set, get) => ({
+  tree: [],
+  loaded: false,
+
+  setTree: (tree: DocNode[]) => set({ tree, loaded: true }),
+
+  load: async () => {
+    const { loaded } = get();
+    if (loaded) return; // already cached for this session
+
+    const res = await fetch("/doc-tree.json");
+    if (!res.ok) {
+      console.warn("Failed to load doc-tree.json", res.status);
+      return;
+    }
+
+    const data = (await res.json()) as DocNode[];
+    set({ tree: data, loaded: true });
+  },
+}));
+
+
+// ---------------------- Other Layout -------------------------
 
 type LayoutState = {
   sidebarWidth: number;
