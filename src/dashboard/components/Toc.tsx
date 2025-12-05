@@ -39,11 +39,10 @@ const Toc: React.FC = () => {
     <aside
   className="
     pt-20
-    hidden md:flex
+    hidden lg:flex
     max-h-screen
     sticky top-0
     overflow-auto no-scrollbar
-    shrink-0
   "
 >
   <div className="h-max overflow-auto border-l border-border-subtle pl-6 pr-2 pt-2 pb-8">

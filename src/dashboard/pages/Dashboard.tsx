@@ -26,15 +26,13 @@ const Dashboard: React.FC = () => {
         <Navbar />
       </div>
       <div className="md:flex">
-        <div className="md:flex min-w-64">
+        <div className="md:flex min-w-64 no-scrollbar">
           <Sidebar />
         </div>
-        <div className="md:w-9/12 lg:w-7/12">
+        <div className="md:w-9/12 lg:w-7/12 overflow-auto">
           <ContentDisplay />
         </div>
-        <div className="hidden lg:flex lg:w-3/12">
-          <Toc />
-        </div>
+        <Toc />
       </div>
 
       <Footer />

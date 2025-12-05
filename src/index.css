@@ -1,7 +1,5 @@
 @import "tailwindcss";
-@config "../tailwind.config.ts";
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@config "../tailwind.config.ts"; 
 
 @layer base {
   html {
