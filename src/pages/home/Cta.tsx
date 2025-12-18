@@ -1,6 +1,6 @@
 import { ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
-import GitHubLogo from '/github.svg';
+import GitHubLogo from '/images/github.svg';
 
 const Cta: React.FC = () => {
   return (

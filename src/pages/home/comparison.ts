@@ -1,7 +1,7 @@
-import SwaggerLogo from "/swagger.svg";
-import SpringdocLogo from "/springdoc.svg";
-import PostmanLogo from "/postman.svg";
-import RetreeverLogo from "/retreever-icon-box.svg";
+import SwaggerLogo from "/images/swagger.svg";
+import SpringdocLogo from "/images/springdoc.svg";
+import PostmanLogo from "/images/postman.svg";
+import RetreeverLogo from "/images/retreever-icon-box.svg";
 
 export const comparisonData = {
   tools: [

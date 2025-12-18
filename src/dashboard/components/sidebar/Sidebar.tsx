@@ -2,29 +2,31 @@ import React, { useEffect, useRef, useState } from "react";
 import type { DocNode } from "../../types/docfile.types";
 import { Search, X } from "lucide-react";
 import { SidebarTree } from "./SidebarTree";
-import RetreeverIcon from "/retreever-icon-box.svg";
+import RetreeverIcon from "/images/retreever-icon-box.svg";
 import { filterDocTree } from "../../service/DocSearch";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import MobileNavbar from "../../../shared/MobileNavbar";
-import { useLayoutStore } from "../../../store/useDocsStore";
+import { useDocTree, useLayoutStore } from "../../../store/useDocsStore";
 
-interface SidebarProps {
-  tree: DocNode[];
-}
 
-const Sidebar: React.FC<SidebarProps> = ({ tree }) => {
+const Sidebar: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false); // for small/medium screens
   const navigate = useNavigate();
   const [hamOpen, setHamOpen] = useState(false);
-
-  const filteredTree = filterDocTree(tree, searchTerm);
+  const {tree, load} = useDocTree();
+  const [filteredTree, setFilteredTree] = useState<DocNode[]>(tree);
 
   // Resize observer to track sidebar width
   const sidebarRef = useRef<HTMLInputElement>(null);
   const setSidebarWidth = useLayoutStore((s) => s.setSidebarWidth);
 
+  useEffect(() => {
+    load();
+    setFilteredTree(filterDocTree(tree, searchTerm));
+  }, [tree]);
+  
   useEffect(() => {
     if (!sidebarRef.current) return;
 
@@ -58,8 +60,7 @@ const Sidebar: React.FC<SidebarProps> = ({ tree }) => {
       {/* Desktop / large screens: normal sidebar with filtering */}
       <aside
         className={`
-          hidden lg:flex
-          min-w-68
+          hidden md:flex
           h-screen
           flex-col
           sticky top-0 overflow-auto

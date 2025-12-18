@@ -4,7 +4,6 @@ export interface DocFile {
   name: string;
   title: string;
   path: string; 
-  _content: string;
 }
 
 export interface DocFolder {
