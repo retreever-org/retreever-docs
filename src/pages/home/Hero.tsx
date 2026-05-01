@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { ChevronRight, PlayCircle, Sparkles } from "lucide-react";
 import GitHubDarkLogo from "/images/github-dark.svg";
-import RetreeverIcon from "/images/retreever-icon-box.svg";
+import RetreeverIcon from "/images/icon512v2.png";
 
 const LOGO_BLUE = "#3B8BFF";
 
@@ -58,16 +58,16 @@ const Hero = () => {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="mb-6 flex items-center gap-3"
+          className="mb-6 flex items-center gap-2.5"
         >
           <motion.img
             src={RetreeverIcon}
             alt="Retreever"
-            className="h-12 w-12 rounded-2xl rotate-6"
-            whileHover={{ rotate: 6, scale: 1.05 }}
+            className="h-10 w-10 rounded-xl object-contain rotate-3"
+            whileHover={{ rotate: 3, scale: 1.04 }}
             transition={{ type: "spring", stiffness: 300 }}
           />
-          <span className="text-2xl font-bold tracking-tight">Retreever</span>
+          <span className="text-xl font-bold tracking-tight">Retreever</span>
         </motion.div>
 
         {/* Main heading with gradient text */}

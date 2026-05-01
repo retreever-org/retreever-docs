@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import type { DocNode } from "../../types/docfile.types";
 import { Search, X } from "lucide-react";
 import { SidebarTree } from "./SidebarTree";
-import RetreeverIcon from "/images/retreever-icon-box.svg";
+import RetreeverIcon from "/images/icon512v2.png";
 import { filterDocTree } from "../../service/DocSearch";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -119,7 +119,7 @@ const Sidebar: React.FC = () => {
         <div className="flex items-center gap-3">
           <motion.a
             href="/"
-            className="group flex items-center gap-2.5 select-none"
+            className="group flex items-center gap-2 select-none"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={(e) => {
@@ -130,8 +130,11 @@ const Sidebar: React.FC = () => {
             <motion.img
               src={RetreeverIcon}
               alt="Retreever"
-              className="h-8 w-auto transition-opacity"
+              className="h-7 w-7 rounded-md object-contain transition-opacity"
             />
+            <span className="hidden text-sm font-bold tracking-tight text-(--rt-fg-light) min-[420px]:inline">
+              Retreever
+            </span>
           </motion.a>
 
           {/* Search bar */}

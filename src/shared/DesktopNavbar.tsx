@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import RetreeverLogo from "/images/Retreever-logo-dark.svg";
+import RetreeverLogo from "/images/icon512v2.png";
 import GitHubLogo from "/images/github.svg";
 import { ChevronRight } from "lucide-react";
 import { type MouseEvent } from "react";
@@ -35,7 +35,7 @@ export default function DesktopNavbar({
           {/* Logo */}
           <motion.a
             href="/"
-            className="group flex items-center select-none"
+            className="group flex items-center gap-2 select-none"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={(e) => {
@@ -46,8 +46,11 @@ export default function DesktopNavbar({
             <motion.img
               src={RetreeverLogo}
               alt="Retreever"
-              className="h-10 w-auto transition-opacity"
+              className="h-8 w-8 rounded-md object-contain transition-opacity"
             />
+            <span className="text-base font-bold tracking-tight text-text-primary">
+              Retreever
+            </span>
           </motion.a>
 
           {/* Desktop Navigation Links */}
