@@ -28,7 +28,7 @@ const Footer: React.FC = () => {
             </h3>
             <div className="space-y-2">
               <a
-                href="https://mvnrepository.com/artifact/dev.retreever/retreever-spring"
+                href="https://mvnrepository.com/artifact/dev.retreever/retreever"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-center gap-3 p-4 rounded-xl bg-neutral-900/50 border border-neutral-800/50 hover:shadow-2xl hover:shadow-blue-300/10 hover:bg-neutral-900 transition-all duration-200 backdrop-blur-sm cursor-pointer"
@@ -37,7 +37,7 @@ const Footer: React.FC = () => {
                   <BookOpen className="w-5 h-5 text-emerald-400" />
                 </div>
                 <div>
-                  <div className="font-semibold text-white group-hover:text-blue-400 transition-colors">retreever-spring</div>
+                  <div className="font-semibold text-white group-hover:text-blue-400 transition-colors">retreever</div>
                   <div className="text-sm text-neutral-400">Maven Central</div>
                 </div>
                 <svg className="w-4 h-4 ml-auto text-neutral-500 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">

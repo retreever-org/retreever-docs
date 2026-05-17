@@ -1,5 +1,7 @@
 import type { DocFile, DocFolder, DocNode } from "../types/docfile.types";
 
+export const DEFAULT_DOC_PATH = "spring-boot/get-started";
+
 const normalize = (value: string) => value.toLowerCase();
 
 const matchesFile = (file: DocFile, term: string) => {
@@ -58,7 +60,7 @@ export function filterDocTree(tree: DocNode[], search: string): DocNode[] {
 
 export async function getMarkdown(filePath: string): Promise<string | null> {
   if (!filePath) {
-    filePath = "introduction";
+    filePath = DEFAULT_DOC_PATH;
   }
 
   try {

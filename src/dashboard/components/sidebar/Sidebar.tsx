@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
-import type { DocNode } from "../../types/docfile.types";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Search, X } from "lucide-react";
 import { SidebarTree } from "./SidebarTree";
 import RetreeverIcon from "/images/icon512v2.png";
@@ -16,7 +15,10 @@ const Sidebar: React.FC = () => {
   const navigate = useNavigate();
   const [hamOpen, setHamOpen] = useState(false);
   const {tree, load} = useDocTree();
-  const [filteredTree, setFilteredTree] = useState<DocNode[]>(tree);
+  const filteredTree = useMemo(
+    () => filterDocTree(tree, searchTerm),
+    [tree, searchTerm]
+  );
 
   // Resize observer to track sidebar width
   const sidebarRef = useRef<HTMLInputElement>(null);
@@ -24,8 +26,7 @@ const Sidebar: React.FC = () => {
 
   useEffect(() => {
     load();
-    setFilteredTree(filterDocTree(tree, searchTerm));
-  }, [tree]);
+  }, [load]);
   
   useEffect(() => {
     if (!sidebarRef.current) return;

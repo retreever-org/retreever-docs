@@ -1,6 +1,6 @@
 import { type DocNode } from './../dashboard/types/docfile.types';
 import { create } from "zustand";
-import { getMarkdown } from "../dashboard/service/DocSearch";
+import { DEFAULT_DOC_PATH, getMarkdown } from "../dashboard/service/DocSearch";
 
 export interface ViewingDoc {
   markdown: string | null;
@@ -20,7 +20,7 @@ export const useDocsStore = create<DocsState>((set, get) => ({
   },
   cache: {},
   setCurrent: async (path: string) => {
-    if (!path) path = "introduction";
+    if (!path) path = DEFAULT_DOC_PATH;
 
     const { cache } = get();
 

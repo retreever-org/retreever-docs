@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ChevronRight, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { DocNode } from "../../types/docfile.types";
-import { highlightText } from "../../service/DocSearch";
+import { DEFAULT_DOC_PATH, highlightText } from "../../service/DocSearch";
 import { useLocation, useNavigate } from "react-router-dom";
 
 interface FolderNodeProps {
@@ -82,7 +82,7 @@ export const FileNode = ({ node, depth, highlight }: FileNodeProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   let currentPath = location.pathname.replace(/^\/docs\//, "");
-  const isActive = currentPath === node.path ||!currentPath;
+  const isActive = (currentPath || DEFAULT_DOC_PATH) === node.path;
 
   return (
     <div

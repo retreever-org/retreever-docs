@@ -48,7 +48,7 @@ const ContentDisplay: React.FC = () => {
 
 
   function prettifyDocsPath(path: string | null): string {
-    if (!path) return "Introduction";
+    if (!path) return "Get Started";
 
     return path
       .replace(/^\/docs\/?/i, "")

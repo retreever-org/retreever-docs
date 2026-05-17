@@ -68,6 +68,20 @@ export async function resolveDocsBuild() {
   }
 
   // Convert to DocNode[] shape
+  const docOrder = new Map([
+    ["spring-boot/get-started", 1],
+    ["spring-boot/annotations", 2],
+    ["spring-boot/headers-metadata", 3],
+    ["spring-boot/environment-automation", 4],
+  ]);
+
+  function sortRank(node) {
+    if (node.type === "file") {
+      return docOrder.get(node.path) ?? 100;
+    }
+    return node.name === "Spring Boot" ? 0 : 100;
+  }
+
   function convert(obj, prefix = "") {
     const result = [];
 
@@ -89,6 +103,8 @@ export async function resolveDocsBuild() {
     }
 
     return result.sort((a, b) => {
+      const rankDiff = sortRank(a) - sortRank(b);
+      if (rankDiff !== 0) return rankDiff;
       if (a.type === "folder" && b.type === "file") return -1;
       if (a.type === "file" && b.type === "folder") return 1;
       return a.name.localeCompare(b.name);
