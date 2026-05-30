@@ -97,7 +97,6 @@ retreever:
     username: admin
     password: change-me
     secret: 123e4567-e89b-12d3-a456-426614174000
-    secure: true
 ```
 
 Auth properties:
@@ -107,7 +106,7 @@ Auth properties:
 | `retreever.auth.username` | Required with `password` to enable Retreever auth. |
 | `retreever.auth.password` | Required with `username` to enable Retreever auth. |
 | `retreever.auth.secret` | Optional UUID. When present and valid, it is used to derive the encryption key for Retreever auth tokens and login guard state. |
-| `retreever.auth.secure` | Controls the `Secure` attribute on Retreever auth cookies. Defaults to `true`. |
+| `retreever.auth.secure-cookies` | Controls the `Secure` attribute on Retreever auth cookies. Defaults to `true`. |
 | `retreever.auth.access-token-ttl` | Access token duration. Defaults to 30 minutes. |
 | `retreever.auth.refresh-token-ttl` | Refresh token duration. Defaults to 7 days. |
 
@@ -116,6 +115,8 @@ If only one of username or password is configured, Retreever disables its auth c
 If `secret` is missing or invalid, Retreever generates a startup-only secret.
 
 Auth cookies are `HttpOnly`, `SameSite=Lax`, scoped to the Retreever path, and use the cookie names `retreever_at`, `retreever_rt`, and `retreever_did`.
+
+In case a local HTTP-only development setup does not retain the Retreever login session, use `retreever.auth.secure-cookies=false` temporarily for that local setup only.
 
 Failed login attempts are tracked in the encrypted `retreever_lg` cookie. Every fifth failed attempt triggers a lockout. The lockout durations are 30 seconds, 5 minutes, 30 minutes, and then 1 hour for later cycles.
 

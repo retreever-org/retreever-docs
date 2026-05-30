@@ -70,9 +70,10 @@ export async function resolveDocsBuild() {
   // Convert to DocNode[] shape
   const docOrder = new Map([
     ["spring-boot/get-started", 1],
-    ["spring-boot/annotations", 2],
-    ["spring-boot/headers-metadata", 3],
-    ["spring-boot/environment-automation", 4],
+    ["spring-boot/security", 2],
+    ["spring-boot/annotations", 3],
+    ["spring-boot/headers-metadata", 4],
+    ["spring-boot/environment-automation", 5],
   ]);
 
   function sortRank(node) {
