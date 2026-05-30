@@ -1,6 +1,6 @@
 import type { DocNode } from "../../types/docfile.types";
 import { CategorySection } from "./SidebarCategorySection";
-import { FileNode, FolderNode } from "./SidebarTreeNode";
+import { FileNode } from "./SidebarTreeNode";
 
 interface SidebarTreeProps {
   tree: DocNode[];
@@ -10,25 +10,26 @@ interface SidebarTreeProps {
 export const SidebarTree = ({ tree, highlight }: SidebarTreeProps) => {
   if (!tree || tree.length === 0) return null;
 
-  const firstFolder = tree.find((n) => n.type === "folder") as
-    | Extract<DocNode, { type: "folder" }>
-    | undefined;
-  const rest = tree.filter((n) => n !== firstFolder);
+  const topLevelFolders = tree.filter((n): n is Extract<DocNode, { type: "folder" }> => n.type === "folder");
+  const topLevelFiles = tree.filter((n): n is Extract<DocNode, { type: "file" }> => n.type === "file");
 
-  const files = rest.filter((n) => n.type === "file") as Extract<
-    DocNode,
-    { type: "file" }
-  >[];
-  const folders = rest.filter((n) => n.type === "folder") as Extract<
-    DocNode,
-    { type: "folder" }
-  >[];
-
-  const intro = files.find((f) => f.name === "Introduction");
-  const gettingStarted = files.find((f) => f.name === "Getting Started");
-  const otherFiles = files
+  const intro = topLevelFiles.find((f) => f.name === "Introduction");
+  const gettingStarted = topLevelFiles.find((f) => f.name === "Getting Started");
+  const otherFiles = topLevelFiles
     .filter((f) => f !== intro && f !== gettingStarted)
     .sort((a, b) => a.name.localeCompare(b.name));
+
+  const categoryRank = (name: string) => {
+    if (name === "Spring Boot") return 0;
+    if (name === "Contribution") return 999;
+    return 100;
+  };
+
+  const categories = [...topLevelFolders].sort((a, b) => {
+    const rankDiff = categoryRank(a.name) - categoryRank(b.name);
+    if (rankDiff !== 0) return rankDiff;
+    return a.name.localeCompare(b.name);
+  });
 
   return (
     <div className="space-y-1">
@@ -58,21 +59,11 @@ export const SidebarTree = ({ tree, highlight }: SidebarTreeProps) => {
         />
       ))}
 
-      {/* 2) Category from first folder */}
-      {firstFolder && (
+      {/* 2) Top-level category sections */}
+      {categories.map((folder, index) => (
         <div className="mt-7">
-          <CategorySection node={firstFolder} highlight={highlight}/>
+          <CategorySection key={folder.name + index} node={folder} highlight={highlight}/>
         </div>
-      )}
-
-      {/* 3) Remaining folders after that */}
-      {folders.map((folder) => (
-        <FolderNode
-          key={folder.name}
-          node={folder}
-          depth={0}
-          highlight={highlight}
-        />
       ))}
     </div>
   );

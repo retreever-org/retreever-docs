@@ -80,7 +80,9 @@ export async function resolveDocsBuild() {
     if (node.type === "file") {
       return docOrder.get(node.path) ?? 100;
     }
-    return node.name === "Spring Boot" ? 0 : 100;
+    if (node.name === "Spring Boot") return 0;
+    if (node.name === "Contribution") return 999;
+    return 100;
   }
 
   function convert(obj, prefix = "") {
