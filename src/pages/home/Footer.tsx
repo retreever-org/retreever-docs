@@ -1,20 +1,19 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { 
-  Github, 
-  BookOpen, 
-  Zap, 
-  Shield, 
-  Code, 
-  Mail, 
+import {
+  Github,
+  BookOpen,
+  Zap,
+  Shield,
+  Code,
+  Mail,
 } from "lucide-react";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="w-full bg-(--dark-3)/30 border-t border-(--dark-border)/30 pt-20 pb-12 relative overflow-hidden">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {/* Try Section */}
+    <footer className="relative w-full overflow-hidden border-t border-surface-500/20 bg-surface-700/30 pb-12 pt-20">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="mb-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           <motion.div
             className="space-y-6"
             initial={{ opacity: 0, y: 20 }}
@@ -22,8 +21,8 @@ const Footer: React.FC = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="flex items-center gap-2 text-xl font-bold text-white mb-4">
-              <Zap className="w-6 h-6 text-blue-400" />
+            <h3 className="mb-4 flex items-center gap-2 text-xl font-bold text-text-primary">
+              <Zap className="h-6 w-6 text-text-primary" />
               Try Retreever
             </h3>
             <div className="space-y-2">
@@ -31,23 +30,34 @@ const Footer: React.FC = () => {
                 href="https://mvnrepository.com/artifact/dev.retreever/retreever"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center gap-3 p-4 rounded-xl bg-neutral-900/50 border border-neutral-800/50 hover:shadow-2xl hover:shadow-blue-300/10 hover:bg-neutral-900 transition-all duration-200 backdrop-blur-sm cursor-pointer"
+                className="group flex cursor-pointer items-center gap-3 rounded-xl border border-surface-500/20 bg-surface-900/20 p-4 backdrop-blur-sm transition-all duration-200 hover:bg-surface-900/30 hover:shadow-2xl hover:shadow-surface-500/10"
               >
-                <div className="w-10 h-10 bg-linear-to-br from-emerald-500/20 to-green-500/20 rounded-lg flex items-center justify-center border border-emerald-500/30 group-hover:scale-110 transition-transform">
-                  <BookOpen className="w-5 h-5 text-emerald-400" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-surface-500/20 bg-surface-900/20 transition-transform group-hover:scale-110">
+                  <BookOpen className="h-5 w-5 text-text-primary" />
                 </div>
                 <div>
-                  <div className="font-semibold text-white group-hover:text-blue-400 transition-colors">retreever</div>
-                  <div className="text-sm text-neutral-400">Maven Central</div>
+                  <div className="font-semibold text-text-primary transition-colors group-hover:text-text-primary">
+                    retreever
+                  </div>
+                  <div className="text-sm text-text-muted">Maven Central</div>
                 </div>
-                <svg className="w-4 h-4 ml-auto text-neutral-500 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <svg
+                  className="ml-auto h-4 w-4 text-text-muted transition-colors group-hover:text-text-primary"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </a>
             </div>
           </motion.div>
 
-          {/* GitHub & Resources */}
           <motion.div
             className="space-y-6"
             initial={{ opacity: 0, y: 20 }}
@@ -55,24 +65,36 @@ const Footer: React.FC = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <h3 className="text-xl font-bold text-white mb-4">Resources</h3>
+            <h3 className="mb-4 text-xl font-bold text-text-primary">
+              Resources
+            </h3>
             <div className="space-y-3">
-              <a href="https://github.com/Retreever-org" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-3 p-3 rounded-lg hover:text-(--rt-blue-1) transition-all duration-200 text-neutral-300 cursor-pointer">
-                <Github className="w-5 h-5" />
+              <a
+                href="https://github.com/Retreever-org"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex cursor-pointer items-center gap-3 rounded-lg p-3 text-text-muted transition-all duration-200 hover:text-text-primary"
+              >
+                <Github className="h-5 w-5" />
                 GitHub Organization
               </a>
-              <a href="/docs" className="group flex items-center gap-3 p-3 rounded-lg hover:text-(--rt-blue-1) transition-all duration-200 text-neutral-300 cursor-pointer">
-                <BookOpen className="w-5 h-5" />
+              <a
+                href="/docs"
+                className="group flex cursor-pointer items-center gap-3 rounded-lg p-3 text-text-muted transition-all duration-200 hover:text-text-primary"
+              >
+                <BookOpen className="h-5 w-5" />
                 Documentation
               </a>
-              <a href="/changelog" className="group flex items-center gap-3 p-3 rounded-lg  hover:text-(--rt-blue-1) transition-all duration-200 text-neutral-300 cursor-pointer">
-                <Code className="w-5 h-5" />
+              <a
+                href="/changelog"
+                className="group flex cursor-pointer items-center gap-3 rounded-lg p-3 text-text-muted transition-all duration-200 hover:text-text-primary"
+              >
+                <Code className="h-5 w-5" />
                 Changelog
               </a>
             </div>
           </motion.div>
 
-          {/* Company */}
           <motion.div
             className="space-y-6"
             initial={{ opacity: 0, y: 20 }}
@@ -80,19 +102,26 @@ const Footer: React.FC = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <h3 className="text-xl font-bold text-white mb-4">Company</h3>
+            <h3 className="mb-4 text-xl font-bold text-text-primary">
+              Company
+            </h3>
             <div className="space-y-3">
-              <a href="/about" className="group flex items-center gap-3 p-3 rounded-lg  hover:text-(--rt-blue-1) transition-all duration-200 text-neutral-300 cursor-pointer">
+              <a
+                href="/about"
+                className="group flex cursor-pointer items-center gap-3 rounded-lg p-3 text-text-muted transition-all duration-200 hover:text-text-primary"
+              >
                 About
               </a>
-              <a href="/privacy" className="group flex items-center gap-3 p-3 rounded-lg  hover:text-(--rt-blue-1) transition-all duration-200 text-neutral-300 cursor-pointer">
-                <Shield className="w-5 h-5" />
+              <a
+                href="/privacy"
+                className="group flex cursor-pointer items-center gap-3 rounded-lg p-3 text-text-muted transition-all duration-200 hover:text-text-primary"
+              >
+                <Shield className="h-5 w-5" />
                 Privacy Policy
               </a>
             </div>
           </motion.div>
 
-          {/* Contact */}
           <motion.div
             className="space-y-6"
             initial={{ opacity: 0, y: 20 }}
@@ -100,30 +129,38 @@ const Footer: React.FC = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <h3 className="text-xl font-bold text-white mb-4">Get in touch</h3>
+            <h3 className="mb-4 text-xl font-bold text-text-primary">
+              Get in touch
+            </h3>
             <div className="space-y-3">
-              <a href="mailto:hello@retreever.com" className="group flex items-center gap-3 p-3 rounded-lg  hover:text-blue-400 transition-all duration-200 text-neutral-300 cursor-pointer">
-                <Mail className="w-5 h-5" />
+              <a
+                href="mailto:hello@retreever.com"
+                className="group flex cursor-pointer items-center gap-3 rounded-lg p-3 text-text-muted transition-all duration-200 hover:text-text-primary"
+              >
+                <Mail className="h-5 w-5" />
                 hello@retreever.com
               </a>
             </div>
           </motion.div>
         </div>
 
-        {/* Bottom section */}
-        <div className="border-t border-neutral-800/50 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-neutral-500">
+        <div className="flex flex-col items-center justify-between gap-4 border-t border-surface-500/20 pt-8 text-sm text-text-muted md:flex-row">
           <motion.p
-            className="text-neutral-400 leading-relaxed max-w-2xl text-center md:text-left"
+            className="max-w-2xl text-center leading-relaxed text-text-muted md:text-left"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            ❤️ Built for developers who are tired of stale documentation, duplicated effort, and YAML fatigue —{" "}
-            <span className="font-semibold text-white">Retreever documents everything you need, instantly.</span>
+            Built for developers who are tired of stale documentation,
+            duplicated effort, and YAML fatigue.
+            <span className="font-semibold text-text-primary">
+              {" "}
+              Retreever documents everything you need, instantly.
+            </span>
           </motion.p>
-          
-          <div className="text-xs text-neutral-600">
+
+          <div className="text-xs text-text-muted">
             © 2025 Retreever. All rights reserved.
           </div>
         </div>

@@ -1,10 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import GitHubLogo from "/images/github.svg";
-import { type MouseEvent } from "react";
-import { useNavigate } from "react-router-dom";
-
-const LOGO_BLUE = "#3B8BFF";
 
 interface MobileNavbarProps {
   isDocs: boolean;
@@ -21,8 +17,6 @@ export default function MobileNavbar({
   open,
   setOpen,
 }: MobileNavbarProps) {
-  const navigate = useNavigate();
-
   return (
     <>
       {/* FAB-style toggle button (always visible on mobile) */}
@@ -42,7 +36,7 @@ export default function MobileNavbar({
         </div>
       )}
       <motion.button
-        className="z-50 flex h-10 w-10 rounded-lg border border-white/10 bg-white/5 text-white backdrop-blur-sm transition-colors hover:bg-white/10"
+        className="z-50 flex h-10 w-10 rounded-lg border border-surface-500/20 bg-surface-700 text-text-primary transition-colors hover:bg-surface-700"
         onClick={() => setOpen((v) => !v)}
         aria-label="Toggle navigation"
         whileTap={{ scale: 0.95 }}
@@ -82,7 +76,7 @@ export default function MobileNavbar({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="fixed inset-0 z-40 flex flex-col justify-between bg-black/60 backdrop-blur-xl md:hidden"
+            className="fixed inset-0 z-40 flex flex-col justify-between bg-surface-700 md:hidden"
           >
             {/* Top content: links + GitHub */}
             <div className="px-6 pt-12 pb-4 space-y-1 mt-6">
@@ -125,15 +119,15 @@ export default function MobileNavbar({
                   </MobileNavLink>
                 </>
               ) : (
-                <MobileNavLink
-                  href="/"
-                  active={isDocs}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    navigate("/");
-                    setOpen(false);
-                  }}
-                >
+              <MobileNavLink
+                href="/"
+                active={isDocs}
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                  setOpen(false);
+                }}
+              >
                   Home
                 </MobileNavLink>
               )}
@@ -142,7 +136,7 @@ export default function MobileNavbar({
                 href="https://github.com/Retreever-org"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 flex items-center gap-2.5 rounded-lg border border-blue-500/20 bg-blue-500/5 px-4 py-3 text-md font-medium text-blue-200"
+                className="mt-5 flex items-center gap-2.5 rounded-lg border border-primary-500/20 bg-surface-700 px-4 py-3 text-md font-medium text-primary-100"
                 onClick={() => setOpen(false)}
                 whileTap={{ scale: 0.98 }}
               >
@@ -163,7 +157,7 @@ export default function MobileNavbar({
 interface MobileNavLinkProps {
   href: string;
   active: boolean;
-  onClick: (event: MouseEvent<HTMLAnchorElement>) => void;
+  onClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;
   children: React.ReactNode;
 }
 
@@ -182,8 +176,8 @@ function MobileNavLink({
       }}
       className={`block rounded-lg px-4 py-3 font-medium transition-all text-md ${
         active
-          ? "bg-blue-500/5 backdrop-blur-2xl text-white"
-          : "text-slate-300 hover:bg-white/5 hover:text-white"
+          ? "bg-surface-700 text-text-primary"
+          : "text-text-muted hover:bg-surface-700 hover:text-text-primary"
       }`}
       whileTap={{ scale: 0.98 }}
     >
@@ -193,8 +187,7 @@ function MobileNavLink({
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            className="h-1.5 w-1.5 rounded-full"
-            style={{ backgroundColor: LOGO_BLUE }}
+            className="h-1.5 w-1.5 rounded-full bg-primary-500"
           />
         )}
       </div>

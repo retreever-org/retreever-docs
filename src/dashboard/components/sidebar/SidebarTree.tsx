@@ -61,7 +61,7 @@ export const SidebarTree = ({ tree, highlight }: SidebarTreeProps) => {
 
       {/* 2) Top-level category sections */}
       {categories.map((folder, index) => (
-        <div className="mt-7">
+        <div className="mt-6">
           <CategorySection key={folder.name + index} node={folder} highlight={highlight}/>
         </div>
       ))}

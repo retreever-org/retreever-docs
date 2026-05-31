@@ -16,6 +16,20 @@
       rel="stylesheet"
     />
 
+    <script type="text/javascript">
+      (function () {
+        try {
+          var storedTheme = localStorage.getItem("retreever.theme");
+          var theme = storedTheme === "light" ? "light" : "dark";
+          document.documentElement.dataset.theme = theme;
+          document.documentElement.style.colorScheme = theme;
+        } catch (error) {
+          document.documentElement.dataset.theme = "dark";
+          document.documentElement.style.colorScheme = "dark";
+        }
+      })();
+    </script>
+
     <title>Retreever</title>
   </head>
   <body>

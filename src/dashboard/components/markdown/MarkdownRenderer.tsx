@@ -34,14 +34,13 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
   markdown,
 }) => {
   const components: Components = {
-    // Headings - Dark mode
     h1: ({ node, ...props }) => {
       const text = getNodeText(props.children);
       const id = slugify(text);
       return (
         <h1
           id={id}
-          className="text-4xl font-medium mt-8 mb-4 pb-2 text-text-primary scroll-mt-28"
+          className="text-4xl font-medium mt-10 pb-2 text-text-primary scroll-mt-28"
           {...props}
         />
       );
@@ -52,7 +51,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       return (
         <h2
           id={id}
-          className="text-2xl font-medium my-7 text-text-primary scroll-mt-28"
+          className="text-2xl font-medium mt-10 text-text-primary scroll-mt-28"
           {...props}
         />
       );
@@ -63,7 +62,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       return (
         <h3
           id={id}
-          className="text-xl font-medium my-7 text-text-primary scroll-mt-28"
+          className="text-xl font-medium mt-5 mb-3 text-text-primary scroll-mt-28"
           {...props}
         />
       );
@@ -80,9 +79,8 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       );
     },
 
-    hr: () => <hr className="my-8 border-t border-border-subtle" />,
+    hr: () => <hr className="my-8 border-t border-surface-500/40" />,
 
-    // Paragraphs - Dark mode
     p: ({ node, ...props }) => (
       <p
         className="text-[1rem] md:text-[0.92rem] mb-4 leading-7 text-text-paragraph"
@@ -90,15 +88,13 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       />
     ),
 
-    // Links - Dark mode
     a: ({ node, ...props }) => (
       <a
-        className="text-blue-400 hover:text-blue-300 hover:underline font-medium"
+        className="text-primary-500 hover:text-primary-400 hover:underline font-medium"
         {...props}
       />
     ),
 
-    // Lists - Dark mode
     ul: ({ node, ...props }) => (
       <ul
         className="custom-list mb-5 ml-6 space-y-2 list-disc text-text-paragraph text-[1rem] md:text-[0.92rem]"
@@ -118,45 +114,39 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       />
     ),
 
-    // Blockquotes - Dark mode
     blockquote: ({ node, ...props }) => (
       <blockquote
-        className="my-4 pl-4 border-l-4 border-b-zinc-500 bg-slate-800/30 py-2 pr-4 italic text-text-muted"
+        className="my-4 pl-4 border-l-4 border-surface-500/30 bg-surface-900/20 py-2 pr-4 italic text-text-muted"
         {...props}
       />
     ),
 
-    // Tables - Dark mode
     table: ({ node, ...props }) => (
-      <div className="my-4 overflow-x-auto">
+      <div className="my-4 overflow-x-auto rounded-lg border border-surface-500/60">
         <table
-          className="min-w-full border-collapse border border-(--dark-border)"
+          className="min-w-full border-collapse [&>tbody>tr:last-child>td]:border-b-0"
           {...props}
         />
       </div>
     ),
-    thead: ({ node, ...props }) => <thead className="bg-black/50" {...props} />,
-    tbody: ({ node, ...props }) => <tbody {...props} />,
-    tr: ({ node, ...props }) => (
-      <tr
-        className="border-b border-(--dark-border) hover:bg-black/30"
-        {...props}
-      />
+    thead: ({ node, ...props }) => (
+      <thead className="bg-surface-900/20" {...props} />
     ),
+    tbody: ({ node, ...props }) => <tbody {...props} />,
+    tr: ({ node, ...props }) => <tr className="hover:bg-surface-900/10" {...props} />,
     th: ({ node, ...props }) => (
       <th
-        className="px-4 py-2 text-left text-[1rem] md:text-[0.92rem] font-semibold border border-(--dark-border) text-text-primary bg-black/20"
+        className="px-4 py-2 text-left text-[1rem] md:text-[0.92rem] font-semibold border-b border-r border-surface-500/60 text-text-primary bg-surface-900/20 last:border-r-0"
         {...props}
       />
     ),
     td: ({ node, ...props }) => (
       <td
-        className="px-4 py-2 text-[1rem] md:text-[0.92rem] border border-(--dark-border) text-text-paragraph"
+        className="px-4 py-2 text-[1rem] md:text-[0.92rem] border-b border-r border-surface-500/60 text-text-paragraph last:border-r-0"
         {...props}
       />
     ),
 
-    // Text formatting - Dark mode
     strong: ({ node, ...props }) => (
       <strong
         className="font-semibold text-[1rem] md:text-[0.92rem] text-text-primary"
@@ -170,7 +160,6 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       <del className="line-through text-text-muted" {...props} />
     ),
 
-    // Code - Enhanced dark mode
     code: CodeBlock,
 
     // Images

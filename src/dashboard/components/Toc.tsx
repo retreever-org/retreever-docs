@@ -37,44 +37,45 @@ const Toc: React.FC = () => {
 
   return (
     <aside
-  className="
-    pt-20
-    hidden lg:flex
-    max-h-screen
-    sticky top-0
-    overflow-auto no-scrollbar
-  "
->
-  <div className="h-max overflow-auto border-l border-border-subtle pl-6 pr-2 pt-2 pb-8">
-    <p className="mb-4 text-xs font-semibold tracking-widest text-text-paragraph">
-      ON THIS PAGE
-    </p>
+      className="
+        hidden lg:flex
+        w-80 min-w-80 max-w-80 shrink-0
+        max-h-screen
+        sticky top-0
+        overflow-auto no-scrollbar
+      "
+    >
+      <div className="h-max py-6 w-full overflow-auto border-l border-surface-500/20 pl-6 pr-2">
+        <p className="mb-4 text-xs font-semibold tracking-widest text-text-paragraph">
+          ON THIS PAGE
+        </p>
 
-    <ul className="space-y-2">
-      {toc.map((item) => (
-        <li
-          key={item.id}
-          style={{ paddingLeft: `${(item.level - 1) * 8}px` }}
-        >
-          <a
-            href={`#${item.id}`}
-            className="
-              block
-              py-1
-              text-sm
-              text-slate-400
-              hover:text-accent/60
-              transition-all
-              duration-200
-            "
-          >
-            {item.text.replaceAll("`", "")}
-          </a>
-        </li>
-      ))}
-    </ul>
-  </div>
-</aside>
+        <ul className="space-y-2">
+          {toc.map((item) => (
+            <li
+              key={item.id}
+              style={{ paddingLeft: `${(item.level - 1) * 8}px` }}
+            >
+              <a
+                href={`#${item.id}`}
+                className="
+                  block
+                  py-1
+                  text-sm
+                  text-text-muted
+                  hover:text-primary-400
+                  transition-all
+                  duration-200
+                  break-words
+                "
+              >
+                {item.text.replaceAll("`", "")}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </aside>
   );
 };
 

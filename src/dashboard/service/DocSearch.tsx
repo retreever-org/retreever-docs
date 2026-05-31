@@ -119,7 +119,7 @@ export const highlightText = (text: string, highlight?: string) => {
     parts.push(
       <span
         key={matchIndex}
-        className="bg-blue-200/30 text-blue-100/90 rounded-[3px]"
+        className="bg-primary-500/20 text-primary-100 rounded-[3px]"
       >
         {matchText}
       </span>

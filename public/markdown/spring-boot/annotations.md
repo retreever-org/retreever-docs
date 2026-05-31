@@ -8,6 +8,8 @@ Retreever works without Retreever annotations. The annotations below add metadat
 
 All Retreever annotations are runtime annotations.
 
+---
+
 ## Summary
 
 | Annotation | Target | Purpose |
@@ -20,7 +22,9 @@ All Retreever annotations are runtime annotations.
 | `@Description` | Parameter, field | Sets human-readable descriptions for parameters or fields. |
 | `@RetreeverSkip` | Type, method | Excludes a controller or endpoint from Retreever documentation. |
 
-## `@ApiDoc`
+---
+
+## 1. @ApiDoc
 
 Use `@ApiDoc` on the Spring Boot application class.
 
@@ -48,7 +52,9 @@ Fields:
 
 If `@ApiDoc` is not present, Retreever derives the document name from the application class name and uses version `v1`.
 
-## `@ApiGroup`
+---
+
+## 2. @ApiGroup
 
 Use `@ApiGroup` on a Spring controller.
 
@@ -76,7 +82,9 @@ Fields:
 
 If `@ApiGroup` is not present, Retreever derives a group name from the controller class name.
 
-## `@ApiEndpoint`
+---
+
+## 3. @ApiEndpoint
 
 Use `@ApiEndpoint` on a controller method.
 
@@ -126,7 +134,9 @@ Supported security annotations:
 
 `permitAll()` and `isAnonymous()` expressions are treated as public.
 
-## `@ApiError`
+---
+
+## 4. @ApiError
 
 Use `@ApiError` on an `@ExceptionHandler` method.
 
@@ -159,7 +169,9 @@ Fields:
 
 If `@ApiError` is not present on an exception handler, Retreever uses `HttpStatus.INTERNAL_SERVER_ERROR` and an empty description.
 
-## `@FieldInfo`
+---
+
+## 5. @FieldInfo
 
 Use `@FieldInfo` on DTO fields.
 
@@ -187,7 +199,9 @@ Fields:
 
 Retreever reads `@FieldInfo.description()` when no `@Description` is present on the field. It reads `@FieldInfo.example()` when the example value is not blank.
 
-## `@Description`
+---
+
+## 6. @Description
 
 Use `@Description` on fields or method parameters.
 
@@ -218,7 +232,9 @@ OrderResponse findOrder(
 
 For schema fields, `@Description` has priority over `@FieldInfo.description()`.
 
-## `@RetreeverSkip`
+---
+
+## 7. @RetreeverSkip
 
 Use `@RetreeverSkip` on a controller class or controller method.
 
@@ -240,6 +256,8 @@ class InternalController {
 ```
 
 When placed on a controller, the controller is not included in Retreever documentation. When placed on a method, that endpoint is not included.
+
+--- 
 
 ## Validation And Jackson Metadata
 

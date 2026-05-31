@@ -1,55 +1,35 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import DesktopNavbar from "../../shared/DesktopNavbar";
-import MobileNavbar from "../../shared/MobileNavbar";
+
+const THEME_STORAGE_KEY = "retreever.theme";
+
+type ThemeMode = "light" | "dark";
+
+function getInitialTheme(): ThemeMode {
+  if (typeof window === "undefined") return "dark";
+
+  const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
+  return stored === "light" ? "light" : "dark";
+}
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState("/");
-  const navigate = useNavigate();
+  const [theme, setTheme] = useState<ThemeMode>(getInitialTheme);
 
-  const isDocs = window.location.pathname.startsWith("/docs");
+  useEffect(() => {
+    const root = document.documentElement;
+    root.dataset.theme = theme;
+    root.style.colorScheme = theme;
+    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+  }, [theme]);
 
-  const handleSectionClick = (href: string) => {
-    setActiveLink(href);
-    setOpen(false);
-    if (href === "/docs") {
-      navigate("/docs");
-    } else {
-      const id = href.replace("#", "");
-      const el = document.getElementById(id);
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-      }
-    }
+  const toggleTheme = () => {
+    setTheme((current) => (current === "dark" ? "light" : "dark"));
   };
 
   return (
-    <>
-      {/* Desktop navbar (unchanged) */}
-      <DesktopNavbar
-        isDocs={isDocs}
-        activeLink={activeLink}
-        handleSectionClick={handleSectionClick}
-        setOpen={setOpen}
-      />
-
-      {/* Shared top bar: logo + mobile hamburger aligned in one line */}
-      <div className="fixed top-0 left-0 z-50 flex w-full items-center justify-between px-4 py-3 md:hidden">
-        {/* placeholder */}
-        <div className="flex items-center gap-2">
-          
-        </div>
-
-        {/* Hamburger from MobileNavbar, positioned via this flex container */}
-        <MobileNavbar
-          isDocs={isDocs}
-          activeLink={activeLink}
-          handleSectionClick={handleSectionClick}
-          open={open}
-          setOpen={setOpen}
-        />
-      </div>
-    </>
+    <DesktopNavbar
+      theme={theme}
+      onToggleTheme={toggleTheme}
+    />
   );
 }

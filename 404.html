@@ -3,18 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <title>Page Not Found</title>
-    <script type="text/javascript">
-      var pathSegmentsToKeep = 0; // root site (retreever.dev)
-
-      var l = window.location;
-      var pathname = l.pathname.split('/').slice(pathSegmentsToKeep + 1).join('/');
-      var search = l.search.slice(1).replace(/&/g, '~and~');
-      var newUrl = l.protocol + '//' + l.host + '/' +
-        (pathSegmentsToKeep ? l.pathname.split('/').slice(1, pathSegmentsToKeep + 1).join('/') + '/' : '') +
-        '?/' + pathname + (search ? '&' + search : '') + l.hash;
-
-      window.location.replace(newUrl);
-    </script>
   </head>
-  <body></body>
+  <body>
+    <p>Page not found.</p>
+  </body>
 </html>

@@ -11,8 +11,8 @@ export const CategorySection = ({ node, highlight }: CategorySectionProps) => {
   const children = node.children;
 
   return (
-    <div className="space-y-4">
-      <div className="px-3 text-base font-semibold text-(--rt-fg-light)">
+    <div className="space-y-1">
+      <div className="px-3 text-base font-semibold text-text-primary">
         {highlightText(node.name, highlight)}
       </div>
 

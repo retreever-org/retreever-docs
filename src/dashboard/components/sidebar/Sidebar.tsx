@@ -1,19 +1,14 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Search, X } from "lucide-react";
 import { SidebarTree } from "./SidebarTree";
-import RetreeverIcon from "/images/icon512v2.png";
 import { filterDocTree } from "../../service/DocSearch";
 import { AnimatePresence, motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import MobileNavbar from "../../../shared/MobileNavbar";
 import { useDocTree, useLayoutStore } from "../../../store/useDocsStore";
 
 
 const Sidebar: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false); // for small/medium screens
-  const navigate = useNavigate();
-  const [hamOpen, setHamOpen] = useState(false);
   const {tree, load} = useDocTree();
   const filteredTree = useMemo(
     () => filterDocTree(tree, searchTerm),
@@ -37,7 +32,7 @@ const Sidebar: React.FC = () => {
 
     observer.observe(sidebarRef.current);
     return () => observer.disconnect();
-  }, []);
+  }, [setSidebarWidth]);
 
   // Handlers
   const handleFocus = () => {
@@ -61,28 +56,27 @@ const Sidebar: React.FC = () => {
       {/* Desktop / large screens: normal sidebar with filtering */}
       <aside
         className={`
+          pt-4
           hidden md:flex
           h-screen
           flex-col
           sticky top-0 overflow-auto
-          border-r border-border-subtle
-          bg-sidebar
+          border-r border-surface-500/20
+          bg-surface-700
         `}
         ref={sidebarRef}
       >
-        <div className="mt-16 mb-4" />
-
         {/* Search */}
-        <div className="px-5 pb-3 shrink-0">
+        <div className="px-5 shrink-0">
           <div
-            className="
+              className="
               flex items-center gap-2
               px-3 py-1.5
               rounded-lg
-              border border-border-subtle
+              border border-surface-500/40
             "
           >
-            <Search className="w-4 h-4 text-(--rt-fg-muted)" />
+            <Search className="w-4 h-4 text-text-muted" />
             <input
               type="text"
               placeholder="Search docs..."
@@ -92,8 +86,8 @@ const Sidebar: React.FC = () => {
                 bg-transparent
                 w-full
                 text-sm
-                text-(--rt-fg-light)
-                placeholder-(--rt-fg-muted)
+                text-text-primary
+                placeholder-text-muted
                 outline-none
               "
             />
@@ -108,35 +102,23 @@ const Sidebar: React.FC = () => {
 
       {/* Small/medium screens: logo + search bar */}
       <div
-        className="
+          className="
           lg:hidden
           fixed
+          top-16
           w-full
           px-4 pt-4 pb-2
-          bg-(--dark-5)
-          border-b border-(--dark-border)/40
+          bg-surface-700
+          border-b border-surface-500/40
         "
       >
         <div className="flex items-center gap-3">
-          <motion.a
-            href="/"
-            className="group flex items-center gap-2 select-none"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={(e) => {
-              e.preventDefault();
-              navigate("/");
-            }}
-          >
-            <motion.img
-              src={RetreeverIcon}
-              alt="Retreever"
-              className="h-7 w-7 rounded-md object-contain transition-opacity"
-            />
-            <span className="hidden text-sm font-bold tracking-tight text-(--rt-fg-light) min-[420px]:inline">
-              Retreever
+          <div className="group flex items-center gap-2 select-none">
+            <div className="h-7 w-7 rounded-md bg-surface-900/20 border border-surface-500/20" />
+            <span className="hidden text-sm font-bold tracking-tight text-text-primary min-[420px]:inline">
+              Retreever Docs
             </span>
-          </motion.a>
+          </div>
 
           {/* Search bar */}
           <div
@@ -145,10 +127,10 @@ const Sidebar: React.FC = () => {
               flex-1
               px-3 py-2
               rounded-lg
-              border border-border-subtle
+              border border-surface-500/40
             "
           >
-            <Search className="w-4 h-4 text-(--rt-fg-muted)" />
+            <Search className="w-4 h-4 text-text-muted" />
             <input
               type="text"
               placeholder="Search docs..."
@@ -159,23 +141,12 @@ const Sidebar: React.FC = () => {
                 bg-transparent
                 w-full
                 text-sm
-                text-(--rt-fg-light)
-                placeholder-(--rt-fg-muted)
+                text-text-primary
+                placeholder-text-muted
                 outline-none
               "
             />
           </div>
-          {!isOpen && (
-            <MobileNavbar
-              activeLink="/docs"
-              isDocs={true}
-              open={hamOpen}
-              setOpen={setHamOpen}
-              handleSectionClick={() => {
-                setHamOpen(false);
-              }}
-            />
-          )}
         </div>
       </div>
 
@@ -184,9 +155,9 @@ const Sidebar: React.FC = () => {
         <div
           className="
             lg:hidden
-            fixed inset-0 z-40
-            bg-(--dark-5)
-            text-(--rt-fg-light)
+            fixed inset-0 z-[60]
+            bg-surface-700
+            text-text-primary
             flex flex-col
           "
         >
@@ -198,10 +169,10 @@ const Sidebar: React.FC = () => {
                 flex-1
                 px-3 py-2
                 rounded-lg
-                border border-(--dark-border-2)
+                border border-surface-500/40
               "
             >
-              <Search className="w-4 h-4 text-(--rt-fg-muted)" />
+              <Search className="w-4 h-4 text-text-muted" />
               <input
                 autoFocus
                 type="text"
@@ -212,14 +183,14 @@ const Sidebar: React.FC = () => {
                   bg-transparent
                   w-full
                   text-sm
-                  text-(--rt-fg-light)
-                  placeholder-(--rt-fg-muted)
+                  text-text-primary
+                  placeholder-text-muted
                   outline-none
                 "
               />
             </div>
             <motion.button
-              className="z-50 flex h-10 w-10 rounded-lg border border-white/10 bg-white/5 text-white backdrop-blur-sm transition-colors hover:bg-white/10"
+            className="z-50 flex h-10 w-10 rounded-lg border border-surface-500/40 bg-surface-900/20 text-text-primary backdrop-blur-sm transition-colors hover:bg-surface-900/30"
               onClick={handleClose}
               aria-label="Toggle navigation"
               whileTap={{ scale: 0.95 }}

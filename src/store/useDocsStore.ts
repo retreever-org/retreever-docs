@@ -1,6 +1,14 @@
-import { type DocNode } from './../dashboard/types/docfile.types';
+import { type DocNode } from "./../dashboard/types/docfile.types";
 import { create } from "zustand";
 import { DEFAULT_DOC_PATH, getMarkdown } from "../dashboard/service/DocSearch";
+
+const DOC_PATH_STORAGE_KEY = "retreever.currentDocPath";
+
+function getStoredDocPath() {
+  if (typeof window === "undefined") return DEFAULT_DOC_PATH;
+
+  return sessionStorage.getItem(DOC_PATH_STORAGE_KEY) || DEFAULT_DOC_PATH;
+}
 
 export interface ViewingDoc {
   markdown: string | null;
@@ -9,22 +17,26 @@ export interface ViewingDoc {
 
 interface DocsState {
   current: ViewingDoc;
-  cache: Record<string, string>;                // path -> markdown
-  setCurrent: (path: string) => Promise<void>;
+  cache: Record<string, string>;
+  setCurrent: (path: string) => Promise<string | null>;
 }
 
 export const useDocsStore = create<DocsState>((set, get) => ({
   current: {
     markdown: null,
-    path: null,
+    path: getStoredDocPath(),
   },
   cache: {},
   setCurrent: async (path: string) => {
     if (!path) path = DEFAULT_DOC_PATH;
 
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem(DOC_PATH_STORAGE_KEY, path);
+    }
+
     const { cache } = get();
 
-    // 1) Cache hit → no network call
+    // 1) Cache hit -> no network call
     if (cache[path]) {
       set({
         current: {
@@ -32,10 +44,10 @@ export const useDocsStore = create<DocsState>((set, get) => ({
           path,
         },
       });
-      return;
+      return cache[path];
     }
 
-    // 2) Cache miss → fetch and store
+    // 2) Cache miss -> fetch and store
     const markdown = await getMarkdown(path);
 
     set((state) => ({
@@ -47,14 +59,16 @@ export const useDocsStore = create<DocsState>((set, get) => ({
         ? { ...state.cache, [path]: markdown }
         : state.cache, // do not cache null/failed
     }));
+
+    return markdown;
   },
 }));
 
 // ------------------------ Doc Tree ---------------------------
 type DocTreeState = {
-  tree: DocNode[];                  // cached tree
-  loaded: boolean;                  // has it been fetched?
-  load: () => Promise<void>;        // fetch + cache
+  tree: DocNode[];
+  loaded: boolean;
+  load: () => Promise<void>;
   setTree: (tree: DocNode[]) => void;
 };
 
@@ -66,7 +80,7 @@ export const useDocTree = create<DocTreeState>((set, get) => ({
 
   load: async () => {
     const { loaded } = get();
-    if (loaded) return; // already cached for this session
+    if (loaded) return;
 
     const res = await fetch("/doc-tree.json");
     if (!res.ok) {
@@ -78,7 +92,6 @@ export const useDocTree = create<DocTreeState>((set, get) => ({
     set({ tree: data, loaded: true });
   },
 }));
-
 
 // ---------------------- Other Layout -------------------------
 

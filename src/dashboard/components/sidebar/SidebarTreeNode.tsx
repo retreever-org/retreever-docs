@@ -1,10 +1,9 @@
-// SidebarTreeNode.tsx
 import { useState } from "react";
 import { ChevronRight, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { DocNode } from "../../types/docfile.types";
 import { DEFAULT_DOC_PATH, highlightText } from "../../service/DocSearch";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useDocsStore } from "../../../store/useDocsStore";
 
 interface FolderNodeProps {
   node: Extract<DocNode, { type: "folder" }>;
@@ -23,18 +22,18 @@ export const FolderNode = ({ node, depth, highlight }: FolderNodeProps) => {
           cursor-pointer
           px-3 py-1
           rounded-md
-          text-(--rt-fg-muted)
+          text-text-muted
           text-sm
           ${depth > 0 ? "pl-6" : ""}
           transition-colors
-          hover:text-(--rt-fg-subtle)
+          hover:text-text-paragraph
         `}
         onClick={() => setOpen((v) => !v)}
       >
         {open ? (
-          <ChevronDown className="w-3.5 h-3.5 text-(--rt-fg-muted)" />
+          <ChevronDown className="w-3.5 h-3.5 text-text-muted" />
         ) : (
-          <ChevronRight className="w-3.5 h-3.5 text-(--rt-fg-muted)" />
+          <ChevronRight className="w-3.5 h-3.5 text-text-muted" />
         )}
         {highlightText(node.name, highlight)}
       </div>
@@ -79,9 +78,8 @@ interface FileNodeProps {
 }
 
 export const FileNode = ({ node, depth, highlight }: FileNodeProps) => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  let currentPath = location.pathname.replace(/^\/docs\//, "");
+  const currentPath = useDocsStore((state) => state.current.path);
+  const setCurrent = useDocsStore((state) => state.setCurrent);
   const isActive = (currentPath || DEFAULT_DOC_PATH) === node.path;
 
   return (
@@ -94,13 +92,13 @@ export const FileNode = ({ node, depth, highlight }: FileNodeProps) => {
         text-sm
         truncate
         ${depth > 0 ? "pl-8" : "pl-3"}
-        ${isActive ? "text-(--rt-blue-1) font-semibold" : "text-(--rt-fg-muted)"}
+        ${isActive ? "text-primary-500 font-semibold" : "text-text-muted"}
         transition-colors
-        ${isActive ? "" : "hover:text-(--rt-fg-subtle)"}
+        ${isActive ? "" : "hover:text-text-paragraph"}
         font-normal
       `}
       title={node.name}
-      onClick={() => navigate(`/docs/${node.path}`)}
+      onClick={() => void setCurrent(node.path)}
     >
       {highlightText(node.name, highlight)}
     </div>
