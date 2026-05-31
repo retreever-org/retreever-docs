@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import RetreeverLogo from "/images/icon512v2.png";
 import GitHubLogo from "/images/github.svg";
 import { ChevronRight } from "lucide-react";
@@ -13,13 +14,43 @@ export default function DesktopNavbar({
   theme,
   onToggleTheme,
 }: DesktopNavbarProps) {
+  const navRef = useRef<HTMLElement | null>(null);
+  const actionsMeasureRef = useRef<HTMLDivElement | null>(null);
+  const [compactGithub, setCompactGithub] = useState(false);
+
   const githubClass =
     theme === "light"
       ? "border-primary-400 bg-primary-500 text-white shadow-none hover:bg-primary-500"
       : "border-primary-500/30 bg-primary-500/10 text-primary-100 hover:bg-primary-500/15";
 
+  useEffect(() => {
+    const navEl = navRef.current;
+    const measureEl = actionsMeasureRef.current;
+    if (!navEl || !measureEl) return;
+
+    const updateCompactMode = () => {
+      const navWidth = navEl.clientWidth;
+      const fullActionsWidth = measureEl.clientWidth;
+      setCompactGithub(fullActionsWidth > navWidth * 0.5);
+    };
+
+    updateCompactMode();
+
+    const observer = new ResizeObserver(() => {
+      updateCompactMode();
+    });
+
+    observer.observe(navEl);
+    observer.observe(measureEl);
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <nav className="static top-0 z-50 w-full border-b border-surface-500/40 bg-surface-700/70 backdrop-blur-xs">
+    <nav
+      ref={navRef}
+      className="static top-0 z-50 w-full border-b border-surface-500/40 bg-surface-700/70 backdrop-blur-xs"
+    >
       <div className="mx-auto flex h-12 max-w-7xl items-center justify-between px-4 sm:px-6">
         <motion.a
           href="/"
@@ -48,16 +79,46 @@ export default function DesktopNavbar({
             href="https://github.com/Retreever-org"
             target="_blank"
             rel="noopener noreferrer"
-            className={`group relative inline-flex items-center gap-2 overflow-hidden rounded-full border px-4 py-2 text-sm font-medium transition-all sm:px-5 ${githubClass}`}
+            aria-label="Star on GitHub"
+            className={
+              compactGithub
+                ? "group relative inline-flex h-8 w-8 items-center justify-center text-text-primary transition-all hover:text-primary-400"
+                : `group relative inline-flex items-center gap-2 overflow-hidden rounded-full border px-4 py-2 text-sm font-medium transition-all sm:px-5 ${githubClass}`
+            }
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
           >
-            <img src={GitHubLogo} alt="GitHub" className="relative h-4 w-4" />
-            <span className="relative font-mono text-[11px] uppercase tracking-widest sm:text-xs">
+            <img
+              src={GitHubLogo}
+              alt="GitHub"
+              className={`relative ${compactGithub ? "h-7 w-7" : "h-4 w-4"}`}
+            />
+            {!compactGithub && (
+              <>
+                <span className="relative font-mono text-[11px] uppercase tracking-widest sm:text-xs">
+                  Star on GitHub
+                </span>
+                <ChevronRight className="relative h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+              </>
+            )}
+          </motion.a>
+        </div>
+
+        <div
+          ref={actionsMeasureRef}
+          aria-hidden="true"
+          className="pointer-events-none absolute right-4 top-1/2 flex -translate-y-1/2 items-center gap-3 opacity-0 sm:right-6 sm:gap-4"
+        >
+          <ThemeToggleButton theme={theme} onToggle={onToggleTheme} />
+          <div
+            className={`inline-flex items-center gap-2 overflow-hidden rounded-full border px-4 py-2 text-sm font-medium sm:px-5 ${githubClass}`}
+          >
+            <img src={GitHubLogo} alt="" className="h-4 w-4" />
+            <span className="font-mono text-[11px] uppercase tracking-widest sm:text-xs">
               Star on GitHub
             </span>
-            <ChevronRight className="relative h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-          </motion.a>
+            <ChevronRight className="h-3.5 w-3.5" />
+          </div>
         </div>
       </div>
     </nav>

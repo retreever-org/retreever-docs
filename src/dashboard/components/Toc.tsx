@@ -66,7 +66,7 @@ const Toc: React.FC = () => {
                   hover:text-primary-400
                   transition-all
                   duration-200
-                  break-words
+                  wrap-break-word
                 "
               >
                 {item.text.replaceAll("`", "")}

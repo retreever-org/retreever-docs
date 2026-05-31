@@ -5,9 +5,20 @@ import { FileNode } from "./SidebarTreeNode";
 interface SidebarTreeProps {
   tree: DocNode[];
   highlight?: string;
+  compactMode?: boolean;
+  pendingPath?: string | null;
+  onPreviewSelect?: (path: string) => void;
+  onConfirmSelect?: (path: string) => void;
 }
 
-export const SidebarTree = ({ tree, highlight }: SidebarTreeProps) => {
+export const SidebarTree = ({
+  tree,
+  highlight,
+  compactMode = false,
+  pendingPath = null,
+  onPreviewSelect,
+  onConfirmSelect,
+}: SidebarTreeProps) => {
   if (!tree || tree.length === 0) return null;
 
   const topLevelFolders = tree.filter((n): n is Extract<DocNode, { type: "folder" }> => n.type === "folder");
@@ -40,6 +51,10 @@ export const SidebarTree = ({ tree, highlight }: SidebarTreeProps) => {
           node={intro}
           depth={0}
           highlight={highlight}
+          compactMode={compactMode}
+          pendingPath={pendingPath}
+          onPreviewSelect={onPreviewSelect}
+          onConfirmSelect={onConfirmSelect}
         />
       )}
       {gettingStarted && (
@@ -48,6 +63,10 @@ export const SidebarTree = ({ tree, highlight }: SidebarTreeProps) => {
           node={gettingStarted}
           depth={0}
           highlight={highlight}
+          compactMode={compactMode}
+          pendingPath={pendingPath}
+          onPreviewSelect={onPreviewSelect}
+          onConfirmSelect={onConfirmSelect}
         />
       )}
       {otherFiles.map((file) => (
@@ -56,16 +75,26 @@ export const SidebarTree = ({ tree, highlight }: SidebarTreeProps) => {
           node={file}
           depth={0}
           highlight={highlight}
+          compactMode={compactMode}
+          pendingPath={pendingPath}
+          onPreviewSelect={onPreviewSelect}
+          onConfirmSelect={onConfirmSelect}
         />
       ))}
 
       {/* 2) Top-level category sections */}
       {categories.map((folder, index) => (
-        <div className="mt-6">
-          <CategorySection key={folder.name + index} node={folder} highlight={highlight}/>
+        <div key={folder.name + index} className="mt-6">
+          <CategorySection
+            node={folder}
+            highlight={highlight}
+            compactMode={compactMode}
+            pendingPath={pendingPath}
+            onPreviewSelect={onPreviewSelect}
+            onConfirmSelect={onConfirmSelect}
+          />
         </div>
       ))}
     </div>
   );
 };
-

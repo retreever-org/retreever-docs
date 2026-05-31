@@ -23,11 +23,11 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="bg-surface-700 text-text-primary tracking-tight">
-      <div className="md:flex">
-        <div className="md:flex min-w-64 no-scrollbar">
+      <div className="lg:flex">
+        <div className="lg:flex min-w-64 no-scrollbar">
           <Sidebar />
         </div>
-        <div className="md:w-9/12 lg:w-7/12 overflow-auto pt-4">
+        <div className="w-full overflow-auto pt-[4.5rem] lg:w-7/12 lg:pt-4">
           <ContentDisplay />
         </div>
         <Toc />

@@ -5,9 +5,20 @@ import { highlightText } from "../../service/DocSearch";
 interface CategorySectionProps {
   node: Extract<DocNode, { type: "folder" }>;
   highlight?: string;
+  compactMode?: boolean;
+  pendingPath?: string | null;
+  onPreviewSelect?: (path: string) => void;
+  onConfirmSelect?: (path: string) => void;
 }
 
-export const CategorySection = ({ node, highlight }: CategorySectionProps) => {
+export const CategorySection = ({
+  node,
+  highlight,
+  compactMode = false,
+  pendingPath = null,
+  onPreviewSelect,
+  onConfirmSelect,
+}: CategorySectionProps) => {
   const children = node.children;
 
   return (
@@ -24,6 +35,10 @@ export const CategorySection = ({ node, highlight }: CategorySectionProps) => {
               node={child}
               depth={0}
               highlight={highlight}
+              compactMode={compactMode}
+              pendingPath={pendingPath}
+              onPreviewSelect={onPreviewSelect}
+              onConfirmSelect={onConfirmSelect}
             />
           ) : (
             <FileNode
@@ -31,6 +46,10 @@ export const CategorySection = ({ node, highlight }: CategorySectionProps) => {
               node={child}
               depth={0}
               highlight={highlight}
+              compactMode={compactMode}
+              pendingPath={pendingPath}
+              onPreviewSelect={onPreviewSelect}
+              onConfirmSelect={onConfirmSelect}
             />
           )
         ))}
