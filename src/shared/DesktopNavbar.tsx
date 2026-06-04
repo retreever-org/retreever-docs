@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import RetreeverLogo from "/images/icon512v2.png";
 import GitHubLogo from "/images/github.svg";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Play } from "lucide-react";
 import ThemeToggleButton from "./ThemeToggleButton";
 
 interface DesktopNavbarProps {
@@ -102,6 +102,19 @@ export default function DesktopNavbar({
               </>
             )}
           </motion.a>
+
+          <motion.a
+            href="https://exp.retreever.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open Retreever experience"
+            title="Open Retreever experience"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-surface-500/35 bg-transparent text-text-primary transition-all hover:border-primary-300/35 hover:text-primary-300"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <Play className="h-4 w-4" />
+          </motion.a>
         </div>
 
         <div
@@ -118,6 +131,9 @@ export default function DesktopNavbar({
               Star on GitHub
             </span>
             <ChevronRight className="h-3.5 w-3.5" />
+          </div>
+          <div className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-surface-500/35 bg-transparent text-text-primary">
+            <Play className="h-4 w-4" />
           </div>
         </div>
       </div>
