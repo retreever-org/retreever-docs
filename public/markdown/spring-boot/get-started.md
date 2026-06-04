@@ -18,14 +18,14 @@ Add the dependency to your Spring Boot application.
 <dependency>
     <groupId>dev.retreever</groupId>
     <artifactId>retreever</artifactId>
-    <version>1.0.5</version>
+    <version>1.1.1</version>
 </dependency>
 ```
 
 **Gradle**
 
 ```gradle
-implementation("dev.retreever:retreever:1.0.5")
+implementation("dev.retreever:retreever:1.1.1")
 ```
 
 No Retreever annotations or YAML configuration are required for the basic setup.
@@ -48,17 +48,7 @@ For Gradle:
 
 Retreever is enabled by default. During startup, it scans the host application's controllers and exposes the Studio routes.
 
-## Step 3: Open Retreever Studio
-
-Open the Studio in your browser:
-
-```text
-http://localhost:8080/retreever
-```
-
-If your application runs on a different port or context path, use that host application URL instead.
-
-## Step 4: Allow Retreever Routes Through Spring Security (Host-Dependent)
+## Step 3: Allow Retreever Routes Through Spring Security (Host-Dependent)
 
 Host-dependent step: this is required only when the host application uses Spring Security.
 
@@ -84,6 +74,16 @@ SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 `RetreeverPublicPaths.get()` includes `/retreever`, `/retreever/**`, `/assets/**`, `/images/**`, `/index.html`, and `/favicon.ico`.
 
 If the host application does not use Spring Security, skip this step.
+
+## Step 4: Open Retreever Studio
+
+Open the Studio in your browser:
+
+```text
+http://localhost:8080/retreever
+```
+
+If your application runs on a different port or context path, use that host application URL instead.
 
 ## Optional Security: Protect Retreever Studio With Retreever Auth
 
