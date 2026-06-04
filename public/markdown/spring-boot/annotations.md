@@ -26,6 +26,8 @@ All Retreever annotations are runtime annotations.
 
 ## 1. @ApiDoc
 
+`@ApiDoc` annotation can be used on the Spring Boot application class for defining the top-level API document identity. It allows the generated document to present a specific API name, description, and version instead of relying on derived defaults.
+
 Use `@ApiDoc` on the Spring Boot application class.
 
 ```java
@@ -56,6 +58,8 @@ If `@ApiDoc` is not present, Retreever derives the document name from the applic
 
 ## 2. @ApiGroup
 
+`@ApiGroup` annotation can be used on a Spring controller for defining how that controller is grouped in the generated document. It helps present endpoints under a deliberate business-facing group name and description instead of only using the controller-derived fallback.
+
 Use `@ApiGroup` on a Spring controller.
 
 ```java
@@ -85,6 +89,8 @@ If `@ApiGroup` is not present, Retreever derives a group name from the controlle
 ---
 
 ## 3. @ApiEndpoint
+
+`@ApiEndpoint` annotation can be used on a controller method for enriching endpoint-level documentation metadata. It allows the endpoint to expose a clearer display name, an explicit secured marker, a documented success status, reusable headers, descriptive text, and linked error types.
 
 Use `@ApiEndpoint` on a controller method.
 
@@ -138,6 +144,8 @@ Supported security annotations:
 
 ## 4. @ApiError
 
+`@ApiError` annotation can be used on an `@ExceptionHandler` method for documenting the error response contract handled by that method. It enables the generated document to show a specific response status and error description for consumers.
+
 Use `@ApiError` on an `@ExceptionHandler` method.
 
 ```java
@@ -173,6 +181,8 @@ If `@ApiError` is not present on an exception handler, Retreever uses `HttpStatu
 
 ## 5. @FieldInfo
 
+`@FieldInfo` annotation can be used on DTO fields for enriching schema property documentation. It helps provide a clearer field description and a concrete example value in the generated model output.
+
 Use `@FieldInfo` on DTO fields.
 
 ```java
@@ -202,6 +212,8 @@ Retreever reads `@FieldInfo.description()` when no `@Description` is present on 
 ---
 
 ## 6. @Description
+
+`@Description` annotation can be used on fields and method parameters for attaching human-readable explanatory text. It enhances generated request and schema documentation for fields, path variables, query parameters, and request headers.
 
 Use `@Description` on fields or method parameters.
 
@@ -235,6 +247,8 @@ For schema fields, `@Description` has priority over `@FieldInfo.description()`.
 ---
 
 ## 7. @RetreeverSkip
+
+`@RetreeverSkip` annotation can be used on a controller class or controller method for excluding that runtime surface from the generated Retreever document. It allows internal, admin, or otherwise non-public endpoints to stay out of the published documentation.
 
 Use `@RetreeverSkip` on a controller class or controller method.
 
