@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import RetreeverLogo from "/images/icon512v2.png";
 import GitHubLogo from "/images/github.svg";
 import { ChevronRight, CircleHelp, MessagesSquare, Play } from "lucide-react";
@@ -14,6 +15,7 @@ export default function DesktopNavbar({
   theme,
   onToggleTheme,
 }: DesktopNavbarProps) {
+  const location = useLocation();
   const navRef = useRef<HTMLElement | null>(null);
   const actionsMeasureRef = useRef<HTMLDivElement | null>(null);
   const [compactGithub, setCompactGithub] = useState(false);
@@ -53,42 +55,53 @@ export default function DesktopNavbar({
     >
       <div className="mx-auto flex h-12 max-w-7xl items-center justify-between px-4 sm:px-6">
         <div className="flex items-center gap-3 sm:gap-4">
-          <motion.a
-            href="/"
+          <motion.div
             className="group flex items-center gap-2 select-none"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={(e) => {
-              e.preventDefault();
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
           >
-            <motion.img
-              src={RetreeverLogo}
-              alt="Retreever"
-              className="h-7 w-7 rounded-md object-contain transition-opacity"
-            />
-            <span className="text-base font-bold tracking-tight text-text-primary">
-              Retreever
-            </span>
-          </motion.a>
+            <Link
+              to="/"
+              className="flex items-center gap-2"
+              onClick={(e) => {
+                if (location.pathname === "/") {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }
+              }}
+            >
+              <motion.img
+                src={RetreeverLogo}
+                alt="Retreever"
+                className="h-7 w-7 rounded-md object-contain transition-opacity"
+              />
+              <span className="text-base font-bold tracking-tight text-text-primary">
+                Retreever
+              </span>
+            </Link>
+          </motion.div>
 
           <ThemeToggleButton theme={theme} onToggle={onToggleTheme} />
         </div>
 
         <div className="flex items-center gap-5 sm:gap-6">
           <div className="flex items-center gap-5 sm:gap-6">
-            <motion.button
-              type="button"
+            <motion.div
               aria-label="Help"
               title="Help"
-              className="inline-flex items-center gap-2 text-sm font-medium text-surface-300 transition-all hover:text-text-primary"
+              className={`inline-flex items-center gap-2 text-sm font-medium transition-all hover:text-text-primary ${
+                location.pathname === "/help"
+                  ? "text-text-primary"
+                  : "text-surface-300"
+              }`}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
             >
-              <CircleHelp className="h-4 w-4" />
-              <span className="hidden sm:inline">Help</span>
-            </motion.button>
+              <Link to="/help" className="inline-flex items-center gap-2">
+                <CircleHelp className="h-4 w-4" />
+                <span className="hidden sm:inline">Help</span>
+              </Link>
+            </motion.div>
 
             <motion.button
               type="button"

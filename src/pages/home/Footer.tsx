@@ -134,11 +134,11 @@ const Footer: React.FC = () => {
             </h3>
             <div className="space-y-3">
               <a
-                href="mailto:hello@retreever.com"
+                href="mailto:hello@retreever.dev"
                 className="group flex cursor-pointer items-center gap-3 rounded-lg p-3 text-text-muted transition-all duration-200 hover:text-text-primary"
               >
                 <Mail className="h-5 w-5" />
-                hello@retreever.com
+                hello@retreever.dev
               </a>
             </div>
           </motion.div>

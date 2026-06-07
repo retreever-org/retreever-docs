@@ -77,6 +77,9 @@
   --text-muted: 132 132 132;
   --text-secondary: 31 120 255;
   --border-subtle: 82 82 82;
+  --help-accent-strong: 207 226 255;
+  --help-accent-soft: 31 120 255;
+  --help-accent-border: 61 137 255;
 
   --dark-1: rgb(var(--surface-700));
   --dark-2: rgb(13 15 18);
@@ -131,6 +134,9 @@
   --text-muted: 112 111 106;
   --text-secondary: 31 120 255;
   --border-subtle: 178 176 169;
+  --help-accent-strong: 17 72 163;
+  --help-accent-soft: 31 120 255;
+  --help-accent-border: 23 96 212;
 
   --dark-1: rgb(var(--surface-700));
   --dark-2: rgb(242 244 248);

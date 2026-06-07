@@ -22,7 +22,7 @@ const Dashboard: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-surface-700 text-text-primary tracking-tight">
+    <div className="bg-inherit text-inherit tracking-tight">
       <div className="lg:flex">
         <div className="lg:flex min-w-64 no-scrollbar">
           <Sidebar />

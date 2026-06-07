@@ -71,9 +71,12 @@ export async function resolveDocsBuild() {
   const docOrder = new Map([
     ["spring-boot/get-started", 1],
     ["spring-boot/security", 2],
-    ["spring-boot/annotations", 3],
-    ["spring-boot/headers-metadata", 4],
-    ["spring-boot/environment-automation", 5],
+    ["spring-boot/studio-storage", 3],
+    ["spring-boot/skip-endpoints", 4],
+    ["spring-boot/runtime-endpoints", 5],
+    ["spring-boot/annotations", 6],
+    ["spring-boot/headers-metadata", 7],
+    ["spring-boot/environment-automation", 8],
   ]);
 
   function sortRank(node) {

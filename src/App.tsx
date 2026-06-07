@@ -1,12 +1,24 @@
-import { useEffect, useRef } from "react";
-import Navbar from "./pages/home/Navbar";
+import { useEffect, useRef, useState } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Dashboard from "./dashboard/pages/Dashboard";
+import Help from "./pages/Help";
+import DesktopNavbar from "./shared/DesktopNavbar";
 import { useDocsStore } from "./store/useDocsStore";
 import { DEFAULT_DOC_PATH } from "./dashboard/service/DocSearch";
 
 const SCROLL_STORAGE_KEY = "retreever.currentScrollTop";
+const THEME_STORAGE_KEY = "retreever.theme";
 
-export default function App() {
+type ThemeMode = "light" | "dark";
+
+function getInitialTheme(): ThemeMode {
+  if (typeof window === "undefined") return "dark";
+
+  const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
+  return stored === "light" ? "light" : "dark";
+}
+
+function DocsRoute() {
   const mainRef = useRef<HTMLElement | null>(null);
   const currentPath = useDocsStore((state) => state.current.path);
   const currentMarkdown = useDocsStore((state) => state.current.markdown);
@@ -66,17 +78,40 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-surface-700">
-      <Navbar />
-      <div className="flex flex-1 overflow-hidden">
-        <main
-          ref={mainRef}
-          onScroll={handleScroll}
-          className="flex-1 overflow-auto"
-        >
-          <Dashboard />
-        </main>
-      </div>
+    <div className="flex flex-1 overflow-hidden">
+      <main
+        ref={mainRef}
+        onScroll={handleScroll}
+        className="flex-1 overflow-auto"
+      >
+        <Dashboard />
+      </main>
+    </div>
+  );
+}
+
+export default function App() {
+  const [theme, setTheme] = useState<ThemeMode>(getInitialTheme);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.dataset.theme = theme;
+    root.style.colorScheme = theme;
+    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((current) => (current === "dark" ? "light" : "dark"));
+  };
+
+  return (
+    <div className="flex h-screen flex-col bg-surface-700 text-text-primary">
+      <DesktopNavbar theme={theme} onToggleTheme={toggleTheme} />
+      <Routes>
+        <Route path="/" element={<DocsRoute />} />
+        <Route path="/help" element={<Help />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
     </div>
   );
 }

@@ -20,6 +20,19 @@ retreever:
 
 Retreever auth is enabled only when both `retreever.auth.username` and `retreever.auth.password` are configured.
 
+Auth properties:
+
+| Property | Behavior |
+| --- | --- |
+| `retreever.auth.username` | Required with `password` to enable Retreever auth. |
+| `retreever.auth.password` | Required with `username` to enable Retreever auth. |
+| `retreever.auth.secret` | Optional UUID. When present and valid, it is used to derive the encryption key for Retreever auth tokens and login guard state. |
+| `retreever.auth.secure-cookies` | Controls the `Secure` attribute on Retreever auth cookies. Defaults to `true`. |
+| `retreever.auth.access-token-ttl` | Access token duration. Defaults to 30 minutes. |
+| `retreever.auth.refresh-token-ttl` | Refresh token duration. Defaults to 7 days. |
+
+If only one of username or password is configured, Retreever disables its auth configuration.
+
 Set `retreever.auth.secret` to a stable UUID for environments where sessions should continue across application restarts or multiple application instances. If the secret is missing or invalid, Retreever generates a startup-only secret and existing Retreever login sessions are invalidated on restart.
 
 ## Allow Retreever Routes Through Host Security
@@ -49,6 +62,8 @@ SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
 Retreever auth cookies are `HttpOnly`, `SameSite=Lax`, scoped to the Retreever path, time-limited, and marked `Secure` by default.
 
+Retreever auth cookies use the cookie names `retreever_at`, `retreever_rt`, and `retreever_did`.
+
 The `retreever.auth.secure-cookies` property controls only the cookie `Secure` attribute. It is not a switch for Retreever authentication.
 
 ```yaml
@@ -58,6 +73,8 @@ retreever:
 ```
 
 Use `retreever.auth.secure-cookies=false` only when a local HTTP-only development setup does not retain the Retreever login session. Keep the default behavior for HTTPS and production-like environments.
+
+Failed login attempts are tracked in the encrypted `retreever_lg` cookie. Every fifth failed attempt triggers a lockout. The lockout durations are 30 seconds, 5 minutes, 30 minutes, and then 1 hour for later cycles.
 
 ## Disable Retreever When Needed
 
