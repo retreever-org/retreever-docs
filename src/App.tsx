@@ -1,13 +1,18 @@
 import { useEffect, useRef, useState } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import Dashboard from "./dashboard/pages/Dashboard";
 import Help from "./pages/Help";
+import Home from "./pages/Home";
 import DesktopNavbar from "./shared/DesktopNavbar";
 import { useDocsStore } from "./store/useDocsStore";
-import { DEFAULT_DOC_PATH } from "./dashboard/service/DocSearch";
+import {
+  DEFAULT_DOC_PATH,
+  normalizeDocPathname,
+  toDocHref,
+} from "./dashboard/service/DocSearch";
 
-const SCROLL_STORAGE_KEY = "retreever.currentScrollTop";
 const THEME_STORAGE_KEY = "retreever.theme";
+const SCROLL_STORAGE_KEY_PREFIX = "retreever.scrollTop.";
 
 type ThemeMode = "light" | "dark";
 
@@ -20,61 +25,58 @@ function getInitialTheme(): ThemeMode {
 
 function DocsRoute() {
   const mainRef = useRef<HTMLElement | null>(null);
+  const location = useLocation();
+  const navigate = useNavigate();
   const currentPath = useDocsStore((state) => state.current.path);
   const currentMarkdown = useDocsStore((state) => state.current.markdown);
-  const hydratedRef = useRef(false);
   const previousPathRef = useRef<string | null>(null);
+  const requestedPath = normalizeDocPathname(location.pathname);
 
   useEffect(() => {
-    const el = mainRef.current;
-    if (!el) return;
+    let cancelled = false;
 
-    const storedPath =
-      sessionStorage.getItem("retreever.currentDocPath") || currentPath;
-    const storedScroll = Number(sessionStorage.getItem(SCROLL_STORAGE_KEY) || "0");
+    const syncCurrentDoc = async () => {
+      const markdown = await useDocsStore.getState().setCurrent(requestedPath);
 
-    if (!hydratedRef.current) {
-      if (!currentPath || !currentMarkdown) return;
-
-      if (currentPath === storedPath) {
-        el.scrollTo({
-          top: storedScroll,
-          left: 0,
-          behavior: "auto",
-        });
-        hydratedRef.current = true;
-        previousPathRef.current = currentPath;
+      if (cancelled || markdown || requestedPath === DEFAULT_DOC_PATH) {
         return;
       }
 
-      if (currentPath === DEFAULT_DOC_PATH) {
-        el.scrollTo({
-          top: 0,
-          left: 0,
-          behavior: "auto",
-        });
-        hydratedRef.current = true;
-        previousPathRef.current = currentPath;
-      }
+      navigate(toDocHref(DEFAULT_DOC_PATH), { replace: true });
+    };
 
-      return;
-    }
+    void syncCurrentDoc();
 
-    if (previousPathRef.current !== currentPath) {
-      el.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "smooth",
-      });
-      previousPathRef.current = currentPath;
-    }
+    return () => {
+      cancelled = true;
+    };
+  }, [navigate, requestedPath]);
+
+  useEffect(() => {
+    const el = mainRef.current;
+    if (!el || !currentPath || !currentMarkdown) return;
+    if (previousPathRef.current === currentPath) return;
+
+    const storedScroll = Number(
+      sessionStorage.getItem(`${SCROLL_STORAGE_KEY_PREFIX}${currentPath}`) || "0"
+    );
+
+    el.scrollTo({
+      top: storedScroll,
+      left: 0,
+      behavior: "auto",
+    });
+    previousPathRef.current = currentPath;
   }, [currentPath, currentMarkdown]);
 
   const handleScroll = () => {
     const el = mainRef.current;
-    if (!el) return;
+    if (!el || !currentPath) return;
 
-    sessionStorage.setItem(SCROLL_STORAGE_KEY, String(el.scrollTop));
+    sessionStorage.setItem(
+      `${SCROLL_STORAGE_KEY_PREFIX}${currentPath}`,
+      String(el.scrollTop)
+    );
   };
 
   return (
@@ -108,9 +110,9 @@ export default function App() {
     <div className="flex h-screen flex-col bg-surface-700 text-text-primary">
       <DesktopNavbar theme={theme} onToggleTheme={toggleTheme} />
       <Routes>
-        <Route path="/" element={<DocsRoute />} />
+        <Route path="/" element={<Home />} />
         <Route path="/help" element={<Help />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<DocsRoute />} />
       </Routes>
     </div>
   );

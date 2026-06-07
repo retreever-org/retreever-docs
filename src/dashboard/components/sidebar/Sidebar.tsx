@@ -1,18 +1,19 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Menu, Search, X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { SidebarTree } from "./SidebarTree";
 import { filterDocTree } from "../../service/DocSearch";
 import {
-  useDocsStore,
   useDocTree,
   useLayoutStore,
 } from "../../../store/useDocsStore";
+import { toDocHref } from "../../service/DocSearch";
 
 const Sidebar: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [pendingPath, setPendingPath] = useState<string | null>(null);
-  const setCurrent = useDocsStore((state) => state.setCurrent);
+  const navigate = useNavigate();
   const { tree, load } = useDocTree();
   const filteredTree = useMemo(
     () => filterDocTree(tree, searchTerm),
@@ -67,7 +68,7 @@ const Sidebar: React.FC = () => {
   };
 
   const handleConfirmSelect = async (path: string) => {
-    await setCurrent(path);
+    navigate(toDocHref(path));
     setPendingPath(null);
     setIsOpen(false);
   };

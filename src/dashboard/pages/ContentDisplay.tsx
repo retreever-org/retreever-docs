@@ -1,7 +1,9 @@
 import { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDocsStore, useDocTree } from "../../store/useDocsStore";
 import { MarkdownRenderer } from "../components/markdown/MarkdownRenderer";
 import type { DocNode } from "../types/docfile.types";
+import { toDocHref } from "../service/DocSearch";
 
 function flattenDocs(tree: DocNode[]): { path: string; title: string }[] {
   const result: { path: string; title: string }[] = [];
@@ -24,7 +26,8 @@ function flattenDocs(tree: DocNode[]): { path: string; title: string }[] {
 }
 
 const ContentDisplay: React.FC = () => {
-  const { current, setCurrent } = useDocsStore();
+  const navigate = useNavigate();
+  const { current } = useDocsStore();
   const { tree } = useDocTree();
   const flatDocs = useMemo(() => flattenDocs(tree), [tree]);
 
@@ -82,7 +85,7 @@ const ContentDisplay: React.FC = () => {
                   <button
                     key={doc.path}
                     type="button"
-                    onClick={() => void setCurrent(doc.path)}
+                    onClick={() => navigate(toDocHref(doc.path))}
                     className="
                       block
                       rounded-lg

@@ -2,6 +2,16 @@ import type { DocFile, DocFolder, DocNode } from "../types/docfile.types";
 
 export const DEFAULT_DOC_PATH = "spring-boot/get-started";
 
+export function normalizeDocPathname(pathname: string): string {
+  const trimmed = pathname.replace(/^\/+|\/+$/g, "");
+  return trimmed || DEFAULT_DOC_PATH;
+}
+
+export function toDocHref(path: string): string {
+  const normalized = path.replace(/^\/+|\/+$/g, "");
+  return `/${normalized || DEFAULT_DOC_PATH}`;
+}
+
 const normalize = (value: string) => value.toLowerCase();
 
 const matchesFile = (file: DocFile, term: string) => {

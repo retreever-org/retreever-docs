@@ -2,14 +2,6 @@ import { type DocNode } from "./../dashboard/types/docfile.types";
 import { create } from "zustand";
 import { DEFAULT_DOC_PATH, getMarkdown } from "../dashboard/service/DocSearch";
 
-const DOC_PATH_STORAGE_KEY = "retreever.currentDocPath";
-
-function getStoredDocPath() {
-  if (typeof window === "undefined") return DEFAULT_DOC_PATH;
-
-  return sessionStorage.getItem(DOC_PATH_STORAGE_KEY) || DEFAULT_DOC_PATH;
-}
-
 export interface ViewingDoc {
   markdown: string | null;
   path: string | null;
@@ -24,15 +16,11 @@ interface DocsState {
 export const useDocsStore = create<DocsState>((set, get) => ({
   current: {
     markdown: null,
-    path: getStoredDocPath(),
+    path: DEFAULT_DOC_PATH,
   },
   cache: {},
   setCurrent: async (path: string) => {
     if (!path) path = DEFAULT_DOC_PATH;
-
-    if (typeof window !== "undefined") {
-      sessionStorage.setItem(DOC_PATH_STORAGE_KEY, path);
-    }
 
     const { cache } = get();
 
@@ -46,6 +34,13 @@ export const useDocsStore = create<DocsState>((set, get) => ({
       });
       return cache[path];
     }
+
+    set({
+      current: {
+        markdown: null,
+        path,
+      },
+    });
 
     // 2) Cache miss -> fetch and store
     const markdown = await getMarkdown(path);

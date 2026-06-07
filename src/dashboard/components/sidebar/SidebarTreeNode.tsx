@@ -1,9 +1,25 @@
-import { type MouseEvent, useState } from "react";
+import { type MouseEvent, useEffect, useState } from "react";
 import { ChevronRight, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import type { DocNode } from "../../types/docfile.types";
-import { DEFAULT_DOC_PATH, highlightText } from "../../service/DocSearch";
+import { DEFAULT_DOC_PATH, highlightText, toDocHref } from "../../service/DocSearch";
 import { useDocsStore } from "../../../store/useDocsStore";
+
+function containsPath(
+  node: Extract<DocNode, { type: "folder" }>,
+  path: string | null
+): boolean {
+  if (!path) return false;
+
+  return node.children.some((child) => {
+    if (child.type === "file") {
+      return child.path === path;
+    }
+
+    return containsPath(child, path);
+  });
+}
 
 interface FolderNodeProps {
   node: Extract<DocNode, { type: "folder" }>;
@@ -24,7 +40,14 @@ export const FolderNode = ({
   onPreviewSelect,
   onConfirmSelect,
 }: FolderNodeProps) => {
-  const [open, setOpen] = useState(false);
+  const currentPath = useDocsStore((state) => state.current.path);
+  const [open, setOpen] = useState(() => containsPath(node, currentPath));
+
+  useEffect(() => {
+    if (containsPath(node, currentPath)) {
+      setOpen(true);
+    }
+  }, [currentPath, node]);
 
   return (
     <div className="select-none font-normal">
@@ -110,8 +133,8 @@ export const FileNode = ({
   onPreviewSelect,
   onConfirmSelect,
 }: FileNodeProps) => {
+  const navigate = useNavigate();
   const currentPath = useDocsStore((state) => state.current.path);
-  const setCurrent = useDocsStore((state) => state.setCurrent);
   const isActive = (currentPath || DEFAULT_DOC_PATH) === node.path;
   const isPending = pendingPath === node.path;
 
@@ -121,7 +144,7 @@ export const FileNode = ({
       return;
     }
 
-    void setCurrent(node.path);
+    navigate(toDocHref(node.path));
   };
 
   const handleConfirm = (event: MouseEvent<HTMLButtonElement>) => {
@@ -132,7 +155,7 @@ export const FileNode = ({
       return;
     }
 
-    void setCurrent(node.path);
+    navigate(toDocHref(node.path));
   };
 
   return (
