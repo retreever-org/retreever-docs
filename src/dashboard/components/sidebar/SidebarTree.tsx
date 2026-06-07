@@ -31,9 +31,18 @@ export const SidebarTree = ({
     .sort((a, b) => a.name.localeCompare(b.name));
 
   const categoryRank = (name: string) => {
-    if (name === "Spring Boot") return 0;
-    if (name === "Contribution") return 999;
-    return 100;
+    const order = new Map([
+      ["Spring Boot", 0],
+      ["NestJS", 1],
+      ["ExpressJS", 2],
+      ["FastAPI", 3],
+      ["Django", 4],
+      ["ASP.NET", 5],
+      ["Gin", 6],
+      ["Contribution", 999],
+    ]);
+
+    return order.get(name) ?? 100;
   };
 
   const categories = [...topLevelFolders].sort((a, b) => {

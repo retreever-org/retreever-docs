@@ -40,7 +40,7 @@ const Toc: React.FC = () => {
       className="
         hidden lg:flex
         w-80 min-w-80 max-w-80 shrink-0
-        max-h-screen
+        max-h-[calc(100vh-3rem)]
         sticky top-0
         overflow-auto no-scrollbar
       "

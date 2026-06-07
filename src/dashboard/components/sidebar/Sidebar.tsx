@@ -80,7 +80,7 @@ const Sidebar: React.FC = () => {
         className={`
           pt-4
           hidden lg:flex
-          h-screen
+          h-[calc(100vh-3rem)]
           flex-col
           sticky top-0 overflow-auto
           border-r border-surface-500/20

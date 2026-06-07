@@ -77,15 +77,30 @@ export async function resolveDocsBuild() {
     ["spring-boot/annotations", 6],
     ["spring-boot/headers-metadata", 7],
     ["spring-boot/environment-automation", 8],
+    ["nestjs/get-started", 9],
+    ["expressjs/get-started", 10],
+    ["fastapi/get-started", 11],
+    ["django/get-started", 12],
+    ["asp-net/get-started", 13],
+    ["gin/get-started", 14],
+  ]);
+
+  const folderOrder = new Map([
+    ["Spring Boot", 0],
+    ["NestJS", 1],
+    ["ExpressJS", 2],
+    ["FastAPI", 3],
+    ["Django", 4],
+    ["ASP.NET", 5],
+    ["Gin", 6],
+    ["Contribution", 999],
   ]);
 
   function sortRank(node) {
     if (node.type === "file") {
       return docOrder.get(node.path) ?? 100;
     }
-    if (node.name === "Spring Boot") return 0;
-    if (node.name === "Contribution") return 999;
-    return 100;
+    return folderOrder.get(node.name) ?? 100;
   }
 
   function convert(obj, prefix = "") {
@@ -122,6 +137,20 @@ export async function resolveDocsBuild() {
 
 export function prettifyName(raw) {
   const name = raw.replace(/\.[^.]+$/, "");
+  const specialNames = new Map([
+    ["spring-boot", "Spring Boot"],
+    ["get-started", "Get Started"],
+    ["nestjs", "NestJS"],
+    ["expressjs", "ExpressJS"],
+    ["fastapi", "FastAPI"],
+    ["asp-net", "ASP.NET"],
+    ["gin", "Gin"],
+  ]);
+
+  if (specialNames.has(name)) {
+    return specialNames.get(name);
+  }
+
   return name
     .replace(/([a-z])([A-Z])/g, "$1 $2")
     .replace(/[_-]+/g, " ")

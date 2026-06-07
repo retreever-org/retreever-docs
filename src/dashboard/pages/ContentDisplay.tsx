@@ -25,6 +25,17 @@ function flattenDocs(tree: DocNode[]): { path: string; title: string }[] {
   return result;
 }
 
+const displayNameBySegment: Record<string, string> = {
+  "spring-boot": "Spring Boot",
+  nestjs: "NestJS",
+  expressjs: "ExpressJS",
+  fastapi: "FastAPI",
+  django: "Django",
+  "asp-net": "ASP.NET",
+  gin: "Gin",
+  "get-started": "Get Started",
+};
+
 const ContentDisplay: React.FC = () => {
   const navigate = useNavigate();
   const { current } = useDocsStore();
@@ -44,8 +55,11 @@ const ContentDisplay: React.FC = () => {
     return path
       .split("/")
       .filter(Boolean)
-      .map((segment) => segment.replace(/-/g, " "))
-      .map((segment) => segment.replace(/\b\w/g, (c) => c.toUpperCase()))
+      .map(
+        (segment) =>
+          displayNameBySegment[segment] ??
+          segment.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
+      )
       .join(" / ");
   }
 

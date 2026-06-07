@@ -4,10 +4,12 @@ import { Link } from "react-router-dom";
 
 const cardClassName =
   "rounded-3xl border border-surface-500/40 bg-surface-900/20 p-6 backdrop-blur-sm";
-const accentTextClassName = "text-[rgb(var(--help-accent-strong))]";
-const accentSoftClassName = "bg-[rgb(var(--help-accent-soft)/0.10)]";
-const accentBorderClassName = "border-[rgb(var(--help-accent-border)/0.28)]";
-const accentHoverBorderClassName = "hover:border-primary-400/40";
+const accentTextClassName = "text-[rgb(var(--docs-accent-strong))]";
+const accentSoftClassName = "bg-[rgb(var(--docs-accent-soft)/0.10)]";
+const accentBorderClassName = "border-[rgb(var(--docs-accent-border)/0.28)]";
+const accentHoverBorderClassName =
+  "hover:border-[rgb(var(--docs-accent-border)/0.45)]";
+const accentHoverTextClassName = "hover:text-[rgb(var(--docs-accent-strong))]";
 const iconContainerClassName =
   `flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border ${accentBorderClassName} ${accentSoftClassName}`;
 
@@ -35,7 +37,7 @@ export default function Help() {
           >
             <Link
               to="/"
-              className={`inline-flex items-center gap-2 rounded-full border border-surface-500/20 bg-surface-900/20 px-4 py-2 text-sm font-medium text-text-primary transition-colors ${accentHoverBorderClassName} hover:text-primary-300`}
+              className={`inline-flex items-center gap-2 rounded-full border border-surface-500/20 bg-surface-900/20 px-4 py-2 text-sm font-medium text-text-primary transition-colors ${accentHoverBorderClassName} ${accentHoverTextClassName}`}
             >
               <ArrowLeft className="h-4 w-4" />
               Back to docs
