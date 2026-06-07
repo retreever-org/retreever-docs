@@ -6,6 +6,22 @@ import type { DocNode } from "../../types/docfile.types";
 import { DEFAULT_DOC_PATH, highlightText, toDocHref } from "../../service/DocSearch";
 import { useDocsStore } from "../../../store/useDocsStore";
 
+function getDisplayedNodeName(
+  node: Extract<DocNode, { type: "file" }>
+): string {
+  const normalizedPath = node.path.replaceAll("\\", "/");
+
+  if (
+    node.name === "Get Started" &&
+    normalizedPath.endsWith("/get-started") &&
+    !normalizedPath.startsWith("spring-boot/")
+  ) {
+    return "Coming Soon...";
+  }
+
+  return node.name;
+}
+
 function containsPath(
   node: Extract<DocNode, { type: "folder" }>,
   path: string | null
@@ -137,6 +153,7 @@ export const FileNode = ({
   const currentPath = useDocsStore((state) => state.current.path);
   const isActive = (currentPath || DEFAULT_DOC_PATH) === node.path;
   const isPending = pendingPath === node.path;
+  const displayName = getDisplayedNodeName(node);
 
   const handleClick = () => {
     if (compactMode) {
@@ -171,14 +188,14 @@ export const FileNode = ({
         ${isActive ? "" : "hover:text-text-paragraph"}
         font-normal
       `}
-      title={node.name}
+      title={displayName}
     >
       <button
         type="button"
         className="min-w-0 flex-1 cursor-pointer truncate text-left"
         onClick={handleClick}
       >
-        {highlightText(node.name, highlight)}
+        {highlightText(displayName, highlight)}
       </button>
       {compactMode && isPending && (
         <button

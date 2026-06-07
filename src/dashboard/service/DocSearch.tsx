@@ -1,6 +1,16 @@
-import type { DocFile, DocFolder, DocNode } from "../types/docfile.types";
+import type { DocFile, DocNode } from "../types/docfile.types";
 
 export const DEFAULT_DOC_PATH = "spring-boot/get-started";
+const DOC_ROUTE_PREFIXES = new Set([
+  "spring-boot",
+  "nestjs",
+  "expressjs",
+  "fastapi",
+  "django",
+  "asp-net",
+  "gin",
+  "contribution",
+]);
 
 export function normalizeDocPathname(pathname: string): string {
   const trimmed = pathname.replace(/^\/+|\/+$/g, "");
@@ -12,9 +22,51 @@ export function toDocHref(path: string): string {
   return `/${normalized || DEFAULT_DOC_PATH}`;
 }
 
+export function resolveDocLinkPath(
+  href: string,
+  currentPath: string | null = DEFAULT_DOC_PATH
+): string | null {
+  if (
+    !href ||
+    href.startsWith("#") ||
+    /^[a-z][a-z0-9+.-]*:/i.test(href) ||
+    href.startsWith("//")
+  ) {
+    return null;
+  }
+
+  try {
+    const base = new URL(
+      toDocHref(currentPath || DEFAULT_DOC_PATH),
+      "https://retreever.dev"
+    );
+    const url = new URL(href, base);
+
+    if (url.search || url.hash) {
+      return null;
+    }
+
+    const normalizedPath = normalizeDocPathname(url.pathname).replace(
+      /\.md$/i,
+      ""
+    );
+    const [prefix] = normalizedPath.split("/");
+
+    if (!DOC_ROUTE_PREFIXES.has(prefix)) {
+      return null;
+    }
+
+    return normalizedPath;
+  } catch {
+    return null;
+  }
+}
+
 const normalize = (value: string) => value.toLowerCase();
 
 const matchesFile = (file: DocFile, term: string) => {
+  if (file.hidden) return false;
+
   const t = normalize(term);
   return (
     normalize(file.name).includes(t) ||
@@ -23,14 +75,52 @@ const matchesFile = (file: DocFile, term: string) => {
   );
 };
 
-const matchesFolder = (folder: DocFolder, term: string) => {
-  const t = normalize(term);
-  return normalize(folder.name).includes(t);
-};
+export function findDocByPath(
+  tree: DocNode[],
+  path: string | null
+): DocFile | null {
+  if (!path) return null;
+
+  for (const node of tree) {
+    if (node.type === "file") {
+      if (node.path === path) return node;
+      continue;
+    }
+
+    const match = findDocByPath(node.children, path);
+    if (match) return match;
+  }
+
+  return null;
+}
+
+export function excludeHiddenDocs(tree: DocNode[]): DocNode[] {
+  const result: DocNode[] = [];
+
+  for (const node of tree) {
+    if (node.type === "file") {
+      if (!node.hidden) {
+        result.push(node);
+      }
+      continue;
+    }
+
+    const visibleChildren = excludeHiddenDocs(node.children);
+    if (visibleChildren.length > 0) {
+      result.push({
+        ...node,
+        children: visibleChildren,
+      });
+    }
+  }
+
+  return result;
+}
 
 export function filterDocTree(tree: DocNode[], search: string): DocNode[] {
+  const visibleTree = excludeHiddenDocs(tree);
   const trimmed = search.trim();
-  if (!trimmed) return tree;
+  if (!trimmed) return visibleTree;
 
   const term = trimmed.toLowerCase();
 
@@ -39,17 +129,13 @@ export function filterDocTree(tree: DocNode[], search: string): DocNode[] {
       return matchesFile(node, term) ? node : null;
     }
 
-    // folder
     const filteredChildren: DocNode[] = [];
     for (const child of node.children) {
       const result = recurse(child);
       if (result) filteredChildren.push(result);
     }
 
-    const folderMatches = matchesFolder(node, term);
-
-    if (folderMatches || filteredChildren.length > 0) {
-      // return a new folder node with filtered children
+    if (filteredChildren.length > 0) {
       return {
         ...node,
         children: filteredChildren,
@@ -60,7 +146,7 @@ export function filterDocTree(tree: DocNode[], search: string): DocNode[] {
   };
 
   const result: DocNode[] = [];
-  for (const node of tree) {
+  for (const node of visibleTree) {
     const filtered = recurse(node);
     if (filtered) result.push(filtered);
   }
@@ -95,48 +181,6 @@ export async function getMarkdown(filePath: string): Promise<string | null> {
 
 
 export const highlightText = (text: string, highlight?: string) => {
-  const termRaw = highlight?.trim();
-  if (!termRaw) return <span className="truncate">{text}</span>;
-
-  const lowerText = text.toLowerCase();
-  const lowerTerm = termRaw.toLowerCase();
-
-  const parts: React.ReactNode[] = [];
-  let currentIndex = 0;
-
-  while (true) {
-    const matchIndex = lowerText.indexOf(lowerTerm, currentIndex);
-    if (matchIndex === -1) {
-      if (currentIndex < text.length) {
-        parts.push(
-          <span key={currentIndex} className="truncate">
-            {text.slice(currentIndex)}
-          </span>
-        );
-      }
-      break;
-    }
-
-    if (matchIndex > currentIndex) {
-      parts.push(
-        <span key={currentIndex} className="truncate">
-          {text.slice(currentIndex, matchIndex)}
-        </span>
-      );
-    }
-
-    const matchText = text.slice(matchIndex, matchIndex + lowerTerm.length);
-    parts.push(
-      <span
-        key={matchIndex}
-        className="bg-primary-500/20 text-primary-100 rounded-[3px]"
-      >
-        {matchText}
-      </span>
-    );
-
-    currentIndex = matchIndex + lowerTerm.length;
-  }
-
-  return <span className="truncate">{parts}</span>;
+  void highlight;
+  return <span className="truncate">{text}</span>;
 };

@@ -21,7 +21,7 @@ export default function ThemeToggleButton({
       aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
       aria-pressed={theme === "light"}
       whileTap={{ scale: 0.95 }}
-      className={`inline-flex h-8 w-8 items-center justify-center rounded-full border border-surface-500/40 bg-surface-700 text-text-primary transition-colors hover:bg-surface-700 ${className}`}
+      className={`inline-flex h-8 w-8 items-center justify-center text-text-primary transition-colors hover:bg-surface-700 ${className}`}
     >
       <motion.span
         key={theme}

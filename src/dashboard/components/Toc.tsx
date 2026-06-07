@@ -45,7 +45,7 @@ const Toc: React.FC = () => {
         overflow-auto no-scrollbar
       "
     >
-      <div className="h-max py-6 w-full overflow-auto border-l border-surface-500/20 pl-6 pr-2">
+      <div className="h-max py-12 w-full overflow-auto  border-surface-500/20 pl-6 pr-2">
         <p className="mb-4 text-xs font-semibold tracking-widest text-text-paragraph">
           ON THIS PAGE
         </p>

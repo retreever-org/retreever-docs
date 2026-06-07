@@ -2,8 +2,8 @@ import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDocsStore, useDocTree } from "../../store/useDocsStore";
 import { MarkdownRenderer } from "../components/markdown/MarkdownRenderer";
-import type { DocNode } from "../types/docfile.types";
-import { toDocHref } from "../service/DocSearch";
+import type { DocFile, DocNode } from "../types/docfile.types";
+import { findDocByPath, toDocHref } from "../service/DocSearch";
 
 function flattenDocs(tree: DocNode[]): { path: string; title: string }[] {
   const result: { path: string; title: string }[] = [];
@@ -11,6 +11,7 @@ function flattenDocs(tree: DocNode[]): { path: string; title: string }[] {
   function walk(nodes: DocNode[]) {
     for (const node of nodes) {
       if (node.type === "file") {
+        if (node.hidden) continue;
         result.push({
           path: node.path,
           title: node.title || node.name,
@@ -36,11 +37,58 @@ const displayNameBySegment: Record<string, string> = {
   "get-started": "Get Started",
 };
 
+function prettifyDocsPath(path: string | null): string {
+  if (!path) return "Get Started";
+
+  const segments = path.split("/").filter(Boolean);
+
+  return segments
+    .map((segment, index) => {
+      if (
+        segment === "get-started" &&
+        index > 0 &&
+        segments[0] !== "spring-boot"
+      ) {
+        return "Coming Soon...";
+      }
+
+      return (
+        displayNameBySegment[segment] ??
+        segment.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
+      );
+    })
+    .join(" / ");
+}
+
+function getDisplayLabel(path: string | null, doc: DocFile | null): string {
+  if (doc) {
+    if (!doc.hidden) {
+      return prettifyDocsPath(path);
+    }
+
+    if (
+      doc.name === "Get Started" &&
+      doc.path.endsWith("/get-started") &&
+      !doc.path.startsWith("spring-boot/")
+    ) {
+      return "Coming Soon...";
+    }
+
+    return doc.title || doc.name;
+  }
+
+  return prettifyDocsPath(path);
+}
+
 const ContentDisplay: React.FC = () => {
   const navigate = useNavigate();
   const { current } = useDocsStore();
   const { tree } = useDocTree();
   const flatDocs = useMemo(() => flattenDocs(tree), [tree]);
+  const currentDoc = useMemo(
+    () => findDocByPath(tree, current.path),
+    [current.path, tree]
+  );
 
   const nextDocs = useMemo(() => {
     if (!current.path || flatDocs.length === 0) return [];
@@ -48,20 +96,6 @@ const ContentDisplay: React.FC = () => {
     if (idx === -1) return [];
     return flatDocs.slice(idx + 1, idx + 4);
   }, [current.path, flatDocs]);
-
-  function prettifyDocsPath(path: string | null): string {
-    if (!path) return "Get Started";
-
-    return path
-      .split("/")
-      .filter(Boolean)
-      .map(
-        (segment) =>
-          displayNameBySegment[segment] ??
-          segment.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
-      )
-      .join(" / ");
-  }
 
   return (
     <div className="text-text-primary px-4 md:p-4 lg:px-12 transition-all duration-300 md:mb-60">
@@ -79,13 +113,14 @@ const ContentDisplay: React.FC = () => {
           uppercase
         "
       >
-        {prettifyDocsPath(current.path)}
+        {getDisplayLabel(current.path, currentDoc)}
       </div>
 
       {current.markdown ? (
         <>
           <MarkdownRenderer
             markdown={current.markdown}
+            currentPath={current.path}
             className="prose prose-invert max-w-none"
           />
 

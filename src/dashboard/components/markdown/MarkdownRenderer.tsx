@@ -1,14 +1,17 @@
 import React, { type ReactElement, type ReactNode } from "react";
 import ReactMarkdown, { type Components } from "react-markdown";
+import { useNavigate } from "react-router-dom";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import { CodeBlock } from "./CodeBlock";
+import { resolveDocLinkPath, toDocHref } from "../../service/DocSearch";
 import { slugify } from "../../service/Slugify";
 
 export interface MarkdownRendererProps {
   markdown: string;
   className?: string;
+  currentPath?: string | null;
 }
 
 function getNodeText(node: ReactNode): string {
@@ -32,7 +35,10 @@ function getNodeText(node: ReactNode): string {
 
 export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
   markdown,
+  currentPath = null,
 }) => {
+  const navigate = useNavigate();
+
   const components: Components = {
     h1: ({ node, ...props }) => {
       const text = getNodeText(props.children);
@@ -88,9 +94,19 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       />
     ),
 
-    a: ({ node, ...props }) => (
+    a: ({ node, href, ...props }) => (
       <a
+        href={href}
         className="text-primary-500 hover:text-primary-400 hover:underline font-medium"
+        onClick={(event) => {
+          if (!href) return;
+
+          const resolvedPath = resolveDocLinkPath(href, currentPath);
+          if (!resolvedPath) return;
+
+          event.preventDefault();
+          navigate(toDocHref(resolvedPath));
+        }}
         {...props}
       />
     ),
@@ -116,7 +132,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 
     blockquote: ({ node, ...props }) => (
       <blockquote
-        className="my-4 pl-4 border-l-4 border-surface-500/30 bg-surface-900/20 py-2 pr-4 italic text-text-muted"
+        className="my-4 pl-4 border-l-4 border-surface-500/50 bg-surface-900/40 pb-1 pt-4 pr-4 italic text-text-muted"
         {...props}
       />
     ),

@@ -3,7 +3,8 @@ export interface DocFile {
   type: "file";
   name: string;
   title: string;
-  path: string; 
+  path: string;
+  hidden?: boolean;
 }
 
 export interface DocFolder {

@@ -6,7 +6,7 @@ title: Get Started
 
 Retreever is a Spring Boot library. Add it to a Spring Boot 3.x application, start the app, and open the Studio at `/retreever`.
 
-You need Java 17 or later.
+> Supported for: Java 17+ and Spring Boot 3 
 
 ## Step 1: Add Retreever
 
@@ -84,3 +84,5 @@ http://localhost:8080/retreever
 ```
 
 If your application runs on a different port or context path, use that host application URL instead.
+
+> 🚨 If Retreever shows an empty screen in a cloud, proxy, or load-balancer deployment, your application may need forwarded-header handling. [Learn more](/spring-boot/__forwarded_header_strategy_issue).

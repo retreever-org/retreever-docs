@@ -64,6 +64,7 @@ export async function resolveDocsBuild() {
       type: "file",
       name: prettifyName(base),
       title,
+      hidden: isHiddenDoc(relative),
     };
   }
 
@@ -135,6 +136,10 @@ export async function resolveDocsBuild() {
   return convert(tree);
 }
 
+function isHiddenDoc(relativePath) {
+  return path.posix.basename(relativePath).startsWith("__");
+}
+
 export function prettifyName(raw) {
   const name = raw.replace(/\.[^.]+$/, "");
   const specialNames = new Map([
@@ -160,8 +165,12 @@ export function prettifyName(raw) {
 }
 
 export function toUrlPath(raw) {
-  return raw
-    .replace(/\.[^.]+$/, "")
+  const name = raw.replace(/\.[^.]+$/, "");
+  if (name.startsWith("__")) {
+    return name;
+  }
+
+  return name
     .replace(/([a-z])([A-Z])/g, "$1-$2")
     .replace(/[_\s]+/g, "-")
     .toLowerCase();
