@@ -5,8 +5,8 @@ import Toc from "../components/Toc";
 
 const Dashboard: React.FC = () => {
   return (
-    <div className="bg-inherit text-inherit tracking-tight">
-      <div className="lg:flex h-[calc(100vh-3rem)]">
+    <div className="flex min-h-full flex-col bg-inherit text-inherit tracking-tight">
+      <div className="flex-1 lg:flex lg:h-[calc(100vh-3rem)] pb-4">
         <div className="lg:flex min-w-64 no-scrollbar">
           <Sidebar />
         </div>
