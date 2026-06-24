@@ -77,7 +77,7 @@ public/
 ### Installation
 
 ```bash
-git clone https://github.com/Retreever-org/retreever-docs.git
+git clone https://github.com/retreever-org/retreever-docs.git
 cd retreever-docs
 npm install
 ```

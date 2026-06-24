@@ -70,7 +70,7 @@ const Cta: React.FC = () => {
           </motion.a>
 
           <motion.a
-            href="https://github.com/Retreever-org"
+            href="https://github.com/retreever-org"
             target="_blank"
             rel="noopener noreferrer"
             className="group inline-flex items-center gap-2 px-7 py-3 rounded-md font-medium border border-white/20 bg-white/5 text-slate-300 hover:text-white hover:border-white/40 hover:bg-white/10 backdrop-blur-sm transition-all duration-300"

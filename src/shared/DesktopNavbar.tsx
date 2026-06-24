@@ -131,7 +131,7 @@ export default function DesktopNavbar({
           </div>
 
           <motion.a
-            href="https://github.com/Retreever-org"
+            href="https://github.com/retreever-org"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Star on GitHub"

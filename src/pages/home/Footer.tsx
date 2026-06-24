@@ -70,7 +70,7 @@ const Footer: React.FC = () => {
             </h3>
             <div className="space-y-3">
               <a
-                href="https://github.com/Retreever-org"
+                href="https://github.com/retreever-org"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex cursor-pointer items-center gap-3 rounded-lg p-3 text-text-muted transition-all duration-200 hover:text-text-primary"

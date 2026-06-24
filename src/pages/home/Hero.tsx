@@ -105,7 +105,7 @@ const Hero = () => {
           className="flex flex-wrap items-center justify-center gap-4"
         >
           <motion.a
-            href="https://github.com/Retreever-org"
+            href="https://github.com/retreever-org"
             target="_blank"
             rel="noreferrer"
             className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full px-8 py-4 text-sm font-semibold text-slate-950 transition-all"

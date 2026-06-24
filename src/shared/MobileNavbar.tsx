@@ -133,7 +133,7 @@ export default function MobileNavbar({
               )}
 
               <motion.a
-                href="https://github.com/Retreever-org"
+                href="https://github.com/retreever-org"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-5 flex items-center gap-2.5 rounded-lg border border-primary-500/20 bg-surface-700 px-4 py-3 text-md font-medium text-primary-100"
