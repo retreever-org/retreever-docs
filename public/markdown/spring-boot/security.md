@@ -1,21 +1,31 @@
 ---
-## title: Security
+title: Security
 ---
 
 # Security
 
-Retreever Studio exposes runtime-generated API documentation and enables API testing from the browser. When Retreever is enabled in a shared, hosted, staging, production-like, or sensitive environment, Studio access should be protected to avoid anonymous access to API specs and API execution.
+Retreever Studio exposes the generated API contract and can execute requests from the browser. In local development that is the point; in shared or data-bearing environments it is a surface that must be protected.
 
-Retreever can help you protect Studio access in two ways:
+Retreever protects only its own routes and resources. The host application remains responsible for the security of business APIs, users, roles, sessions, CSRF rules, and authorization policies.
 
-1. Built-in in-memory user
-2. Host Managed Authentication (support from retreever-spring version 2.0.0)
+Retreever supports two Studio authentication modes:
 
-Retreever authentication applies only to Retreever-owned routes and resources, including Studio, generated documentation, login, refresh, and logout. The host application continues to own security for its own APIs, users, roles, sessions, CSRF rules, and authorization policies.
+1. Built-in static user configured through application properties.
+2. Host Managed Authentication through a `RetreeverAuthenticator` bean.
 
-## Built-in In-Memory User
+## Choose An Auth Mode
 
-The built-in in-memory user is the simplest Retreever authentication mode. It protects Retreever Studio using a username and password configured in the host application's configuration.
+| Situation | Recommended mode |
+| --- | --- |
+| Studio needs a simple shared credential for a local, internal, or temporary environment | Built-in static user |
+| Studio access must follow existing application users, admin accounts, directory users, or custom policy | Host Managed Authentication |
+| Studio must not be exposed at all in an environment | Disable Retreever |
+
+## Built-in Static User
+
+Use the built-in static user when the Studio only needs one configured username and password. This mode is suitable for local demos, small internal test environments, or temporary protected access.
+
+Do not use this mode when Studio access must be tied to real user identity, roles, audit rules, or existing admin policy. Use Host Managed Authentication for that.
 
 ```yaml
 retreever:
@@ -24,25 +34,26 @@ retreever:
     password: change-me
 ```
 
-When both `retreever.auth.username` and `retreever.auth.password` are configured, Retreever enables built-in authentication for Studio access.
+When both `retreever.auth.username` and `retreever.auth.password` are configured, Retreever enables built-in authentication for Studio access. If only one of the two values is configured, Retreever treats the static auth configuration as invalid and disables static authentication.
 
 This user exists only inside Retreever authentication. It is not added to the host application's user store and does not affect host application login behavior.
 
-If a Host Managed Authentication bean is available, the configured username and password are ignored. In that case, these properties can be avoided.
+If a Host Managed Authentication bean is available, the configured username and password are ignored. In that mode, do not configure static username/password unless you intentionally keep them as fallback documentation for another profile.
 
-## Host Managed Authentication (v2.0.0)
+## Host Managed Authentication
 
-Host Managed Authentication allows the host application to decide who can access Retreever Studio.
+Use Host Managed Authentication when the host application must decide who can access the Studio. This mode is suitable for existing users, admin accounts, internal access rules, or custom credential validation.
 
-The host application provides a `RetreeverAuthenticator` bean. During Retreever login, Retreever passes the submitted principal and credential to this bean. The host application validates them using its own user store, policy, or authentication logic, and returns the authentication result to Retreever.
+The host application provides a `RetreeverAuthenticator` bean. During Retreever login, Retreever passes the submitted principal and credential to this bean. The host application validates them using its own user store, admin policy, directory service, or custom login logic, then returns the authentication result to Retreever.
 
 ```java
+import dev.retreever.auth.RetreeverAuthenticator;
+import dev.retreever.auth.RetreeverAuthenticationResult;
+import org.springframework.context.annotation.Bean;
+
 @Bean
 RetreeverAuthenticator retreeverAuthenticator(HostAuthService hostAuthService) {
     return request -> {
-        // principal is the username and credential is the password submitted from Retreever login.
-        // Authenticate the user in the host application and return the result to Retreever.
-        // example:
         boolean authenticated = hostAuthService.authenticate(
                 request.principal(),
                 request.credential()
@@ -55,17 +66,24 @@ RetreeverAuthenticator retreeverAuthenticator(HostAuthService hostAuthService) {
 }
 ```
 
-Host Managed Authentication is suitable when Studio access should follow the host application's internal users, admin accounts, access policy, or custom login validation.
+The Retreever login payload remains `{ "username": "...", "password": "..." }`. Retreever maps those values to `principal` and `credential` for the host-auth request.
 
 Retreever delegates only the login validation to the host application. After successful login, Retreever still issues and manages its own authentication cookies for Retreever Studio access.
 
 When a `RetreeverAuthenticator` bean is present, it takes precedence over `retreever.auth.username` and `retreever.auth.password`.
 
-## Stable Auth Secret (Recommended)
+## Stable Auth Secret
 
 Retreever uses an auth secret to protect Retreever login sessions and auth token state.
 
-A stable secret should be configured when the application is deployed behind a load balancer, runs with multiple instances, or when multiple Retreever-enabled services behind the same gateway/proxy are expected to use consistent Retreever authentication behavior.
+Configure a stable UUID when:
+
+| Condition |
+| --- |
+| The application runs with more than one instance. |
+| The application is behind a load balancer. |
+| Retreever sessions should survive application restarts. |
+| Multiple Retreever-enabled services behind the same gateway need consistent Retreever authentication behavior. |
 
 ```yaml
 retreever:
@@ -90,7 +108,7 @@ retreever:
     refresh-token-ttl: 7d
 ```
 
-The default access token duration is 30 minutes. The default refresh token duration is 7 days.
+The default access token duration is 30 minutes. The default refresh token duration is 7 days. The values must be positive durations; invalid or non-positive values fall back to the defaults.
 
 ## Secure Cookies
 
@@ -104,7 +122,7 @@ retreever:
 
 `secure-cookies` controls only the `Secure` attribute on Retreever cookies. It does not enable or disable Retreever authentication.
 
-For local HTTP-only development, this can be disabled when the browser does not retain the Retreever login session over HTTP.
+Set `secure-cookies: false` only for local HTTP-only development when the browser does not retain the Retreever login session over HTTP.
 
 ```yaml
 retreever:
@@ -112,7 +130,7 @@ retreever:
     secure-cookies: false
 ```
 
-For HTTPS, shared environments, staging, production-like environments, and production, keep secure cookies enabled.
+Keep `secure-cookies: true` for HTTPS, shared environments, staging, production-like environments, and production.
 
 ## Allow Retreever Routes Through Spring Security
 
@@ -135,31 +153,31 @@ SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 }
 ```
 
-`RetreeverPublicPaths.get()` includes Retreever Studio, assets, and runtime routes.
+`RetreeverPublicPaths.get()` includes `/retreever` and `/retreever/**`.
 
 Allowing these paths in the host Spring Security chain does not make Retreever Studio public when Retreever authentication is enabled. It only allows the request to reach Retreever, where Retreever applies its own authentication rules for Studio and Retreever-owned resources.
 
 ## Disable Retreever
 
-Retreever can be disabled completely for environments where Studio should not be exposed.
+Set `retreever.enabled=false` when Retreever Studio must not be exposed in an environment at all.
 
 ```yaml
 retreever:
   enabled: false
 ```
 
-When disabled, Retreever does not register its controllers, filters, resources, or scanners.
+When disabled, Retreever does not register its controllers, filters, resources, or scanners. Use this for production environments where documentation and browser-based API testing are not allowed.
 
 ## Auth Properties
 
-| Property                           | Purpose                                                                                                                                                       | Default                       |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
-| `retreever.auth.username`          | Username for built-in Retreever authentication. Requires `password`. Ignored when a `RetreeverAuthenticator` bean is available.                               | Not set                       |
-| `retreever.auth.password`          | Password for built-in Retreever authentication. Requires `username`. Ignored when a `RetreeverAuthenticator` bean is available.                               | Not set                       |
-| `retreever.auth.secret`            | Stable UUID used to protect Retreever auth tokens and login guard state. Recommended for restarts, load-balanced deployments, and multi-instance deployments. | Startup-only generated secret |
-| `retreever.auth.secure-cookies`    | Controls the `Secure` attribute on Retreever auth cookies.                                                                                                    | `true`                        |
-| `retreever.auth.access-token-ttl`  | Duration of the Retreever access token.                                                                                                                       | `30m`                         |
-| `retreever.auth.refresh-token-ttl` | Duration of the Retreever refresh token.                                                                                                                      | `7d`                          |
+| Property | Purpose | Default |
+| --- | --- | --- |
+| `retreever.auth.username` | Username for built-in Retreever authentication. Requires `password`. Ignored when a `RetreeverAuthenticator` bean is available. | Not set |
+| `retreever.auth.password` | Password for built-in Retreever authentication. Requires `username`. Ignored when a `RetreeverAuthenticator` bean is available. | Not set |
+| `retreever.auth.secret` | Stable UUID used to protect Retreever auth tokens and login guard state. Recommended for restarts, load-balanced deployments, and multi-instance deployments. | Startup-only generated secret |
+| `retreever.auth.secure-cookies` | Controls the `Secure` attribute on Retreever auth cookies. | `true` |
+| `retreever.auth.access-token-ttl` | Duration of the Retreever access token. | `30m` |
+| `retreever.auth.refresh-token-ttl` | Duration of the Retreever refresh token. | `7d` |
 
 ## Security Boundary
 

@@ -4,14 +4,18 @@ title: Studio Storage
 
 # Studio Storage
 
-Retreever Studio supports two storage modes:
+Retreever Studio is a working API client as well as a documentation view. It can contain URLs, headers, request bodies, uploaded files, generated documentation, and environment values. Storage mode controls how much of that workspace data the browser may retain.
 
-- `in-memory`
-- `indexed-db`
+Retreever supports two storage modes:
 
-`in-memory` is the default. It keeps sensitive working data runtime-scoped where possible and is the expected posture for production-like environments.
+| Mode | Use when |
+| --- | --- |
+| `in-memory` | The environment is shared, hosted, production-like, connected to sensitive systems, or may contain realistic customer/test data. |
+| `indexed-db` | The environment is local, development, or test, and developers need request edits, generated docs, uploaded files, and workspace layout to survive reloads. |
 
-`indexed-db` enables persistent workspace behavior for local, development, and test environments where users are trusted and the data is appropriate for browser persistence.
+`in-memory` is the default and the recommended setting for any environment where browser persistence is not explicitly safe. It keeps request URLs, bodies, response data, environment values, and authorization secrets out of long-lived Retreever workspace storage.
+
+`indexed-db` stores more Studio workspace data in the browser. Use it only for trusted development and test environments.
 
 Configure the mode with:
 
@@ -39,11 +43,16 @@ Any blank or unsupported value falls back to `in-memory`.
 
 Active tab metadata is intentionally separated from request data. In `in-memory` mode, Retreever can preserve view continuity while removing manual request URLs, request bodies, response bodies, environment values, and authorization secrets from retained tab data.
 
-Browser-managed state is separate from Retreever-managed workspace storage. Tested host APIs can still set browser cookies through `Set-Cookie`, and browsers or intermediaries can cache responses according to the host application's response headers, browser behavior, and request configuration. Retreever does not block tested API cookie flows because cookie-based flows are valid API testing behavior.
-
 ## Recommended Usage
 
-Use `in-memory` where the environment resembles production, uses realistic data, or connects to sensitive downstream systems.
+Use `in-memory` when:
+
+| Condition |
+| --- |
+| The environment is staging, production-like, hosted, or shared. |
+| API requests may include real or realistic customer data. |
+| Request bodies, headers, uploaded files, or generated examples may contain sensitive values. |
+| You want Retreever to avoid retaining manual request data after the active session. |
 
 ```yaml
 retreever:
@@ -51,7 +60,14 @@ retreever:
     storage: in-memory
 ```
 
-Use `indexed-db` where persistent workspace behavior is useful and the environment is local, development, or test.
+Use `indexed-db` when:
+
+| Condition |
+| --- |
+| The environment is local, development, or test. |
+| Developers are using test data and test credentials. |
+| It is acceptable for the browser to retain request edits, generated documents, uploaded test files, and layout state. |
+| Developers need to reload the Studio without rebuilding their workspace. |
 
 ```yaml
 retreever:
@@ -59,4 +75,12 @@ retreever:
     storage: indexed-db
 ```
 
-Use test data and test credentials when browser persistence is enabled.
+Do not enable `indexed-db` for production-like environments unless the team has explicitly reviewed the browser persistence risk.
+
+## Browser State Outside Retreever
+
+Retreever-managed workspace storage is not the only browser state involved in API testing.
+
+Tested host APIs can still set browser cookies through `Set-Cookie`, and browsers or intermediaries can cache responses according to the host application's response headers, browser behavior, and request configuration. Retreever does not block tested API cookie flows because cookie-based flows are valid API testing behavior.
+
+If an environment has strict data-handling requirements, review both Retreever storage mode and the host application's own browser-facing cookie and cache behavior.

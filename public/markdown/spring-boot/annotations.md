@@ -4,11 +4,11 @@ title: Annotations
 
 # Annotations
 
-Retreever works without Retreever annotations. The annotations below add metadata to the generated document.
+Retreever derives the first version of the document from Spring controllers, request mappings, method parameters, request and response types, validation annotations, Jackson metadata, and exception handlers.
+
+Annotations are optional. Add them when the generated document needs information that the code cannot express clearly enough: names, descriptions, examples, explicit success statuses, reusable headers, or mapped error cases.
 
 All Retreever annotations are runtime annotations.
-
----
 
 ## Summary
 
@@ -22,13 +22,11 @@ All Retreever annotations are runtime annotations.
 | `@Description` | Parameter, field | Sets human-readable descriptions for parameters or fields. |
 | `@RetreeverSkip` | Type, method | Excludes a controller or endpoint from Retreever documentation. |
 
----
+## `@ApiDoc`
 
-## 1. @ApiDoc
+`@ApiDoc` gives the generated document an explicit product or service identity.
 
-`@ApiDoc` annotation can be used on the Spring Boot application class for defining the top-level API document identity. It allows the generated document to present a specific API name, description, and version instead of relying on derived defaults.
-
-Use `@ApiDoc` on the Spring Boot application class.
+Add `@ApiDoc` when the document should show a deliberate API name, description, or version. Without it, Retreever derives the document name from the application class and uses version `v1`.
 
 ```java
 import dev.retreever.annotation.ApiDoc;
@@ -52,15 +50,11 @@ Fields:
 | `description` | No | Empty string |
 | `version` | No | `v1` |
 
-If `@ApiDoc` is not present, Retreever derives the document name from the application class name and uses version `v1`.
+## `@ApiGroup`
 
----
+`@ApiGroup` gives a Spring controller a readable group name instead of a controller-derived fallback.
 
-## 2. @ApiGroup
-
-`@ApiGroup` annotation can be used on a Spring controller for defining how that controller is grouped in the generated document. It helps present endpoints under a deliberate business-facing group name and description instead of only using the controller-derived fallback.
-
-Use `@ApiGroup` on a Spring controller.
+Add `@ApiGroup` when controller class names are implementation-oriented, split for code organization, or not the wording developers should see in the Studio sidebar.
 
 ```java
 import dev.retreever.annotation.ApiGroup;
@@ -69,7 +63,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @ApiGroup(
         name = "Orders",
-        description = "Order APIs"
+        description = "Create, search, and manage customer orders."
 )
 @RestController
 @RequestMapping("/orders")
@@ -86,13 +80,11 @@ Fields:
 
 If `@ApiGroup` is not present, Retreever derives a group name from the controller class name.
 
----
+## `@ApiEndpoint`
 
-## 3. @ApiEndpoint
+Add `@ApiEndpoint` when method-name inference is not enough.
 
-`@ApiEndpoint` annotation can be used on a controller method for enriching endpoint-level documentation metadata. It allows the endpoint to expose a clearer display name, an explicit secured marker, a documented success status, reusable headers, descriptive text, and linked error types.
-
-Use `@ApiEndpoint` on a controller method.
+It provides a readable endpoint name, documented success status, security marker, endpoint description, reusable header references, and mapped error types.
 
 ```java
 import dev.retreever.annotation.ApiEndpoint;
@@ -106,7 +98,7 @@ import org.springframework.web.bind.annotation.PathVariable;
         secured = true,
         status = HttpStatus.OK,
         headers = {HttpHeaders.AUTHORIZATION, "X-Tenant-ID"},
-        description = "Returns one order by id",
+        description = "Returns one order by id.",
         errors = {OrderNotFoundException.class}
 )
 @GetMapping("/{orderId}")
@@ -138,15 +130,13 @@ Supported security annotations:
 | `jakarta.annotation.security.RolesAllowed` |
 | `javax.annotation.security.RolesAllowed` |
 
-`permitAll()` and `isAnonymous()` expressions are treated as public.
+`permitAll()` and `isAnonymous()` expressions are treated as public. If an expression combines a public condition with an `or` operator, Retreever treats the endpoint as public for documentation purposes.
 
----
+## `@ApiError`
 
-## 4. @ApiError
+`@ApiError` documents the status and meaning of an error response handled by an `@ExceptionHandler` method.
 
-`@ApiError` annotation can be used on an `@ExceptionHandler` method for documenting the error response contract handled by that method. It enables the generated document to show a specific response status and error description for consumers.
-
-Use `@ApiError` on an `@ExceptionHandler` method.
+Retreever scans exception handlers and links errors to endpoints when endpoint metadata references the exception type through `@ApiEndpoint(errors = {...})`.
 
 ```java
 import dev.retreever.annotation.ApiError;
@@ -159,7 +149,7 @@ class ApiExceptionHandler {
 
     @ApiError(
             status = HttpStatus.NOT_FOUND,
-            description = "Order was not found"
+            description = "Order was not found."
     )
     @ExceptionHandler(OrderNotFoundException.class)
     ErrorResponse handleOrderNotFound(OrderNotFoundException ex) {
@@ -177,13 +167,11 @@ Fields:
 
 If `@ApiError` is not present on an exception handler, Retreever uses `HttpStatus.INTERNAL_SERVER_ERROR` and an empty description.
 
----
+## `@FieldInfo`
 
-## 5. @FieldInfo
+`@FieldInfo` adds schema descriptions and examples directly on DTO fields.
 
-`@FieldInfo` annotation can be used on DTO fields for enriching schema property documentation. It helps provide a clearer field description and a concrete example value in the generated model output.
-
-Use `@FieldInfo` on DTO fields.
+Add `@FieldInfo` when the field meaning is not obvious from the Java name alone, such as external ids, status values, timestamps, or domain-specific codes.
 
 ```java
 import dev.retreever.annotation.FieldInfo;
@@ -193,7 +181,7 @@ class OrderResponse {
 
     @NotBlank
     @FieldInfo(
-            description = "Public order identifier",
+            description = "Public order identifier.",
             example = "ORD-1001"
     )
     private String orderId;
@@ -209,13 +197,11 @@ Fields:
 
 Retreever reads `@FieldInfo.description()` when no `@Description` is present on the field. It reads `@FieldInfo.example()` when the example value is not blank.
 
----
+## `@Description`
 
-## 6. @Description
+`@Description` adds concise human-readable explanations to fields and method parameters.
 
-`@Description` annotation can be used on fields and method parameters for attaching human-readable explanatory text. It enhances generated request and schema documentation for fields, path variables, query parameters, and request headers.
-
-Use `@Description` on fields or method parameters.
+Add `@Description` to request parameters when the Studio needs to explain what a path variable, query parameter, or header means without introducing additional wrapper types.
 
 ```java
 import dev.retreever.annotation.Description;
@@ -225,15 +211,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 OrderResponse findOrder(
         @PathVariable
-        @Description("Public order identifier")
+        @Description("Public order identifier.")
         String orderId,
 
         @RequestParam
-        @Description("Optional customer id filter")
+        @Description("Optional customer id filter.")
         String customerId,
 
         @RequestHeader("X-Tenant-ID")
-        @Description("Tenant identifier")
+        @Description("Tenant identifier for the request.")
         String tenantId
 ) {
     return null;
@@ -244,13 +230,11 @@ OrderResponse findOrder(
 
 For schema fields, `@Description` has priority over `@FieldInfo.description()`.
 
----
+## `@RetreeverSkip`
 
-## 7. @RetreeverSkip
+`@RetreeverSkip` excludes a controller class or controller method from the generated Retreever document.
 
-`@RetreeverSkip` annotation can be used on a controller class or controller method for excluding that runtime surface from the generated Retreever document. It allows internal, admin, or otherwise non-public endpoints to stay out of the published documentation.
-
-Use `@RetreeverSkip` on a controller class or controller method.
+This is a documentation exclusion only. It does not disable the endpoint and does not change host application security.
 
 ```java
 import dev.retreever.annotation.RetreeverSkip;
@@ -258,9 +242,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@RetreeverSkip
 @RestController
 @RequestMapping("/internal")
-@RetreeverSkip
 class InternalController {
 
     @DeleteMapping("/cache")
@@ -269,13 +253,15 @@ class InternalController {
 }
 ```
 
-When placed on a controller, the controller is not included in Retreever documentation. When placed on a method, that endpoint is not included.
+When placed on a controller, the controller is not included in Retreever documentation. When placed on a method, only that endpoint is excluded.
 
---- 
+For centralized path-based exclusions, use `retreever.docs.skip`. See [Skip Endpoints](/spring-boot/skip-endpoints).
 
 ## Validation And Jackson Metadata
 
-Retreever reads these validation constraints from fields and parameters:
+Retreever also reads metadata from common framework annotations, so you do not need Retreever-specific annotations for everything.
+
+Validation constraints from fields and parameters:
 
 | Validation annotation | Documented constraint |
 | --- | --- |
@@ -286,5 +272,7 @@ Retreever reads these validation constraints from fields and parameters:
 | `@Min` | Minimum numeric value |
 | `@Max` | Maximum numeric value |
 | `@Pattern` | Regex pattern |
+
+Both `jakarta.validation.constraints.*` and `javax.validation.constraints.*` variants are supported.
 
 Retreever also uses Jackson naming metadata while resolving schema property names. It checks Jackson's serialization model, `@JsonProperty`, and class-level `@JsonNaming`.

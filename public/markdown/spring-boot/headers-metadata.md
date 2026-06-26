@@ -4,6 +4,8 @@ title: Headers Metadata
 
 # Headers Metadata
 
+Headers are part of the API contract. Authentication tokens, tenant ids, idempotency keys, correlation ids, locale hints, and device identifiers often decide whether a request can be executed successfully.
+
 Retreever resolves request header metadata from controller methods and optional `ApiHeader` beans.
 
 ## Header Sources
@@ -17,9 +19,20 @@ Retreever reads headers from these sources:
 | Endpoint header references | `@ApiEndpoint(headers = {...})`. |
 | Header metadata beans | Spring beans of type `dev.retreever.endpoint.model.ApiHeader`. |
 
+Use `@RequestHeader` metadata when the controller method already declares the header. Use reusable `ApiHeader` beans when the same header appears across many endpoints or when the header is referenced through `@ApiEndpoint(headers = {...})`.
+
 ## Register Reusable Header Metadata
 
-Create `ApiHeader` beans when you want reusable metadata for headers referenced by `@ApiEndpoint(headers = {...})`.
+Create `ApiHeader` beans when a header should have one shared definition across the API document.
+
+Use `ApiHeader` beans for:
+
+| Header pattern |
+| --- |
+| `Authorization` headers used by many secured endpoints. |
+| Tenant, organization, or workspace headers repeated across controllers. |
+| Idempotency, correlation, or request tracking headers. |
+| Headers referenced by `@ApiEndpoint(headers = {...})` but not declared as method parameters. |
 
 ```java
 import dev.retreever.endpoint.model.ApiHeader;
@@ -37,7 +50,7 @@ class RetreeverHeaderMetadata {
                 .setName(HttpHeaders.AUTHORIZATION)
                 .setType(JsonPropertyType.STRING)
                 .setRequired(true)
-                .setDescription("Authorization header");
+                .setDescription("Bearer token used to authorize the request.");
     }
 
     @Bean
@@ -46,7 +59,7 @@ class RetreeverHeaderMetadata {
                 .setName("X-Tenant-ID")
                 .setType(JsonPropertyType.STRING)
                 .setRequired(true)
-                .setDescription("Tenant identifier");
+                .setDescription("Tenant identifier for the request.");
     }
 }
 ```
@@ -85,12 +98,14 @@ import org.springframework.web.bind.annotation.RequestHeader;
 @GetMapping("/orders")
 List<OrderResponse> listOrders(
         @RequestHeader(name = "X-Tenant-ID", required = true)
-        @Description("Tenant identifier")
+        @Description("Tenant identifier for the request.")
         String tenantId
 ) {
     return List.of();
 }
 ```
+
+Use this option when the header is consumed directly by the controller method.
 
 ## Document Mapping Headers
 
@@ -114,7 +129,7 @@ Mapping headers are treated as required. Their type is resolved as `JsonProperty
 
 ## Merge Behavior
 
-When the same header appears from multiple sources, Retreever merges it by header name.
+When the same header appears from multiple sources, Retreever merges it by header name. This allows you to combine method-level discovery with reusable metadata.
 
 | Metadata | Priority |
 | --- | --- |
